@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
+import { useT } from "@/app/i18n";
 
 import Button from "./Button";
 
@@ -48,6 +49,7 @@ export default function SelectVersionModal({
   setShow: (newShow: boolean) => void;
   onSelect: (selectedVersionUuid: string) => void;
 }) {
+  const t = useT();
   const doHide = () => {
     setShow(false);
   };
@@ -75,7 +77,7 @@ export default function SelectVersionModal({
   return (
     <Modal show={show} onHide={() => doHide()} centered={true}>
       <Modal.Header>
-        <Modal.Title>Select Game Version</Modal.Title>
+        <Modal.Title>{t("Select Game Version")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         The server <strong>{server?.description}</strong> supports multiple game

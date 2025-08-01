@@ -1,6 +1,7 @@
 import { Modal } from "react-bootstrap";
 import Button from "@/components/Button";
 import { VersionEntry } from "@/app/types";
+import { useT } from "@/app/i18n";
 
 export default function RemoveBuildModal({
   show,
@@ -14,10 +15,11 @@ export default function RemoveBuildModal({
   onConfirm: (uuid: string, deleteCaches: boolean) => void;
 }) {
 
+  const t = useT();
   return (
     <Modal show={show} onHide={() => setShow(false)} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Remove Build</Modal.Title>
+        <Modal.Title>{t("Remove Build")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         Are you sure you want to remove build <strong>{version?.name ?? version?.uuid}</strong>?

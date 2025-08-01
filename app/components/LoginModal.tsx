@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useT } from "@/app/i18n";
 
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
@@ -141,6 +142,7 @@ export default function LoginModal({
   onSubmitRegister: (username: string, password: string, email: string) => void;
   onForgotPassword: () => void;
 }) {
+  const t = useT();
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [remember, setRemember] = useState<boolean>(alwaysRemember);
@@ -215,11 +217,11 @@ export default function LoginModal({
             className="mb-3"
             fill
           >
-            <Tab eventKey={TAB_LOGIN} title="Log In" className="p-3">
+            <Tab eventKey={TAB_LOGIN} title={t("Log In")} className="p-3">
               <Form.Group className="mb-3" controlId={CONTROL_ID_USERNAME}>
                 <Form.Control
                   type="text"
-                  placeholder="Username"
+                  placeholder={t("Username")}
                   value={username}
                   onFocus={() => setActiveControl(CONTROL_ID_USERNAME)}
                   onChange={(e) => setUsername(e.target.value)}
@@ -228,7 +230,7 @@ export default function LoginModal({
               <Form.Group className="mb-3" controlId={CONTROL_ID_PASSWORD}>
                 <Form.Control
                   type="password"
-                  placeholder="Password"
+                  placeholder={t("Password")}
                   value={password}
                   onFocus={() => setActiveControl(CONTROL_ID_PASSWORD)}
                   onChange={(e) => setPassword(e.target.value)}
@@ -238,7 +240,7 @@ export default function LoginModal({
                 <Form.Group controlId={CONTROL_ID_REMEMBER}>
                   <Form.Check
                     type="checkbox"
-                    label="Remember Me"
+                    label={t("Remember Me")}
                     disabled={alwaysRemember}
                     checked={remember}
                     onChange={(e) => setRemember(e.target.checked)}
@@ -256,11 +258,11 @@ export default function LoginModal({
                 </span>
               </div>
             </Tab>
-            <Tab eventKey={TAB_REGISTER} title="Register" className="p-3">
+            <Tab eventKey={TAB_REGISTER} title={t("Register")} className="p-3">
               <Form.Group className="mb-3" controlId={CONTROL_ID_NEW_USERNAME}>
                 <Form.Control
                   type="text"
-                  placeholder="Username"
+                  placeholder={t("Username")}
                   value={username}
                   onFocus={() => setActiveControl(CONTROL_ID_NEW_USERNAME)}
                   onChange={(e) => setUsername(e.target.value)}
@@ -270,7 +272,7 @@ export default function LoginModal({
               <Form.Group className="mb-3" controlId={CONTROL_ID_NEW_PASSWORD}>
                 <Form.Control
                   type="password"
-                  placeholder="Password"
+                  placeholder={t("Password")}
                   value={password}
                   onFocus={() => setActiveControl(CONTROL_ID_NEW_PASSWORD)}
                   onChange={(e) => setPassword(e.target.value)}
@@ -283,7 +285,7 @@ export default function LoginModal({
               >
                 <Form.Control
                   type="password"
-                  placeholder="Confirm Password"
+                  placeholder={t("Confirm Password")}
                   value={confirmPassword}
                   onFocus={() => setActiveControl(CONTROL_ID_CONFIRM_PASSWORD)}
                   onChange={(e) => setConfirmPassword(e.target.value)}
@@ -293,7 +295,7 @@ export default function LoginModal({
               <Form.Group className="mb-3" controlId={CONTROL_ID_EMAIL}>
                 <Form.Control
                   type="text"
-                  placeholder={"Email" + (emailRequired ? "" : " (optional)")}
+                  placeholder={emailRequired ? t("Email") : t("Email (optional)")}
                   value={email}
                   onFocus={() => setActiveControl(CONTROL_ID_EMAIL)}
                   onChange={(e) => setEmail(e.target.value)}

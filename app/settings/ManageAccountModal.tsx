@@ -6,6 +6,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { open } from "@tauri-apps/plugin-shell";
 import { AccountInfo, LoginSession, ServerEntry } from "@/app/types";
 import { getPrivacyPolicyUrlForServer, validateEmail, validatePassword } from "@/app/util";
+import { useT } from "@/app/i18n";
 
 const TAB_UPDATE_EMAIL = "update_email";
 const TAB_UPDATE_PASSWORD = "update_password";
@@ -27,6 +28,7 @@ export default function ManageAccountModal({
   onUpdateEmail: (newEmail: string) => Promise<void>;
   onUpdatePassword: (newPassword: string) => Promise<void>;
 }) {
+  const t = useT();
   const [tab, setTab] = useState(TAB_DEFAULT);
   const [accountInfo, setAccountInfo] = useState<AccountInfo | undefined | null>(undefined);
   const [working, setWorking] = useState<boolean>(false);
@@ -86,7 +88,7 @@ export default function ManageAccountModal({
   return (
     <Modal show={show} onHide={() => setShow(false)} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Manage Account - {server?.description}</Modal.Title>
+        <Modal.Title>{t("Manage Account")} - {server?.description}</Modal.Title>
       </Modal.Header>
       <Modal.Body className="p-0">
         {accountInfo === undefined ? (
@@ -109,14 +111,14 @@ export default function ManageAccountModal({
           </div>
         )}
         <Tabs activeKey={tab} onSelect={(k) => setTab(k || TAB_DEFAULT)} fill>
-          <Tab eventKey={TAB_UPDATE_EMAIL} title="Change Email">
+          <Tab eventKey={TAB_UPDATE_EMAIL} title={t("Change Email")}>
             <Form className="p-3">
               <Form.Group className="mb-3" controlId="editNewEmail">
                 <Form.Control
                   type="text"
                   value={newEmail}
                   onChange={(e) => setNewEmail(e.target.value)}
-                  placeholder="New Email"
+                  placeholder={t("New Email")}
                   isInvalid={newEmail.length > 0 && !validateEmail(newEmail, false)}
                 />
               </Form.Group>
@@ -125,20 +127,20 @@ export default function ManageAccountModal({
                   type="text"
                   value={newEmailConfirm}
                   onChange={(e) => setNewEmailConfirm(e.target.value)}
-                  placeholder="Confirm New Email"
+                  placeholder={t("Confirm New Email")}
                   isInvalid={newEmailConfirm.length > 0 && !validateNewEmail()}
                 />
               </Form.Group>
             </Form>
           </Tab>
-          <Tab eventKey={TAB_UPDATE_PASSWORD} title="Change Password">
+          <Tab eventKey={TAB_UPDATE_PASSWORD} title={t("Change Password")}>
             <Form className="p-3">
               <Form.Group className="mb-3" controlId="editNewPassword">
                 <Form.Control
                   type="text"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder="New Password"
+                  placeholder={t("New Password")}
                   isInvalid={newPassword.length > 0 && !validatePassword(newPassword)}
                 />
               </Form.Group>
@@ -147,7 +149,7 @@ export default function ManageAccountModal({
                   type="text"
                   value={newPasswordConfirm}
                   onChange={(e) => setNewPasswordConfirm(e.target.value)}
-                  placeholder="Confirm New Password"
+                  placeholder={t("Confirm New Password")}
                   isInvalid={newPasswordConfirm.length > 0 && !validateNewPassword()}
                 />
               </Form.Group>
