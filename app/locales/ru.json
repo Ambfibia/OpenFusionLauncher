@@ -80,5 +80,6 @@
   "Do you really want to delete {server}?": "Вы действительно хотите удалить {server}?",
   "You could always re-add it later.": "Вы всегда можете добавить его снова.",
   "Language": "Язык",
-  "api.myserver.xyz": "api.myserver.xyz"
+  "api.myserver.xyz": "api.myserver.xyz",
+  "default": "по умолчанию"
 }

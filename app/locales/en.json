@@ -80,5 +80,6 @@
   "Do you really want to delete {server}?": "Do you really want to delete {server}?",
   "You could always re-add it later.": "You could always re-add it later.",
   "Language": "Language",
-  "api.myserver.xyz": "api.myserver.xyz"
+  "api.myserver.xyz": "api.myserver.xyz",
+  "default": "default"
 }
