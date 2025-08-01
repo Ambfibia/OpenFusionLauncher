@@ -13,6 +13,7 @@ import { Stack } from "react-bootstrap";
 import Button from "@/components/Button";
 import AddBuildModal from "./AddBuildModal";
 import RemoveBuildModal from "./RemoveBuildModal";
+import { useT } from "@/app/i18n";
 
 const findVersion = (versions: VersionEntry[], uuid: string) => {
   return versions.find((version) => version.uuid == uuid);
@@ -30,13 +31,19 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
   const [removeTarget, setRemoveTarget] = useState("");
 
   const ctx = useContext(SettingsCtx);
+  const t = useT();
 
   const clearGameCache = async (uuid: string, name?: string) => {
-    const txt = name ? " for " + name : "";
     try {
       await invoke("delete_cache", { uuid, offline: false });
       if (ctx.alertSuccess) {
-        ctx.alertSuccess("Game cache" + txt + " cleared successfully");
+        const msg = name
+          ? t("Game cache for {name} cleared successfully").replace(
+              "{name}",
+              name,
+            )
+          : t("Game cache cleared successfully");
+        ctx.alertSuccess(msg);
       }
       setVersionData((prev) => {
         return prev.map((pv) => {
@@ -49,7 +56,15 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
       });
     } catch (e) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to clear game cache" + txt + ": " + e);
+        const msg = name
+          ? t("Failed to clear game cache for {name}: {error}")
+              .replace("{name}", name)
+              .replace("{error}", "" + e)
+          : t("Failed to clear game cache: {error}").replace(
+              "{error}",
+              "" + e,
+            );
+        ctx.alertError(msg);
       }
     }
   };
@@ -78,7 +93,12 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
       });
     } catch (e) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to kickoff offline cache download: " + e);
+        ctx.alertError(
+          t("Failed to kickoff offline cache download: {error}").replace(
+            "{error}",
+            "" + e,
+          ),
+        );
       }
     }
   };
@@ -87,21 +107,31 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
     try {
       await invoke("download_cache", { uuid, offline: true, repair: true });
       if (ctx.alertSuccess) {
-        ctx.alertSuccess("Offline cache repair started");
+        ctx.alertSuccess(t("Offline cache repair started"));
       }
     } catch (e) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to kickoff offline cache repair: " + e);
+        ctx.alertError(
+          t("Failed to kickoff offline cache repair: {error}").replace(
+            "{error}",
+            "" + e,
+          ),
+        );
       }
     }
   };
 
   const deleteOfflineCache = async (uuid: string, name?: string) => {
-    const txt = name ? " for " + name : "";
     try {
       await invoke("delete_cache", { uuid, offline: true });
       if (ctx.alertSuccess) {
-        ctx.alertSuccess("Offline cache" + txt + " deleted successfully");
+        const msg = name
+          ? t("Offline cache for {name} deleted successfully").replace(
+              "{name}",
+              name,
+            )
+          : t("Offline cache deleted successfully");
+        ctx.alertSuccess(msg);
       }
       setVersionData((prev) => {
         return prev.map((pv) => {
@@ -118,7 +148,15 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
       });
     } catch (e) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to delete offline cache" + txt + ": " + e);
+        const msg = name
+          ? t("Failed to delete offline cache for {name}: {error}")
+              .replace("{name}", name)
+              .replace("{error}", "" + e)
+          : t("Failed to delete offline cache: {error}").replace(
+              "{error}",
+              "" + e,
+            );
+        ctx.alertError(msg);
       }
     }
   };
@@ -176,12 +214,16 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
       });
       await fetchVersions();
       if (ctx.alertSuccess) {
-        ctx.alertSuccess("Imported build " + newVersionLabel);
+        ctx.alertSuccess(
+          t("Imported build {name}").replace("{name}", newVersionLabel),
+        );
       }
       return true;
     } catch (e: unknown) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to import build: " + e);
+        ctx.alertError(
+          t("Failed to import build: {error}").replace("{error}", "" + e),
+        );
       }
     }
     return false;
@@ -195,11 +237,18 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
       setRemoveTarget("");
       setShowRemoveBuildModal(false);
       if (ctx.alertSuccess) {
-        ctx.alertSuccess("Removed build " + name);
+        ctx.alertSuccess(
+          t("Removed build {name}").replace("{name}", name),
+        );
       }
     } catch (e: unknown) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to remove build: " + e);
+        ctx.alertError(
+          t("Failed to remove build: {error}").replace(
+            "{error}",
+            "" + e,
+          ),
+        );
       }
     }
   };
@@ -209,11 +258,13 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
       await invoke("add_version_manual", { name, assetUrl });
       await fetchVersions();
       if (ctx.alertSuccess) {
-        ctx.alertSuccess("Added build " + name);
+        ctx.alertSuccess(t("Added build {name}").replace("{name}", name));
       }
     } catch (e: unknown) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to add build: " + e);
+        ctx.alertError(
+          t("Failed to add build: {error}").replace("{error}", "" + e),
+        );
       }
     }
   };
