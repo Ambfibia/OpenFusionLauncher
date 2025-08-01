@@ -8,6 +8,7 @@ import { deepEqual, getDebugMode } from "@/app/util";
 import SettingsHeader from "./SettingsHeader";
 import { SettingsCtx } from "@/app/contexts";
 import SettingControlFpsFix from "./SettingControlFpsFix";
+import { useT } from "@/app/i18n";
 
 export default function GameSettingsTab({
   active,
@@ -26,6 +27,7 @@ export default function GameSettingsTab({
   const [debug, setDebug] = useState<boolean>(false);
 
   const ctx = useContext(SettingsCtx);
+  const t = useT();
 
   useEffect(() => {
     getDebugMode().then(setDebug);
@@ -54,8 +56,10 @@ export default function GameSettingsTab({
   const showResetConfirmation = () => {
     if (ctx.showConfirmationModal) {
       ctx.showConfirmationModal(
-        "Are you sure you want to reset the game settings to their defaults?",
-        "Reset Game Settings",
+        t(
+          "Are you sure you want to reset the game settings to their defaults?",
+        ),
+        t("Reset Game Settings"),
         "danger",
         resetSettings,
       );
@@ -74,7 +78,7 @@ export default function GameSettingsTab({
           className="primary my-5 p-3 rounded border border-primary"
         >
           <SettingsHeader
-            text="Game Settings"
+            text={t("Game Settings")}
             working={working}
             canApply={canApply}
             onApply={applySettings}

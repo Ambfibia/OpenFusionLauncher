@@ -172,7 +172,13 @@ export default function Home() {
       );
       if (updateInfo) {
         setUpdateAvailable(updateInfo);
-        alertInfo("Update available: " + updateInfo.version, updateInfo.url);
+        alertInfo(
+          t("Update available: {version}").replace(
+            "{version}",
+            updateInfo.version,
+          ),
+          updateInfo.url,
+        );
       }
     } catch (e: unknown) {
       console.warn("Failed to check for updates (" + e + ")");
@@ -187,7 +193,7 @@ export default function Home() {
     }
     getDebugMode().then((debug) => {
       if (debug) {
-        alertWarning("Debug mode enabled");
+        alertWarning(t("Debug mode enabled"));
       }
     });
     setInitialFetchDone(true);
@@ -200,25 +206,30 @@ export default function Home() {
       if (counts.server_count == 0 && counts.version_count == 0) {
         console.log("Nothing to import");
       } else {
-        let text = "Imported ";
+        let text = t("Imported") + " ";
         if (counts.version_count > 0) {
           text +=
             counts.version_count +
-            (counts.version_count > 1 ? " versions " : " version ");
+            (counts.version_count > 1 ? " " + t("versions") + " " : " " + t("version") + " ");
           if (counts.server_count > 0) {
-            text += "and ";
+            text += t("and") + " ";
           }
         }
         if (counts.server_count > 0) {
           text +=
             counts.server_count +
-            (counts.server_count > 1 ? " servers " : " server ");
+            (counts.server_count > 1 ? " " + t("servers") + " " : " " + t("server") + " ");
         }
-        text += "from OpenFusionClient";
-        alertSuccess(text);
+        text += t("from OpenFusionClient");
+        alertSuccess(text.trim());
       }
     } catch (e: unknown) {
-      alertError("Failed to import from OpenFusionClient (" + e + ")");
+      alertError(
+        t("Failed to import from OpenFusionClient: {error}").replace(
+          "{error}",
+          String(e),
+        ),
+      );
     }
     stopLoading("import");
   };
@@ -272,7 +283,9 @@ export default function Home() {
       await getCurrentWindow().setFocus();
     } catch (e: unknown) {
       await getCurrentWindow().show();
-      alertError("Error during init (" + e + ")");
+      alertError(
+        t("Error during init: {error}").replace("{error}", String(e)),
+      );
     }
   };
 
@@ -304,7 +317,9 @@ export default function Home() {
       }
     } catch (e: unknown) {
       await getCurrentWindow().show();
-      alertError("Failed to launch (" + e + ")");
+      alertError(
+        t("Failed to launch: {error}").replace("{error}", String(e)),
+      );
     }
     stopLoading("launch");
   };
@@ -331,7 +346,9 @@ export default function Home() {
         alertInfo(res.resp);
       }
     } catch (e: unknown) {
-      alertError("Failed to register (" + e + ")");
+      alertError(
+        t("Failed to register: {error}").replace("{error}", String(e)),
+      );
     }
     stopLoading("do_register");
   };
@@ -351,7 +368,9 @@ export default function Home() {
         remember: remember,
       });
     } catch (e: unknown) {
-      alertError("Failed to login (" + e + ")");
+      alertError(
+        t("Failed to login: {error}").replace("{error}", String(e)),
+      );
       return;
     } finally {
       stopLoading("do_login");
@@ -362,7 +381,7 @@ export default function Home() {
   const onConnect = async (serverUuid: string, versionUuid?: string) => {
     const server = servers.find((s) => s.uuid == serverUuid);
     if (!server) {
-      alertError("Server not found");
+      alertError(t("Server not found"));
       setConnecting(false);
       return;
     }
@@ -398,7 +417,9 @@ export default function Home() {
         });
       } catch (e: unknown) {
         stopLoading("configure_endpoint");
-        alertError("Failed to get versions: " + e);
+        alertError(
+          t("Failed to get versions: {error}").replace("{error}", String(e)),
+        );
         setConnecting(false);
         return;
       }
@@ -416,11 +437,16 @@ export default function Home() {
         }
       }
 
-      alertSuccess("Logged in as " + session.username);
+      alertSuccess(
+        t("Logged in as {username}").replace(
+          "{username}",
+          session.username,
+        ),
+      );
     }
 
     if (!version) {
-      alertError("No version selected");
+      alertError(t("No version selected"));
       setConnecting(false);
       return;
     }
@@ -438,9 +464,11 @@ export default function Home() {
         return [...servers, newServer];
       });
       setSelectedServer(uuid);
-      alertSuccess("Server added");
+      alertSuccess(t("Server added"));
     } catch (e: unknown) {
-      alertError("Failed to add server (" + e + ")");
+      alertError(
+        t("Failed to add server: {error}").replace("{error}", String(e)),
+      );
     }
     stopLoading("add_server");
   };
@@ -463,10 +491,15 @@ export default function Home() {
         return newServers;
       });
       if (showSucc ?? true) {
-        alertSuccess("Server updated");
+        alertSuccess(t("Server updated"));
       }
     } catch (e: unknown) {
-      alertError("Failed to update server (" + e + ")");
+      alertError(
+        t("Failed to update server: {error}").replace(
+          "{error}",
+          String(e),
+        ),
+      );
     }
     stopLoading("update_server");
   };
@@ -491,9 +524,14 @@ export default function Home() {
             break;
           }
         }
-        alertSuccess("Server deleted");
+        alertSuccess(t("Server deleted"));
       } catch (e: unknown) {
-        alertError("Failed to delete server (" + e + ")");
+        alertError(
+          t("Failed to delete server: {error}").replace(
+            "{error}",
+            String(e),
+          ),
+        );
       }
     }
   };
@@ -505,9 +543,14 @@ export default function Home() {
         serverUuid: getSelectedServer()!.uuid,
       });
       setShowForgotPasswordModal(false);
-      alertSuccess("One-time password sent");
+      alertSuccess(t("One-time password sent"));
     } catch (e: unknown) {
-      alertError("Failed to send one-time password (" + e + ")");
+      alertError(
+        t("Failed to send one-time password: {error}").replace(
+          "{error}",
+          String(e),
+        ),
+      );
     }
   };
 

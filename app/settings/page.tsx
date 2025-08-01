@@ -115,34 +115,48 @@ export default function SettingsPage() {
       await syncConfig();
       setInitialFetchDone(true);
     } catch (e) {
-      alertError("Error during init: " + e);
+      alertError(
+        t("Error during init: {error}").replace("{error}", String(e)),
+      );
     }
   };
 
   const saveConfig = async (config: Config) => {
     try {
       await invoke("update_config", { config: config });
-      alertSuccess("Changes applied successfully");
+      alertSuccess(t("Changes applied successfully"));
     } catch (e) {
-      alertError("Error updating config: " + e);
+      alertError(
+        t("Error updating config: {error}").replace("{error}", String(e)),
+      );
     }
   };
 
   const resetLauncherSettings = async () => {
     try {
       await invoke("reset_launcher_config");
-      alertSuccess("Launcher settings reset successfully");
+      alertSuccess(t("Launcher settings reset successfully"));
     } catch (e) {
-      alertError("Error resetting launcher settings: " + e);
+      alertError(
+        t("Error resetting launcher settings: {error}").replace(
+          "{error}",
+          String(e),
+        ),
+      );
     }
   };
 
   const resetGameSettings = async () => {
     try {
       await invoke("reset_game_config");
-      alertSuccess("Game settings reset successfully");
+      alertSuccess(t("Game settings reset successfully"));
     } catch (e) {
-      alertError("Error resetting game settings: " + e);
+      alertError(
+        t("Error resetting game settings: {error}").replace(
+          "{error}",
+          String(e),
+        ),
+      );
     }
   };
 
