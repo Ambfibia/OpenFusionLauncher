@@ -1,5 +1,6 @@
 import { ProgressBar } from "react-bootstrap";
 import Button from "../components/Button";
+import { useT } from "@/app/i18n";
 
 import {
   VersionCacheData,
@@ -55,8 +56,16 @@ const isCorrupt = (
   );
 };
 
-const getTooltipForItem = (name: string, item: VersionCacheProgressItem) => {
-  const status = item.missing ? "Missing: " : item.corrupt ? "Corrupt: " : "";
+const getTooltipForItem = (
+  t: (key: string) => string,
+  name: string,
+  item: VersionCacheProgressItem,
+) => {
+  const status = item.missing
+    ? t("Missing:") + " "
+    : item.corrupt
+    ? t("Corrupt:") + " "
+    : "";
   return status + name;
 };
 
@@ -107,7 +116,10 @@ const getTotalOfflineSize = (version: VersionEntry) => {
   return version.total_compressed_size + version.main_file_info.size;
 };
 
-const getMissingTooltip = (items: Record<string, VersionCacheProgressItem>) => {
+const getMissingTooltip = (
+  t: (key: string) => string,
+  items: Record<string, VersionCacheProgressItem>,
+) => {
   const missingItems = Object.entries(items).filter(
     ([_, item]) => item.missing,
   );
@@ -115,7 +127,7 @@ const getMissingTooltip = (items: Record<string, VersionCacheProgressItem>) => {
     return undefined;
   }
 
-  let tooltip = "Missing:\n";
+  let tooltip = t("Missing:") + "\n";
   for (const [name, _] of missingItems) {
     tooltip += `${name}\n`;
   }
@@ -139,14 +151,15 @@ export default function GameBuildsList({
   deleteOfflineCache: (uuid: string) => void;
   removeVersion: (uuid: string) => void;
 }) {
+  const t = useT();
   return (
     <div className="table-responsive" id="builds-table">
       <table className="table table-striped table-hover mb-0">
         <thead>
           <tr>
-            <th>Version</th>
-            <th className="text-center cache-col">Game Cache</th>
-            <th className="text-center px-5 cache-col">Offline Cache</th>
+            <th>{t("Version")}</th>
+            <th className="text-center cache-col">{t("Game Cache")}</th>
+            <th className="text-center px-5 cache-col">{t("Offline Cache")}</th>
             <th className="text-end"></th>
           </tr>
         </thead>
@@ -163,7 +176,7 @@ export default function GameBuildsList({
             </tr>
           ) : versions.length == 0 ? (
             <tr>
-              <td colSpan={3}>No builds available</td>
+              <td colSpan={3}>{t("No builds available")}</td>
             </tr>
           ) : (
             versions.map((version) => {
@@ -208,7 +221,7 @@ export default function GameBuildsList({
                       <ProgressBar
                         data-bs-toggle="tooltip"
                         data-bs-placement="top"
-                        title={getMissingTooltip(versionData.gameItems)}
+                        title={getMissingTooltip(t, versionData.gameItems)}
                       >
                         {Object.entries(versionData.gameItems).map(
                           ([itemName, item]) =>
@@ -216,7 +229,7 @@ export default function GameBuildsList({
                               <ProgressBar
                                 data-bs-toggle="tooltip"
                                 data-bs-placement="top"
-                                title={getTooltipForItem(itemName, item)}
+                                title={getTooltipForItem(t, itemName, item)}
                                 key={itemName}
                                 now={item.item_size}
                                 max={version.total_uncompressed_size ?? 1}
@@ -261,7 +274,7 @@ export default function GameBuildsList({
                             <ProgressBar
                               data-bs-toggle="tooltip"
                               data-bs-placement="top"
-                              title={getTooltipForItem(itemName, item)}
+                              title={getTooltipForItem(t, itemName, item)}
                               key={itemName}
                               now={item.item_size}
                               max={version.total_compressed_size ?? 1}

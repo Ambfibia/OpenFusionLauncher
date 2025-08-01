@@ -11,6 +11,7 @@ import { SettingsCtx } from "@/app/contexts";
 import LoginModal from "@/components/LoginModal";
 import ForgotPasswordModal from "@/components/ForgotPasswordModal";
 import ManageAccountModal from "./ManageAccountModal";
+import { useT } from "@/app/i18n";
 
 function ListEntry({
   server,
@@ -19,6 +20,7 @@ function ListEntry({
   server: ServerEntry;
   refreshes: number;
 }) {
+  const t = useT();
   const [logo, setLogo] = useState<string | undefined>(undefined);
   const [offline, setOffline] = useState<boolean | undefined>(undefined);
   const [buttonLoading, setButtonLoading] = useState<boolean>(false);
@@ -63,13 +65,18 @@ function ListEntry({
     try {
       await invoke("do_logout", { serverUuid: server.uuid });
       if (ctx.alertSuccess) {
-        const txt = "Logged out of " + server.description;
+        const txt = t("Logged out of {server}").replace(
+          "{server}",
+          server.description,
+        );
         ctx.alertSuccess(txt);
       }
       loadSession();
     } catch (e: unknown) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to log out: " + e);
+        ctx.alertError(
+          t("Failed to log out: {error}").replace("{error}", String(e)),
+        );
       }
     }
     setButtonLoading(false);
@@ -85,12 +92,14 @@ function ListEntry({
         remember: true,
       });
       if (ctx.alertSuccess) {
-        ctx.alertSuccess("Logged in successfully");
+        ctx.alertSuccess(t("Logged in successfully"));
       }
       loadSession();
     } catch (e: unknown) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to login: " + e);
+        ctx.alertError(
+          t("Failed to login: {error}").replace("{error}", String(e)),
+        );
       }
     }
     setButtonLoading(false);
@@ -133,11 +142,16 @@ function ListEntry({
       await invoke("send_otp", { email, serverUuid: server.uuid });
       setShowForgotPasswordModal(false);
       if (ctx.alertSuccess) {
-        ctx.alertSuccess("One-time password sent");
+        ctx.alertSuccess(t("One-time password sent"));
       }
     } catch (e: unknown) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to send one-time password (" + e + ")");
+        ctx.alertError(
+          t("Failed to send one-time password ({error})").replace(
+            "{error}",
+            String(e),
+          ),
+        );
       }
     }
   };
@@ -146,12 +160,22 @@ function ListEntry({
     try {
       await invoke("update_email", { newEmail, serverUuid: server.uuid, sessionToken: session!.session_token });
       if (ctx.alertSuccess) {
-        ctx.alertSuccess("Verification email sent to " + newEmail);
+        ctx.alertSuccess(
+          t("Verification email sent to {email}").replace(
+            "{email}",
+            newEmail,
+          ),
+        );
       }
       setShowManageAccountModal(false);
     } catch (e: unknown) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to send verification email: " + e);
+        ctx.alertError(
+          t("Failed to send verification email: {error}").replace(
+            "{error}",
+            String(e),
+          ),
+        );
       }
     }
   };
@@ -160,12 +184,17 @@ function ListEntry({
     try {
       await invoke("update_password", { newPassword, serverUuid: server.uuid, sessionToken: session!.session_token });
       if (ctx.alertSuccess) {
-        ctx.alertSuccess("Password updated successfully");
+        ctx.alertSuccess(t("Password updated successfully"));
       }
       setShowManageAccountModal(false);
     } catch (e: unknown) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to update password: " + e);
+        ctx.alertError(
+          t("Failed to update password: {error}").replace(
+            "{error}",
+            String(e),
+          ),
+        );
       }
     }
   };
@@ -209,7 +238,7 @@ function ListEntry({
               <small className="text-muted">{server.endpoint}</small>
               {offline !== undefined && (
                 <small className={"text-" + (offline! ? "danger" : "success")}>
-                  {" " + (offline! ? "offline" : "online")}
+                  {" " + t(offline! ? "offline" : "online")}
                 </small>
               )}
             </div>
@@ -221,7 +250,7 @@ function ListEntry({
               ></span>
             ) : offline === true ? null : session === null ? (
               <div className="text-end">
-                <small className="mb-1 d-block text-muted">not logged in</small>
+                <small className="mb-1 d-block text-muted">{t("not logged in")}</small>
                 <Button
                   loading={buttonLoading}
                   icon="sign-in-alt"
@@ -233,7 +262,7 @@ function ListEntry({
             ) : (
               <div className="text-end">
                 <span className="mb-1 d-block">
-                  <small className="text-muted">logged in as</small>
+                  <small className="text-muted">{t("logged in as")}</small>
                   <h4 className="d-inline">{" " + session.username}</h4>
                 </span>
                 <Button
@@ -290,6 +319,7 @@ export default function AuthenticationList({
   servers?: ServerEntry[];
   refreshes: number;
 }) {
+  const t = useT();
   return (
     <div className="table-responsive" id="auth-table">
       <table className="table table-striped table-hover mb-0">
@@ -306,7 +336,7 @@ export default function AuthenticationList({
             </tr>
           ) : servers.length == 0 ? (
             <tr>
-              <td colSpan={3}>No servers available.</td>
+              <td colSpan={3}>{t("No servers available.")}</td>
             </tr>
           ) : (
             servers.map((server: ServerEntry) => {

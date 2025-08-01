@@ -3,6 +3,7 @@ import { Tabs, Tab } from "react-bootstrap";
 import Button from "@/components/Button";
 import { useEffect, useState } from "react";
 import { open } from "@tauri-apps/plugin-dialog";
+import { useT } from "@/app/i18n";
 
 const TAB_IMPORT = "import";
 const TAB_MANUAL = "manual";
@@ -18,6 +19,7 @@ export default function AddBuildModal({
   onImport: (manifestPath: string) => Promise<boolean>;
   onManualAdd: (name: string, assetUrl: string) => void;
 }) {
+  const t = useT();
   const [tab, setTab] = useState(TAB_IMPORT);
 
   // Import tab
@@ -48,7 +50,7 @@ export default function AddBuildModal({
       directory: false,
       filters: [
         {
-          name: "Build manifest",
+          name: t("Build manifest"),
           extensions: ["json"],
         },
       ],
@@ -73,20 +75,20 @@ export default function AddBuildModal({
   return (
     <Modal show={show} onHide={() => setShow(false)} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Add Build</Modal.Title>
+        <Modal.Title>{t("Add Build")}</Modal.Title>
       </Modal.Header>
       <Modal.Body className="p-0">
         <Tabs activeKey={tab} onSelect={(k) => setTab(k || TAB_IMPORT)} fill>
-          <Tab eventKey={TAB_IMPORT} title="Import">
+          <Tab eventKey={TAB_IMPORT} title={t("Import")}>
             <Form className="p-3">
               <Form.Group className="mb-3" controlId="editManifestPath">
-                <Form.Label>Manifest</Form.Label>
+                <Form.Label>{t("Manifest")}</Form.Label>
                 <div className="d-flex align-items-center">
                   <Form.Control
                     type="text"
                     value={manifestPath}
                     onChange={(e) => setManifestPath(e.target.value)}
-                    placeholder="No file selected"
+                    placeholder={t("No file selected")}
                   />
                   <Button
                     className="ms-3"
@@ -97,19 +99,19 @@ export default function AddBuildModal({
               </Form.Group>
             </Form>
           </Tab>
-          <Tab eventKey={TAB_MANUAL} title="Add Manually">
+          <Tab eventKey={TAB_MANUAL} title={t("Add Manually")}>
             <Form className="p-3">
               <Form.Group className="mb-3" controlId="editName">
-                <Form.Label>Name</Form.Label>
+                <Form.Label>{t("Name")}</Form.Label>
                 <Form.Control
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="My Build"
+                  placeholder={t("My Build")}
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="editAssetUrl">
-                <Form.Label>Asset URL</Form.Label>
+                <Form.Label>{t("Asset URL")}</Form.Label>
                 <Form.Control
                   type="text"
                   value={assetUrl}
