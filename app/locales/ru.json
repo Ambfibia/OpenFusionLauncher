@@ -80,5 +80,12 @@
   "Do you really want to delete {server}?": "Вы действительно хотите удалить {server}?",
   "You could always re-add it later.": "Вы всегда можете добавить его снова.",
   "Language": "Язык",
-  "api.myserver.xyz": "api.myserver.xyz"
+  "api.myserver.xyz": "api.myserver.xyz",
+  "FusionFall's framerate is normally capped around 64 FPS.": "Частота кадров FusionFall обычно ограничена около 64 FPS.",
+  "This setting activates a patch to remove this limit.": "Эта настройка активирует патч, снимающий это ограничение.",
+  "You can restore the original behavior by turning it off or tweak it to your own soft cap.": "Вы можете восстановить исходное поведение, выключив настройку, или задать собственный мягкий предел.",
+  "On (experimental, default)": "Вкл. (экспериментально, по умолчанию)",
+  "On with limiter": "Вкл. с ограничителем",
+  "Off": "Выкл.",
+  "FPS": "FPS"
 }

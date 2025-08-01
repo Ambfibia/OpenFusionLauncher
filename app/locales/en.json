@@ -80,5 +80,12 @@
   "Do you really want to delete {server}?": "Do you really want to delete {server}?",
   "You could always re-add it later.": "You could always re-add it later.",
   "Language": "Language",
-  "api.myserver.xyz": "api.myserver.xyz"
+  "api.myserver.xyz": "api.myserver.xyz",
+  "FusionFall's framerate is normally capped around 64 FPS.": "FusionFall's framerate is normally capped around 64 FPS.",
+  "This setting activates a patch to remove this limit.": "This setting activates a patch to remove this limit.",
+  "You can restore the original behavior by turning it off or tweak it to your own soft cap.": "You can restore the original behavior by turning it off or tweak it to your own soft cap.",
+  "On (experimental, default)": "On (experimental, default)",
+  "On with limiter": "On with limiter",
+  "Off": "Off",
+  "FPS": "FPS"
 }
