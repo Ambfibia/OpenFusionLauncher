@@ -218,7 +218,7 @@ export default function Home() {
         alertSuccess(text);
       }
     } catch (e: unknown) {
-      alertError("Failed to import from OpenFusionClient (" + e + ")");
+      alertError(t("Failed to import from OpenFusionClient") + " (" + e + ")");
     }
     stopLoading("import");
   };
@@ -272,7 +272,7 @@ export default function Home() {
       await getCurrentWindow().setFocus();
     } catch (e: unknown) {
       await getCurrentWindow().show();
-      alertError("Error during init (" + e + ")");
+      alertError(t("Error during init") + " (" + e + ")");
     }
   };
 
@@ -304,7 +304,7 @@ export default function Home() {
       }
     } catch (e: unknown) {
       await getCurrentWindow().show();
-      alertError("Failed to launch (" + e + ")");
+      alertError(t("Failed to launch") + " (" + e + ")");
     }
     stopLoading("launch");
   };
@@ -331,7 +331,7 @@ export default function Home() {
         alertInfo(res.resp);
       }
     } catch (e: unknown) {
-      alertError("Failed to register (" + e + ")");
+      alertError(t("Failed to register") + " (" + e + ")");
     }
     stopLoading("do_register");
   };
@@ -351,7 +351,7 @@ export default function Home() {
         remember: remember,
       });
     } catch (e: unknown) {
-      alertError("Failed to login (" + e + ")");
+      alertError(t("Failed to login") + " (" + e + ")");
       return;
     } finally {
       stopLoading("do_login");
@@ -362,7 +362,7 @@ export default function Home() {
   const onConnect = async (serverUuid: string, versionUuid?: string) => {
     const server = servers.find((s) => s.uuid == serverUuid);
     if (!server) {
-      alertError("Server not found");
+      alertError(t("Server not found"));
       setConnecting(false);
       return;
     }
@@ -398,7 +398,7 @@ export default function Home() {
         });
       } catch (e: unknown) {
         stopLoading("configure_endpoint");
-        alertError("Failed to get versions: " + e);
+        alertError(t("Failed to get versions") + ": " + e);
         setConnecting(false);
         return;
       }
@@ -416,11 +416,13 @@ export default function Home() {
         }
       }
 
-      alertSuccess("Logged in as " + session.username);
+      alertSuccess(
+        t("Logged in as {username}").replace("{username}", session.username)
+      );
     }
 
     if (!version) {
-      alertError("No version selected");
+      alertError(t("No version selected"));
       setConnecting(false);
       return;
     }
@@ -438,9 +440,9 @@ export default function Home() {
         return [...servers, newServer];
       });
       setSelectedServer(uuid);
-      alertSuccess("Server added");
+      alertSuccess(t("Server added"));
     } catch (e: unknown) {
-      alertError("Failed to add server (" + e + ")");
+      alertError(t("Failed to add server") + " (" + e + ")");
     }
     stopLoading("add_server");
   };
@@ -463,10 +465,10 @@ export default function Home() {
         return newServers;
       });
       if (showSucc ?? true) {
-        alertSuccess("Server updated");
+        alertSuccess(t("Server updated"));
       }
     } catch (e: unknown) {
-      alertError("Failed to update server (" + e + ")");
+      alertError(t("Failed to update server") + " (" + e + ")");
     }
     stopLoading("update_server");
   };
@@ -491,9 +493,9 @@ export default function Home() {
             break;
           }
         }
-        alertSuccess("Server deleted");
+        alertSuccess(t("Server deleted"));
       } catch (e: unknown) {
-        alertError("Failed to delete server (" + e + ")");
+        alertError(t("Failed to delete server") + " (" + e + ")");
       }
     }
   };
@@ -505,9 +507,9 @@ export default function Home() {
         serverUuid: getSelectedServer()!.uuid,
       });
       setShowForgotPasswordModal(false);
-      alertSuccess("One-time password sent");
+      alertSuccess(t("One-time password sent"));
     } catch (e: unknown) {
-      alertError("Failed to send one-time password (" + e + ")");
+      alertError(t("Failed to send one-time password") + " (" + e + ")");
     }
   };
 

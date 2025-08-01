@@ -11,6 +11,7 @@ import { SettingsCtx } from "@/app/contexts";
 import LoginModal from "@/components/LoginModal";
 import ForgotPasswordModal from "@/components/ForgotPasswordModal";
 import ManageAccountModal from "./ManageAccountModal";
+import { useT } from "@/app/i18n";
 
 function ListEntry({
   server,
@@ -31,6 +32,7 @@ function ListEntry({
   const [showManageAccountModal, setShowManageAccountModal] = useState(false);
 
   const ctx = useContext(SettingsCtx);
+  const t = useT();
 
   const loadSession = async () => {
     setOffline(undefined);
@@ -63,13 +65,16 @@ function ListEntry({
     try {
       await invoke("do_logout", { serverUuid: server.uuid });
       if (ctx.alertSuccess) {
-        const txt = "Logged out of " + server.description;
+        const txt = t("Logged out of {server}").replace(
+          "{server}",
+          server.description,
+        );
         ctx.alertSuccess(txt);
       }
       loadSession();
     } catch (e: unknown) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to log out: " + e);
+        ctx.alertError(t("Failed to log out") + ": " + e);
       }
     }
     setButtonLoading(false);
@@ -85,12 +90,12 @@ function ListEntry({
         remember: true,
       });
       if (ctx.alertSuccess) {
-        ctx.alertSuccess("Logged in successfully");
+        ctx.alertSuccess(t("Logged in successfully"));
       }
       loadSession();
     } catch (e: unknown) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to login: " + e);
+        ctx.alertError(t("Failed to login") + ": " + e);
       }
     }
     setButtonLoading(false);
@@ -122,7 +127,7 @@ function ListEntry({
       }
     } catch (e: unknown) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to register: " + e);
+        ctx.alertError(t("Failed to register") + ": " + e);
       }
     }
     setButtonLoading(false);
@@ -133,11 +138,13 @@ function ListEntry({
       await invoke("send_otp", { email, serverUuid: server.uuid });
       setShowForgotPasswordModal(false);
       if (ctx.alertSuccess) {
-        ctx.alertSuccess("One-time password sent");
+        ctx.alertSuccess(t("One-time password sent"));
       }
     } catch (e: unknown) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to send one-time password (" + e + ")");
+        ctx.alertError(
+          t("Failed to send one-time password") + " (" + e + ")",
+        );
       }
     }
   };
@@ -146,12 +153,14 @@ function ListEntry({
     try {
       await invoke("update_email", { newEmail, serverUuid: server.uuid, sessionToken: session!.session_token });
       if (ctx.alertSuccess) {
-        ctx.alertSuccess("Verification email sent to " + newEmail);
+        ctx.alertSuccess(
+          t("Verification email sent to {email}").replace("{email}", newEmail),
+        );
       }
       setShowManageAccountModal(false);
     } catch (e: unknown) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to send verification email: " + e);
+        ctx.alertError(t("Failed to send verification email") + ": " + e);
       }
     }
   };
@@ -160,12 +169,12 @@ function ListEntry({
     try {
       await invoke("update_password", { newPassword, serverUuid: server.uuid, sessionToken: session!.session_token });
       if (ctx.alertSuccess) {
-        ctx.alertSuccess("Password updated successfully");
+        ctx.alertSuccess(t("Password updated successfully"));
       }
       setShowManageAccountModal(false);
     } catch (e: unknown) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to update password: " + e);
+        ctx.alertError(t("Failed to update password") + ": " + e);
       }
     }
   };
