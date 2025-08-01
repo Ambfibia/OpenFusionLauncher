@@ -3,6 +3,7 @@ import SettingControlBase from "./SettingControlBase";
 import { useEffect, useState } from "react";
 import Button from "@/components/Button";
 import { open } from "@tauri-apps/plugin-dialog";
+import { useT } from "@/i18n";
 
 export default function SettingControlBrowse({
   id,
@@ -26,6 +27,7 @@ export default function SettingControlBrowse({
   onChange: (value: string) => void;
 }) {
   const [text, setText] = useState<string>(value ?? "");
+  const t = useT();
 
   const oldValueString = oldValue ?? "";
   const valueString = value ?? "";
@@ -51,7 +53,7 @@ export default function SettingControlBrowse({
         ? []
         : [
             {
-              name: "File",
+              name: t("File"),
               extensions: extensions ?? ["*"],
             },
           ],
