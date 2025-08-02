@@ -338,7 +338,7 @@ export default function LoginModal({
           </Tabs>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={onClose} variant="primary" text="Cancel" />
+          <Button onClick={onClose} variant="primary" text="common.cancel" />
           <Button
             onClick={submitForm}
             variant="success"

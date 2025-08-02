@@ -49,7 +49,7 @@ export default function AboutModal({
           <Button
             onClick={() => setShow(false)}
             variant="primary"
-            text="Close"
+            text="common.close"
           />
         </Stack>
       </Modal.Footer>

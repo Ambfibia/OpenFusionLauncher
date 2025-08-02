@@ -66,7 +66,7 @@ export default function ForgotPasswordModal({
         <Button
           variant="primary"
           onClick={() => setShow(false)}
-          text="Cancel"
+          text="common.cancel"
         />
         <Button
           variant="success"

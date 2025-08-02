@@ -143,17 +143,17 @@ export default function EditServerModal({
   return (
     <Modal show={show} onHide={() => doHide()} centered={true}>
       <Modal.Header>
-        <Modal.Title>{isAdd ? t("Add server") : t("Edit server")}</Modal.Title>
+        <Modal.Title>{isAdd ? t("server.add") : t("server.edit")}</Modal.Title>
       </Modal.Header>
       <Modal.Body className="px-0">
         <Form>
           <Form.Group className="mb-4 px-3" controlId="editServerDescription">
-            <Form.Label>{t("Server Name")}</Form.Label>
+            <Form.Label>{t("server.name")}</Form.Label>
             <Form.Control
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder={t("My OpenFusion Server")}
+              placeholder={t("server.default_name")}
             />
           </Form.Group>
           <Tabs
@@ -162,9 +162,9 @@ export default function EditServerModal({
             className="mb-3"
             fill
           >
-            <Tab eventKey={TAB_SIMPLE} title={t("Simple Server")}>
+            <Tab eventKey={TAB_SIMPLE} title={t("server.simple")}>
               <Form.Group className="mb-3 px-3" controlId="editServerIp">
-                <Form.Label>{t("Server Host")}</Form.Label>
+                <Form.Label>{t("server.host")}</Form.Label>
                 <Form.Control
                   type="text"
                   value={ip}
@@ -174,7 +174,7 @@ export default function EditServerModal({
                 />
               </Form.Group>
               <Form.Group className="mb-3 px-3" controlId="editServerVersion">
-                <Form.Label>{t("Server Version")}</Form.Label>
+                <Form.Label>{t("server.version")}</Form.Label>
                 <Form.Select
                   value={version}
                   onChange={(e) => setVersion(e.target.value)}
@@ -190,14 +190,14 @@ export default function EditServerModal({
                 </Form.Select>
               </Form.Group>
             </Tab>
-            <Tab eventKey={TAB_ENDPOINT} title={t("Endpoint Server")}>
+            <Tab eventKey={TAB_ENDPOINT} title={t("server.endpoint")}>
               <Form.Group className="mb-3 px-3" controlId="editServerEndpoint">
-                <Form.Label>{t("API Host")}</Form.Label>
+                <Form.Label>{t("server.api_host")}</Form.Label>
                 <Form.Control
                   type="text"
                   value={endpoint}
                   onChange={(e) => setEndpoint(e.target.value)}
-                  placeholder={t("api.myserver.xyz")}
+                  placeholder={t("server.placeholder_api")}
                   isInvalid={endpoint.length > 0 && !validateEndpoint(endpoint)}
                 />
               </Form.Group>
@@ -206,7 +206,7 @@ export default function EditServerModal({
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={() => doHide()} variant="primary" text="Cancel" />
+        <Button onClick={() => doHide()} variant="primary" text="common.cancel" />
         <Button
           onClick={() => {
             const newServerDetails = makeNewServerDetails();
@@ -214,7 +214,7 @@ export default function EditServerModal({
             doHide();
           }}
           variant="success"
-          text={isAdd ? "Add" : "Save"}
+          text={isAdd ? "common.add" : "common.save"}
           enabled={(() => {
             if (tab == TAB_SIMPLE) {
               return validateAddress(ip) && version != "";

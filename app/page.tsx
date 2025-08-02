@@ -217,7 +217,7 @@ export default function Home() {
         }
         if (counts.server_count > 0) {
           text += `${counts.server_count} ${
-            counts.server_count > 1 ? t("servers") : t("server")
+            counts.server_count > 1 ? t("terms.servers") : t("terms.server")
           }`;
         }
         text += ` ${t("from OpenFusionClient")}`;
@@ -667,7 +667,7 @@ export default function Home() {
                 enabled={getSelectedServer() ? true : false}
                 variant="primary"
                 icon="angle-double-right"
-                text="Connect"
+                text="server.connect"
               />
             </Stack>
           </Col>

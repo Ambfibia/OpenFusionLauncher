@@ -22,7 +22,7 @@ export default function ConfirmationModal({
   return (
     <Modal show={show} onHide={() => setShow(false)} centered>
       <Modal.Header closeButton>
-        <Modal.Title>{t("Confirm")}</Modal.Title>
+        <Modal.Title>{t("common.confirm")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p>{message}</p>
@@ -31,7 +31,7 @@ export default function ConfirmationModal({
         <Button
           variant="primary"
           onClick={() => setShow(false)}
-          text="Cancel"
+          text="common.cancel"
         />
         <Button
           variant={confirmVariant}
