@@ -50,6 +50,9 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     let unlisten: UnlistenFn | undefined;
     const init = async () => {
       try {
+        if (!localeCache["en"]) {
+          localeCache["en"] = await loadLocale("en");
+        }
         const langs = await invoke<string[]>("get_languages");
         availableLanguages.splice(0, availableLanguages.length, ...langs);
         langs.forEach((code) => {
@@ -109,9 +112,23 @@ export function useLanguage() {
 }
 
 export function useT() {
-  const { translations } = useLanguage();
+  const { translations, lang } = useLanguage();
   return (key: string, params?: Record<string, string>) => {
-    let text = translations[key] || key;
+    let text = translations[key];
+    if (text === undefined) {
+      const fallback = localeCache["en"];
+      if (fallback && fallback[key] !== undefined) {
+        console.warn(
+          `Missing translation for key "${key}" in "${lang}", falling back to English.`,
+        );
+        text = fallback[key];
+      } else {
+        console.warn(
+          `Missing translation for key "${key}" in "${lang}" and English.`,
+        );
+        text = key;
+      }
+    }
     if (params) {
       for (const [name, value] of Object.entries(params)) {
         text = text.replace(new RegExp(`\\{${name}\\}`, "g"), value);
