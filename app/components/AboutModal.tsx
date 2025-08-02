@@ -18,11 +18,11 @@ export default function AboutModal({
   return (
     <Modal show={show} onHide={() => setShow(false)} centered={true}>
       <Modal.Header>
-        <Modal.Title>{t("About {name}").replace("{name}", name)}</Modal.Title>
+        <Modal.Title>{t("About {name}", { name })}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p className="font-monospace">
-          {t("Version {version}").replace("{version}", version)}
+          {t("Version {version}", { version })}
         </p>
         <p>
           ©2020-2025 OpenFusion Contributors

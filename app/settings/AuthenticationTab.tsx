@@ -29,10 +29,9 @@ export default function AuthenticationTab({ active }: { active: boolean }) {
     } catch (e) {
       if (ctx.alertError) {
         ctx.alertError(
-          t("Failed to log out of all game servers: {error}").replace(
-            "{error}",
-            "" + e,
-          ),
+          t("Failed to log out of all game servers: {error}", {
+            error: "" + e,
+          }),
         );
       }
     }
