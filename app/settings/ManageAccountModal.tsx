@@ -181,7 +181,7 @@ export default function ManageAccountModal({
         <Button
           variant="primary"
           onClick={() => setShow(false)}
-          text="Cancel"
+          text="common.cancel"
         />
         <Button
           variant="success"

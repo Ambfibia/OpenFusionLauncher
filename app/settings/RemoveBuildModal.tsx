@@ -27,7 +27,7 @@ export default function RemoveBuildModal({
         <Button
           variant="primary"
           onClick={() => setShow(false)}
-          text="Cancel"
+          text="common.cancel"
         />
         <Button
           variant="danger"
@@ -36,7 +36,7 @@ export default function RemoveBuildModal({
         />
         <Button
           variant="success"
-          text="Remove"
+          text="common.remove"
           onClick={() => onConfirm(version!.uuid, false)}
         />
       </Modal.Footer>

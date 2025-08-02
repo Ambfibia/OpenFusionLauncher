@@ -120,7 +120,7 @@ export default function SelectVersionModal({
         )}
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={() => doHide()} variant="primary" text="Cancel" />
+        <Button onClick={() => doHide()} variant="primary" text="common.cancel" />
         <Button
           onClick={() => {
             doHide();
