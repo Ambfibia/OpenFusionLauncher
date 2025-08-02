@@ -83,10 +83,8 @@ export default function SelectVersionModal({
         <span
           dangerouslySetInnerHTML={{
             __html: t(
-              "The server {server} supports multiple game versions. Please select a version to use."
-            ).replace(
-              "{server}",
-              `<strong>${server?.description ?? ""}</strong>`
+              "The server {server} supports multiple game versions. Please select a version to use.",
+              { server: `<strong>${server?.description ?? ""}</strong>` },
             ),
           }}
         />

@@ -23,10 +23,9 @@ export default function DeleteServerModal({
         <Modal.Title>{t("Are you sure?")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {t("Do you really want to delete {server}?").replace(
-          "{server}",
-          server?.description ?? "",
-        )}
+        {t("Do you really want to delete {server}?", {
+          server: server?.description ?? "",
+        })}
         <br />
         {t("You could always re-add it later.")}
       </Modal.Body>

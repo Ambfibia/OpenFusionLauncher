@@ -110,5 +110,13 @@ export function useLanguage() {
 
 export function useT() {
   const { translations } = useLanguage();
-  return (key: string) => translations[key] || key;
+  return (key: string, params?: Record<string, string>) => {
+    let text = translations[key] || key;
+    if (params) {
+      for (const [name, value] of Object.entries(params)) {
+        text = text.replace(new RegExp(`\\{${name}\\}`, "g"), value);
+      }
+    }
+    return text;
+  };
 }
