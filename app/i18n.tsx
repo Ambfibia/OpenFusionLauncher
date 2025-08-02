@@ -8,20 +8,24 @@ import {
 } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { once, type UnlistenFn } from "@tauri-apps/api/event";
+import type { TranslationKey } from "./i18n-keys";
+
 export const availableLanguages: string[] = [];
 export type Language = string;
 export const languageNames: Record<string, string> = {};
 
-const localeCache: Record<string, Record<string, string>> = {};
+const localeCache: Record<string, Partial<Record<TranslationKey, string>>> = {};
 
-async function loadLocale(lang: Language): Promise<Record<string, string>> {
-  return invoke<Record<string, string>>("load_language", { lang });
+async function loadLocale(
+  lang: Language,
+): Promise<Partial<Record<TranslationKey, string>>> {
+  return invoke<Record<TranslationKey, string>>("load_language", { lang });
 }
 
 interface LangContextType {
   lang: Language;
   setLang: (lang: Language) => void;
-  translations: Record<string, string>;
+  translations: Partial<Record<TranslationKey, string>>;
 }
 
 const LangCtx = createContext<LangContextType>({
@@ -32,7 +36,8 @@ const LangCtx = createContext<LangContextType>({
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = useState<Language>("en");
-  const [translations, setTranslations] = useState<Record<string, string>>({});
+  const [translations, setTranslations] =
+    useState<Partial<Record<TranslationKey, string>>>({});
 
   const setLang = (newLang: Language) => {
     setLangState(newLang);
@@ -113,7 +118,7 @@ export function useLanguage() {
 
 export function useT() {
   const { translations, lang } = useLanguage();
-  return (key: string, params?: Record<string, string>) => {
+  return (key: TranslationKey, params?: Record<string, string>) => {
     let text = translations[key];
     if (text === undefined) {
       const fallback = localeCache["en"];
@@ -137,3 +142,5 @@ export function useT() {
     return text;
   };
 }
+
+export type { TranslationKey } from "./i18n-keys";
