@@ -55,6 +55,7 @@ static DOWNLOAD_SEMAPHORE: Semaphore = Semaphore::const_new(MAX_CONCURRENT_DOWNL
 
 static GAME_CACHE_OPS: OnceLock<Mutex<HashSet<Uuid>>> = OnceLock::new();
 static OFFLINE_CACHE_OPS: OnceLock<Mutex<HashSet<Uuid>>> = OnceLock::new();
+static LANGUAGE_CACHE: OnceLock<Mutex<HashMap<String, HashMap<String, String>>>> = OnceLock::new();
 
 const CACHE_PROGRESS_EVENT: &str = "cache_progress";
 
@@ -129,10 +130,21 @@ async fn get_languages() -> CommandResult<Vec<String>> {
 
 #[tauri::command]
 async fn load_language(lang: String) -> CommandResult<HashMap<String, String>> {
+    let cache = LANGUAGE_CACHE.get_or_init(|| Mutex::new(HashMap::new()));
+    {
+        let cache_guard = cache.lock().await;
+        if let Some(map) = cache_guard.get(&lang) {
+            return Ok(map.clone());
+        }
+    }
+
     let locales_dir = state::get_app_statics().resource_dir.join("locales");
     let file_path = locales_dir.join(format!("{}.json", lang));
     let contents = std::fs::read_to_string(file_path).map_err(|e| e.to_string())?;
     let map = serde_json::from_str(&contents).map_err(|e| e.to_string())?;
+
+    let mut cache_guard = cache.lock().await;
+    cache_guard.insert(lang, map.clone());
     Ok(map)
 }
 
