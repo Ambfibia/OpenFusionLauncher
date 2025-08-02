@@ -1,5 +1,5 @@
 "use client";
-import {
+import React, {
   createContext,
   useContext,
   useState,
@@ -7,22 +7,31 @@ import {
   useLayoutEffect,
 } from "react";
 import { invoke } from "@tauri-apps/api/core";
-export const availableLanguages = ["en", "ru"] as const;
+export const availableLanguages = ["en", "ru", "ar"] as const;
 export type Language = (typeof availableLanguages)[number];
 export const languageNames: Record<Language, string> = {
   en: "English",
   ru: "Русский",
+  ar: "العربية",
+};
+
+export const languageDirections: Record<Language, "ltr" | "rtl"> = {
+  en: "ltr",
+  ru: "ltr",
+  ar: "rtl",
 };
 
 const localeCache: Partial<Record<Language, Record<string, string>>> = {};
 
 async function loadLocale(lang: Language): Promise<Record<string, string>> {
-  switch (lang) {
-    case "en":
-      return (await import("./locales/en.json")).default;
-    case "ru":
-      return (await import("./locales/ru.json")).default;
-  }
+    switch (lang) {
+      case "en":
+        return (await import("./locales/en.json")).default as unknown as Record<string, string>;
+      case "ru":
+        return (await import("./locales/ru.json")).default as unknown as Record<string, string>;
+      case "ar":
+        return (await import("./locales/ar.json")).default as unknown as Record<string, string>;
+    }
   throw new Error(`Unsupported language: ${lang}`);
 }
 
@@ -89,6 +98,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   useLayoutEffect(() => {
     document.documentElement.lang = lang;
+    document.documentElement.dir = languageDirections[lang];
     window.localStorage.setItem("lang", lang);
   }, [lang]);
 
