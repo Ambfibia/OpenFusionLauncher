@@ -141,7 +141,8 @@ async fn load_language(lang: String) -> CommandResult<HashMap<String, String>> {
     let locales_dir = state::get_app_statics().resource_dir.join("locales");
     let file_path = locales_dir.join(format!("{}.json", lang));
     let contents = std::fs::read_to_string(file_path).map_err(|e| e.to_string())?;
-    let map = serde_json::from_str(&contents).map_err(|e| e.to_string())?;
+    let map: HashMap<String, String> =
+        serde_json::from_str(&contents).map_err(|e| e.to_string())?;
 
     let mut cache_guard = cache.lock().await;
     cache_guard.insert(lang, map.clone());
