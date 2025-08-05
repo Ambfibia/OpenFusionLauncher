@@ -49,9 +49,6 @@ import ForgotPasswordModal from "./components/ForgotPasswordModal";
 import { useRouter } from "next/navigation";
 import { useT, useLanguage, type Language } from "@/app/i18n";
 
-const DEFAULT_TAGLINE_KEY =
-  "Welcome to OpenFusion.\nSelect a server from the list below to get started.";
-
 export default function Home() {
   const loadedRef = useRef(false);
   const router = useRouter();
@@ -63,7 +60,7 @@ export default function Home() {
   const [updateAvailable, setUpdateAvailable] = useState<
     UpdateInfo | undefined
   >(undefined);
-  const [tagline, setTagline] = useState(t(DEFAULT_TAGLINE_KEY));
+  const [tagline, setTagline] = useState(t("server.welcomeOpenfusionSelect"));
   const [topOffset, setTopOffset] = useState<string>("0");
 
   const [initialFetchDone, setInitialFetchDone] = useState(false);
