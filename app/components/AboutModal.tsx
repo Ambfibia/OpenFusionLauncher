@@ -18,11 +18,11 @@ export default function AboutModal({
   return (
     <Modal show={show} onHide={() => setShow(false)} centered={true}>
       <Modal.Header>
-        <Modal.Title>{t("About {name}").replace("{name}", name)}</Modal.Title>
+        <Modal.Title>{t("nav.about").replace("{name}", name)}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p className="font-monospace">
-          {t("Version {version}").replace("{version}", version)}
+          {t("common.version").replace("{version}", version)}
         </p>
         <p>
           ©2020-2025 OpenFusion Contributors
@@ -37,19 +37,19 @@ export default function AboutModal({
             onClick={() => open("https://github.com/OpenFusionProject/")}
             variant="primary"
             icon="github fa-brands fa-xl"
-            tooltip="Github Page"
+            tooltip="common.githubPage"
           />
           <Button
             onClick={() => open("https://discord.gg/DYavckB")}
             variant="primary"
             icon="discord fa-brands fa-lg"
-            tooltip="Discord Chat"
+            tooltip="common.discordChat"
           />
           <div className="ms-auto"></div>
           <Button
             onClick={() => setShow(false)}
             variant="primary"
-            text="Close"
+            text="nav.close"
           />
         </Stack>
       </Modal.Footer>

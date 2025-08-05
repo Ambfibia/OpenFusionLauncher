@@ -38,8 +38,8 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
       await invoke("delete_cache", { uuid, offline: false });
       if (ctx.alertSuccess) {
         const message = name
-          ? t("Game cache for {name} cleared successfully", { name })
-          : t("Game cache cleared successfully");
+          ? t("cache.gameClearedSuccessfully", { name })
+          : t("cache.gameClearedSuccessfully2");
         ctx.alertSuccess(message);
       }
       setVersionData((prev) => {
@@ -54,11 +54,11 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
     } catch (e) {
       if (ctx.alertError) {
         const message = name
-          ? t("Failed to clear game cache for {name}: {error}", {
+          ? t("cache.failedClearGame", {
               name,
               error: String(e),
             })
-          : t("Failed to clear game cache: {error}", { error: String(e) });
+          : t("cache.failedClearGame2", { error: String(e) });
         ctx.alertError(message);
       }
     }
@@ -89,7 +89,7 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
     } catch (e) {
       if (ctx.alertError) {
         ctx.alertError(
-          t("Failed to kickoff offline cache download: {error}", {
+          t("cache.failedKickoffOffline", {
             error: String(e),
           }),
         );
@@ -101,12 +101,12 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
     try {
       await invoke("download_cache", { uuid, offline: true, repair: true });
       if (ctx.alertSuccess) {
-        ctx.alertSuccess(t("Offline cache repair started"));
+        ctx.alertSuccess(t("cache.offlineRepairStarted"));
       }
     } catch (e) {
       if (ctx.alertError) {
         ctx.alertError(
-          t("Failed to kickoff offline cache repair: {error}", {
+          t("cache.failedKickoffOffline2", {
             error: String(e),
           }),
         );
@@ -119,8 +119,8 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
       await invoke("delete_cache", { uuid, offline: true });
       if (ctx.alertSuccess) {
         const message = name
-          ? t("Offline cache for {name} deleted successfully", { name })
-          : t("Offline cache deleted successfully");
+          ? t("cache.offlineDeletedSuccessfully", { name })
+          : t("cache.offlineDeletedSuccessfully2");
         ctx.alertSuccess(message);
       }
       setVersionData((prev) => {
@@ -139,11 +139,11 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
     } catch (e) {
       if (ctx.alertError) {
         const message = name
-          ? t("Failed to delete offline cache for {name}: {error}", {
+          ? t("cache.failedDeleteOffline", {
               name,
               error: String(e),
             })
-          : t("Failed to delete offline cache: {error}", {
+          : t("cache.failedDeleteOffline2", {
               error: String(e),
             });
         ctx.alertError(message);
@@ -205,14 +205,14 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
       await fetchVersions();
       if (ctx.alertSuccess) {
         ctx.alertSuccess(
-          t("Imported build {name}", { name: newVersionLabel }),
+          t("build.imported", { name: newVersionLabel }),
         );
       }
       return true;
     } catch (e: unknown) {
       if (ctx.alertError) {
         ctx.alertError(
-          t("Failed to import build: {error}", { error: String(e) }),
+          t("build.failedImport", { error: String(e) }),
         );
       }
     }
@@ -227,12 +227,12 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
       setRemoveTarget("");
       setShowRemoveBuildModal(false);
       if (ctx.alertSuccess) {
-        ctx.alertSuccess(t("Removed build {name}", { name }));
+        ctx.alertSuccess(t("build.removed", { name }));
       }
     } catch (e: unknown) {
       if (ctx.alertError) {
         ctx.alertError(
-          t("Failed to remove build: {error}", { error: String(e) }),
+          t("build.failedRemove", { error: String(e) }),
         );
       }
     }
@@ -243,11 +243,11 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
       await invoke("add_version_manual", { name, assetUrl });
       await fetchVersions();
       if (ctx.alertSuccess) {
-        ctx.alertSuccess(t("Added build {name}", { name }));
+        ctx.alertSuccess(t("build.added", { name }));
       }
     } catch (e: unknown) {
       if (ctx.alertError) {
-        ctx.alertError(t("Failed to add build: {error}", { error: String(e) }));
+        ctx.alertError(t("build.failedAdd", { error: String(e) }));
       }
     }
   };
@@ -309,22 +309,22 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
       >
         <Button
           icon="plus"
-          text={t("Add Build")}
-          tooltip="Add a new build from a manifest or asset URL"
+          text={t("build.add")}
+          tooltip="build.addNewManifest"
           variant="success"
           onClick={() => setShowAddBuildModal(true)}
         />
         <div className="p-2 ms-auto"></div>
         <Button
           icon="trash"
-          text={t("Delete All Offline")}
-          tooltip="Delete all offline caches"
+          text={t("common.deleteOffline")}
+          tooltip="cache.deleteOfflineCaches"
           variant="danger"
           onClick={() => {
             if (ctx.showConfirmationModal) {
               ctx.showConfirmationModal(
-                t("Are you sure you want to delete all offline caches?"),
-                t("Delete All"),
+                t("dialog.deleteAllOffline"),
+                t("common.delete"),
                 "danger",
                 deleteAllOfflineCaches,
               );
@@ -333,14 +333,14 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
         />
         <Button
           icon="trash"
-          text={t("Clear All Game")}
-          tooltip="Clear all game caches"
+          text={t("common.clearGame")}
+          tooltip="cache.clearGameCaches"
           variant="danger"
           onClick={() => {
             if (ctx.showConfirmationModal) {
               ctx.showConfirmationModal(
-                t("Are you sure you want to clear all game caches?"),
-                t("Clear All"),
+                t("dialog.confirmClear"),
+                t("common.clear"),
                 "danger",
                 clearAllGameCaches,
               );
@@ -356,10 +356,10 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
             const version = versions!.find((v) => v.uuid == uuid)!;
             const label = version.name ?? "version " + version.uuid;
             ctx.showConfirmationModal(
-              t("Are you sure you want to clear the game cache for {name}?", {
+              t("dialog.confirmClear2", {
                 name: label,
               }),
-              t("Clear"),
+              t("common.clear2"),
               "danger",
               clearGameCache.bind(null, uuid),
             );
@@ -372,10 +372,10 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
             const version = versions!.find((v) => v.uuid == uuid)!;
             const label = version.name ?? "version " + version.uuid;
             ctx.showConfirmationModal(
-              t("Are you sure you want to delete the offline cache for {name}?", {
+              t("dialog.deleteOffline", {
                 name: label,
               }),
-              t("Delete"),
+              t("common.delete2"),
               "danger",
               deleteOfflineCache.bind(null, uuid),
             );

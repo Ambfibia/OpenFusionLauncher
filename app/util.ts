@@ -55,13 +55,13 @@ export function getTheme(config: Config) {
 export function variantToLabel(variant: string, t: (key: string) => string) {
   switch (variant) {
     case "success":
-      return t("Success");
+      return t("status.success");
     case "danger":
-      return t("Error");
+      return t("status.error");
     case "warning":
-      return t("Warning");
+      return t("status.warning");
     case "primary":
-      return t("Info");
+      return t("status.info");
     default:
       return "";
   }

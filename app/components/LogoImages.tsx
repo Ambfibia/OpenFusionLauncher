@@ -43,7 +43,7 @@ export default function BackgroundImages({
         <img
           src={imageUrl}
           className="logo-image"
-          alt={t("{server} Logo").replace("{server}", selectedServer.description)}
+          alt={t("server.logo").replace("{server}", selectedServer.description)}
         />
       </div>
     );
@@ -54,13 +54,13 @@ export default function BackgroundImages({
       <NextImage
         id="of-logo-light"
         src={ofLogoLight}
-        alt={t("OpenFusion Logo")}
+        alt={t("nav.openfusionLogo")}
         width={256}
       />
       <NextImage
         id="of-logo-dark"
         src={ofLogoDark}
-        alt={t("OpenFusion Logo")}
+        alt={t("nav.openfusionLogo")}
         width={256}
       />
     </>

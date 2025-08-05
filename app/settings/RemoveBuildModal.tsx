@@ -27,16 +27,16 @@ export default function RemoveBuildModal({
         <Button
           variant="primary"
           onClick={() => setShow(false)}
-          text="Cancel"
+          text="common.cancel"
         />
         <Button
           variant="danger"
-          text="Remove and Clear Caches"
+          text="cache.removeClearCaches"
           onClick={() => onConfirm(version!.uuid, true)}
         />
         <Button
           variant="success"
-          text="Remove"
+          text="common.remove"
           onClick={() => onConfirm(version!.uuid, false)}
         />
       </Modal.Footer>

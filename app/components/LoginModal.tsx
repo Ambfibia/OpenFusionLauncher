@@ -54,7 +54,7 @@ const checkEmailRequired = async (server: ServerEntry) => {
 
 function AnnouncementsPanel({ server }: { server?: ServerEntry }) {
   const t = useT();
-  const ERROR_TEXT = t("This server has no announcements.");
+  const ERROR_TEXT = t("server.hasNoAnnouncements");
 
   const [showUpsell, setShowUpsell] = useState<boolean>(false);
   const [showAnnouncements, setShowAnnouncements] = useState<boolean>(false);
@@ -99,7 +99,7 @@ function AnnouncementsPanel({ server }: { server?: ServerEntry }) {
         src={getUpsellImage(server)}
         className={!showUpsell ? "d-none" : ""}
         onLoad={() => setShowUpsell(true)}
-        alt={t("Upsell")}
+        alt={t("common.upsell")}
       />
       <div className="announcements">
         {error ? ERROR_TEXT : <div dangerouslySetInnerHTML={{ __html: announcements }} />}
@@ -218,11 +218,11 @@ export default function LoginModal({
             className="mb-3"
             fill
           >
-            <Tab eventKey={TAB_LOGIN} title={t("Log In")} className="p-3">
+            <Tab eventKey={TAB_LOGIN} title={t("auth.log")} className="p-3">
               <Form.Group className="mb-3" controlId={CONTROL_ID_USERNAME}>
                 <Form.Control
                   type="text"
-                  placeholder={t("Username")}
+                  placeholder={t("common.username")}
                   value={username}
                   onFocus={() => setActiveControl(CONTROL_ID_USERNAME)}
                   onChange={(e) => setUsername(e.target.value)}
@@ -231,7 +231,7 @@ export default function LoginModal({
               <Form.Group className="mb-3" controlId={CONTROL_ID_PASSWORD}>
                 <Form.Control
                   type="password"
-                  placeholder={t("Password")}
+                  placeholder={t("auth.password")}
                   value={password}
                   onFocus={() => setActiveControl(CONTROL_ID_PASSWORD)}
                   onChange={(e) => setPassword(e.target.value)}
@@ -241,7 +241,7 @@ export default function LoginModal({
                 <Form.Group controlId={CONTROL_ID_REMEMBER}>
                   <Form.Check
                     type="checkbox"
-                    label={t("Remember Me")}
+                    label={t("common.remember")}
                     disabled={alwaysRemember}
                     checked={remember}
                     onChange={(e) => setRemember(e.target.checked)}
@@ -255,15 +255,15 @@ export default function LoginModal({
                     onClose(); // bootstrap doesn't support nested modals
                   }}
                 >
-                {t("Forgot your password?")}
+                {t("dialog.forgotPassword")}
                 </span>
               </div>
             </Tab>
-            <Tab eventKey={TAB_REGISTER} title={t("Register")} className="p-3">
+            <Tab eventKey={TAB_REGISTER} title={t("common.register")} className="p-3">
               <Form.Group className="mb-3" controlId={CONTROL_ID_NEW_USERNAME}>
                 <Form.Control
                   type="text"
-                  placeholder={t("Username")}
+                  placeholder={t("common.username")}
                   value={username}
                   onFocus={() => setActiveControl(CONTROL_ID_NEW_USERNAME)}
                   onChange={(e) => setUsername(e.target.value)}
@@ -273,7 +273,7 @@ export default function LoginModal({
               <Form.Group className="mb-3" controlId={CONTROL_ID_NEW_PASSWORD}>
                 <Form.Control
                   type="password"
-                  placeholder={t("Password")}
+                  placeholder={t("auth.password")}
                   value={password}
                   onFocus={() => setActiveControl(CONTROL_ID_NEW_PASSWORD)}
                   onChange={(e) => setPassword(e.target.value)}
@@ -286,7 +286,7 @@ export default function LoginModal({
               >
                 <Form.Control
                   type="password"
-                  placeholder={t("Confirm Password")}
+                  placeholder={t("auth.confirmPassword")}
                   value={confirmPassword}
                   onFocus={() => setActiveControl(CONTROL_ID_CONFIRM_PASSWORD)}
                   onChange={(e) => setConfirmPassword(e.target.value)}
@@ -296,7 +296,7 @@ export default function LoginModal({
               <Form.Group className="mb-3" controlId={CONTROL_ID_EMAIL}>
                 <Form.Control
                   type="text"
-                  placeholder={t("Email") + (emailRequired ? "" : " " + t("(optional)"))}
+                  placeholder={t("common.email") + (emailRequired ? "" : " " + t("common.optional"))}
                   value={email}
                   onFocus={() => setActiveControl(CONTROL_ID_EMAIL)}
                   onChange={(e) => setEmail(e.target.value)}
@@ -314,7 +314,7 @@ export default function LoginModal({
                     open(url);
                   }}
                 >
-                  {t("View this server's privacy policy")}
+                  {t("server.viewServersPrivacy")}
                 </span>
               </div>
               <RequirementsTooltip
@@ -322,8 +322,8 @@ export default function LoginModal({
                 controlId={CONTROL_ID_NEW_USERNAME}
               >
                 <div className="text-start lh-small">
-                  {"\u2022 " + t("4 - 32 characters long")}
-                  <br />{"\u2022 " + t("No special characters besides - and _")}
+                  {"\u2022 " + t("common.432Characters")}
+                  <br />{"\u2022 " + t("common.noSpecialCharacters")}
                 </div>
               </RequirementsTooltip>
               <RequirementsTooltip
@@ -331,18 +331,18 @@ export default function LoginModal({
                 controlId={CONTROL_ID_NEW_PASSWORD}
               >
                 <div className="text-start lh-small">
-                  {"\u2022 " + t("8 - 32 characters long")}
+                  {"\u2022 " + t("common.832Characters")}
                 </div>
               </RequirementsTooltip>
             </Tab>
           </Tabs>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={onClose} variant="primary" text="Cancel" />
+          <Button onClick={onClose} variant="primary" text="common.cancel" />
           <Button
             onClick={submitForm}
             variant="success"
-            text={tab === TAB_LOGIN ? "Log In" : "Register"}
+            text={tab === TAB_LOGIN ? "auth.log" : "common.register"}
             enabled={canSubmit(tab)}
           />
           {/* Hidden submit button */}

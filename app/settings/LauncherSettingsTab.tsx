@@ -68,8 +68,8 @@ export default function LauncherSettingsTab({
   const showResetConfirmation = () => {
     if (ctx.showConfirmationModal) {
       ctx.showConfirmationModal(
-        t("Are you sure you want to reset the launcher settings to their defaults?"),
-        t("Reset Launcher Settings"),
+        t("dialog.confirmReset"),
+        t("settings.resetLauncher"),
         "danger",
         resetSettings,
       );
@@ -88,7 +88,7 @@ export default function LauncherSettingsTab({
           className="primary my-5 p-3 rounded border border-primary"
         >
           <SettingsHeader
-            text={t("Launcher Settings")}
+            text={t("settings.launcher")}
             working={working}
             canApply={canApply}
             onApply={applySettings}
@@ -100,7 +100,7 @@ export default function LauncherSettingsTab({
             <Form>
               <SettingControlDropdown
                 id="language"
-                name={t("Language")}
+                name={t("common.language")}
                 options={availableLanguages.map((code) => ({
                   key: code,
                   value: code,
@@ -133,10 +133,10 @@ export default function LauncherSettingsTab({
               /> */}
               <SettingControlDropdown
                 id="check_for_updates"
-                name={t("Check for launcher updates on launch")}
+                name={t("common.checkLauncherUpdates")}
                 options={[
-                  { key: "yes", value: true, label: t("Yes") },
-                  { key: "no", value: false, label: t("No") },
+                  { key: "yes", value: true, label: t("common.yes") },
+                  { key: "no", value: false, label: t("common.no") },
                 ]}
                 defaultKey="yes"
                 oldValue={currentSettings.check_for_updates}
@@ -150,7 +150,7 @@ export default function LauncherSettingsTab({
               />
               <SettingControlBrowse
                 id="game_cache_path"
-                name={t("Game Cache Path")}
+                name={t("cache.gamePath")}
                 oldValue={currentSettings.game_cache_path}
                 value={settings.game_cache_path}
                 directory={true}
@@ -163,7 +163,7 @@ export default function LauncherSettingsTab({
               />
               <SettingControlBrowse
                 id="offline_cache_path"
-                name={t("Offline Cache Path")}
+                name={t("cache.offlinePath")}
                 oldValue={currentSettings.offline_cache_path}
                 value={settings.offline_cache_path}
                 directory={true}
@@ -176,10 +176,10 @@ export default function LauncherSettingsTab({
               />
               <SettingControlDropdown
                 id="use_offline_caches"
-                name={t("Use offline caches when downloaded")}
+                name={t("cache.useOfflineCaches")}
                 options={[
-                  { key: "yes", value: true, label: t("Yes") },
-                  { key: "no", value: false, label: t("No") },
+                  { key: "yes", value: true, label: t("common.yes") },
+                  { key: "no", value: false, label: t("common.no") },
                 ]}
                 defaultKey="yes"
                 oldValue={currentSettings.use_offline_caches}
@@ -193,10 +193,10 @@ export default function LauncherSettingsTab({
               />
               <SettingControlDropdown
                 id="verify_offline_caches"
-                name={t("Verify offline caches on launch")}
+                name={t("cache.verifyOfflineCaches")}
                 options={[
-                  { key: "yes", value: true, label: t("Yes") },
-                  { key: "no", value: false, label: t("No") },
+                  { key: "yes", value: true, label: t("common.yes") },
+                  { key: "no", value: false, label: t("common.no") },
                 ]}
                 defaultKey="no"
                 oldValue={currentSettings.verify_offline_caches}
@@ -210,10 +210,10 @@ export default function LauncherSettingsTab({
               />
               <SettingControlDropdown
                 id="delete_old_game_caches"
-                name={t("Delete old game caches on upgrades")}
+                name={t("cache.deleteOldGame")}
                 options={[
-                  { key: "yes", value: true, label: t("Yes") },
-                  { key: "no", value: false, label: t("No") },
+                  { key: "yes", value: true, label: t("common.yes") },
+                  { key: "no", value: false, label: t("common.no") },
                 ]}
                 defaultKey="no"
                 oldValue={currentSettings.delete_old_game_caches}
@@ -227,25 +227,25 @@ export default function LauncherSettingsTab({
               />
               <SettingControlDropdown
                 id="launch_behavior"
-                name={t("Launch behavior")}
+                name={t("common.launchBehavior")}
                 options={[
                   {
                     key: "hide",
-                    label: t("Hide"),
+                    label: t("common.hide"),
                     description: t(
-                      "hide the launcher when the game is launched, show again after game exits",
+                      "common.hideLauncherGame",
                     ),
                   },
                   {
                     key: "quit",
-                    label: t("Quit"),
-                    description: t("quit the launcher when the game is launched"),
+                    label: t("common.quit"),
+                    description: t("common.quitLauncherGame"),
                   },
                   {
                     key: "stay_open",
-                    label: t("Stay Open"),
+                    label: t("common.stayOpen"),
                     description: t(
-                      "keep the launcher open when the game is launched",
+                      "common.keepLauncherOpen",
                     ),
                   },
                 ]}
@@ -264,7 +264,7 @@ export default function LauncherSettingsTab({
           {debug && (
             <>
               <hr className="border-primary" />
-              <h6>{t("Debug")}</h6>
+              <h6>{t("common.debug")}</h6>
               <textarea
                 className="w-100"
                 rows={5}

@@ -56,8 +56,8 @@ export default function GameSettingsTab({
   const showResetConfirmation = () => {
     if (ctx.showConfirmationModal) {
       ctx.showConfirmationModal(
-        t("Are you sure you want to reset the game settings to their defaults?"),
-        t("Reset Game Settings"),
+        t("dialog.confirmReset2"),
+        t("settings.resetGame"),
         "danger",
         resetSettings,
       );
@@ -76,7 +76,7 @@ export default function GameSettingsTab({
           className="primary my-5 p-3 rounded border border-primary"
         >
           <SettingsHeader
-            text={t("Game Settings")}
+            text={t("settings.game")}
             working={working}
             canApply={canApply}
             onApply={applySettings}
@@ -88,11 +88,11 @@ export default function GameSettingsTab({
             <Form>
               <SettingControlDropdown
                 id="graphics_api"
-                name={t("Graphics API")}
+                name={t("common.graphicsApi")}
                 options={[
-                  { key: "dx9", label: t("DirectX 9") },
-                  { key: "vulkan", label: t("Vulkan (experimental)") },
-                  { key: "opengl", label: t("OpenGL (not recommended)") },
+                  { key: "dx9", label: t("common.directx9") },
+                  { key: "vulkan", label: t("common.vulkanExperimental") },
+                  { key: "opengl", label: t("nav.openglRecommended") },
                 ]}
                 defaultKey="dx9"
                 oldValue={currentSettings.graphics_api}
@@ -103,7 +103,7 @@ export default function GameSettingsTab({
               />
               <SettingControlText
                 id="launch_command"
-                name={t("Custom Launch Command")}
+                name={t("common.customLaunchCommand")}
                 oldValue={currentSettings.launch_command}
                 value={settings.launch_command}
                 placeholder="{}"
@@ -119,7 +119,7 @@ export default function GameSettingsTab({
               />
               <SettingControlWindowSize
                 id="window_size"
-                name={t("Window Size")}
+                name={t("common.windowSize")}
                 modified={
                   settings.window_size?.width !==
                     currentSettings?.window_size?.width ||
@@ -133,7 +133,7 @@ export default function GameSettingsTab({
               />
               <SettingControlFpsFix
                 id="fps_fix"
-                name={t("FPS Fix")}
+                name={t("common.fpsFix")}
                 oldValue={currentSettings.fps_fix}
                 value={settings.fps_fix}
                 onChange={(value) =>
@@ -145,7 +145,7 @@ export default function GameSettingsTab({
           {debug && (
             <>
               <hr className="border-primary" />
-              <h6>{t("Debug")}</h6>
+              <h6>{t("common.debug")}</h6>
               <textarea
                 id="settings-json"
                 className="w-100"

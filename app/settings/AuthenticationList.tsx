@@ -66,14 +66,14 @@ function ListEntry({
       await invoke("do_logout", { serverUuid: server.uuid });
       if (ctx.alertSuccess) {
         ctx.alertSuccess(
-          t("Logged out of {server}", { server: server.description }),
+          t("server.loggedOut", { server: server.description }),
         );
       }
       loadSession();
     } catch (e: unknown) {
       if (ctx.alertError) {
         ctx.alertError(
-          t("Failed to log out: {error}", { error: String(e) }),
+          t("auth.failedLogOut", { error: String(e) }),
         );
       }
     }
@@ -90,13 +90,13 @@ function ListEntry({
         remember: true,
       });
       if (ctx.alertSuccess) {
-        ctx.alertSuccess(t("Logged in successfully"));
+        ctx.alertSuccess(t("status.loggedSuccessfully"));
       }
       loadSession();
     } catch (e: unknown) {
       if (ctx.alertError) {
         ctx.alertError(
-          t("Failed to login: {error}", { error: String(e) }),
+          t("status.failedLogin", { error: String(e) }),
         );
       }
     }
@@ -130,7 +130,7 @@ function ListEntry({
     } catch (e: unknown) {
       if (ctx.alertError) {
         ctx.alertError(
-          t("Failed to register: {error}", { error: String(e) }),
+          t("status.failedRegister", { error: String(e) }),
         );
       }
     }
@@ -142,12 +142,12 @@ function ListEntry({
       await invoke("send_otp", { email, serverUuid: server.uuid });
       setShowForgotPasswordModal(false);
       if (ctx.alertSuccess) {
-        ctx.alertSuccess(t("One-time password sent"));
+        ctx.alertSuccess(t("auth.onetimePasswordSent"));
       }
     } catch (e: unknown) {
       if (ctx.alertError) {
         ctx.alertError(
-          t("Failed to send one-time password ({error})", {
+          t("auth.failedSendOnetime", {
             error: String(e),
           }),
         );
@@ -160,14 +160,14 @@ function ListEntry({
       await invoke("update_email", { newEmail, serverUuid: server.uuid, sessionToken: session!.session_token });
       if (ctx.alertSuccess) {
         ctx.alertSuccess(
-          t("Verification email sent to {email}", { email: newEmail }),
+          t("common.verificationEmailSent", { email: newEmail }),
         );
       }
       setShowManageAccountModal(false);
     } catch (e: unknown) {
       if (ctx.alertError) {
         ctx.alertError(
-          t("Failed to send verification email: {error}", {
+          t("status.failedSendVerification", {
             error: String(e),
           }),
         );
@@ -179,13 +179,13 @@ function ListEntry({
     try {
       await invoke("update_password", { newPassword, serverUuid: server.uuid, sessionToken: session!.session_token });
       if (ctx.alertSuccess) {
-        ctx.alertSuccess(t("Password updated successfully"));
+        ctx.alertSuccess(t("auth.passwordUpdatedSuccessfully"));
       }
       setShowManageAccountModal(false);
     } catch (e: unknown) {
       if (ctx.alertError) {
         ctx.alertError(
-          t("Failed to update password: {error}", { error: String(e) }),
+          t("auth.failedUpdatePassword", { error: String(e) }),
         );
       }
     }
@@ -230,7 +230,7 @@ function ListEntry({
               <small className="text-muted">{server.endpoint}</small>
               {offline !== undefined && (
                 <small className={"text-" + (offline! ? "danger" : "success")}>
-                  {" " + (offline! ? t("offline") : t("online"))}
+                  {" " + (offline! ? t("common.offline") : t("common.online"))}
                 </small>
               )}
             </div>
@@ -242,11 +242,11 @@ function ListEntry({
               ></span>
             ) : offline === true ? null : session === null ? (
               <div className="text-end">
-                <small className="mb-1 d-block text-muted">{t("not logged in")}</small>
+                <small className="mb-1 d-block text-muted">{t("common.logged2")}</small>
                 <Button
                   loading={buttonLoading}
                   icon="sign-in-alt"
-                  text="Log In"
+                  text="auth.log"
                   onClick={logIn}
                   variant="success"
                 />
@@ -254,13 +254,13 @@ function ListEntry({
             ) : (
               <div className="text-end">
                 <span className="mb-1 d-block">
-                  <small className="text-muted">{t("logged in as")}</small>
+                  <small className="text-muted">{t("common.logged3")}</small>
                   <h4 className="d-inline">{" " + session.username}</h4>
                 </span>
                 <Button
                   loading={buttonLoading}
                   icon="user"
-                  text="Manage Account"
+                  text="common.manageAccount"
                   onClick={() => setShowManageAccountModal(true)}
                   variant="primary"
                   className="me-2"
@@ -268,7 +268,7 @@ function ListEntry({
                 <Button
                   loading={buttonLoading}
                   icon="sign-out-alt"
-                  text="Log Out"
+                  text="auth.logOut2"
                   onClick={logOut}
                   variant="danger"
                 />
@@ -328,7 +328,7 @@ export default function AuthenticationList({
             </tr>
           ) : servers.length == 0 ? (
             <tr>
-              <td colSpan={3}>{t("No servers available.")}</td>
+              <td colSpan={3}>{t("server.noServersAvailable")}</td>
             </tr>
           ) : (
             servers.map((server: ServerEntry) => {

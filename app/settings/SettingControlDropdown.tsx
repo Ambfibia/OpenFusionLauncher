@@ -67,7 +67,7 @@ export default function SettingControlDropdown({
           <option key={option.key} value={option.key}>
             {option.label +
               (option.description ? " - " + option.description : "") +
-              (option.key === defaultKey ? ` ${t("(default)")}` : "")}
+              (option.key === defaultKey ? ` ${t("common.default")}` : "")}
           </option>
         ))}
       </Form.Select>

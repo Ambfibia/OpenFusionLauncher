@@ -35,11 +35,11 @@ export default function NavBar({
       <Row className="m-0 w-100">
         <Col className="p-0">
           <Button
-            text="Back"
+            text="nav.back"
             icon="angle-double-left"
             iconLeft
             onClick={() => router.back()}
-            tooltip="Back"
+            tooltip="nav.back"
             variant="primary"
           />
         </Col>

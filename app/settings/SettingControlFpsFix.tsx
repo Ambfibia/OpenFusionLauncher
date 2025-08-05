@@ -83,10 +83,10 @@ export default function SettingControlFpsFix({
     : getFpsLimitForValue(value) !== getFpsLimitForValue(oldValue);
 
   const EXPLANATION = [
-    t("FusionFall's framerate is normally capped around 64 FPS."),
-    t("This setting activates a patch to remove this limit."),
+    t("common.fusionfallsFramerateNormally"),
+    t("settings.settingActivatesPatch"),
     t(
-      "You can restore the original behavior by turning it off or tweak it to your own soft cap.",
+      "common.restoreOriginalBehavior",
     ),
   ];
 
@@ -96,7 +96,7 @@ export default function SettingControlFpsFix({
       <Form.Check
         type="radio"
         id={`${id}-on`}
-        label={t("On (experimental, default)")}
+        label={t("common.experimentalDefault")}
         checked={selected === KEY_FIX_ON}
         className={selected === KEY_FIX_ON && keyModified ? "text-success" : ""}
         onChange={() => {
@@ -108,7 +108,7 @@ export default function SettingControlFpsFix({
         <Form.Check
           type="radio"
           id={`${id}-on-with-limiter`}
-          label={t("On with limiter")}
+          label={t("common.limiter")}
           checked={selected === KEY_FIX_ON_WITH_LIMITER}
           className={
             selected === KEY_FIX_ON_WITH_LIMITER && keyModified
@@ -137,7 +137,7 @@ export default function SettingControlFpsFix({
       <Form.Check
         type="radio"
         id={`${id}-off`}
-        label={t("Off")}
+        label={t("common.off")}
         checked={selected === KEY_FIX_OFF}
         className={
           selected === KEY_FIX_OFF && keyModified ? "text-success" : ""
