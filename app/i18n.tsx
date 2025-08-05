@@ -9,9 +9,7 @@ import {
 import { invoke } from "@tauri-apps/api/core";
 import { once, type UnlistenFn } from "@tauri-apps/api/event";
 
-export const availableLanguages: string[] = [];
 export type Language = string;
-export const languageNames: Record<string, string> = {};
 
 const localeCache: Record<string, Record<string, string>> = {};
 
@@ -23,17 +21,23 @@ interface LangContextType {
   lang: Language;
   setLang: (lang: Language) => void;
   translations: Record<string, string>;
+  availableLanguages: string[];
+  languageNames: Record<string, string>;
 }
 
 const LangCtx = createContext<LangContextType>({
   lang: "en",
   setLang: () => {},
   translations: {},
+  availableLanguages: [],
+  languageNames: {},
 });
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = useState<Language>("en");
   const [translations, setTranslations] = useState<Record<string, string>>({});
+  const [availableLanguages, setAvailableLanguages] = useState<string[]>([]);
+  const [languageNames, setLanguageNames] = useState<Record<string, string>>({});
 
   const setLang = (newLang: Language) => {
     setLangState(newLang);
@@ -52,12 +56,14 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     const init = async () => {
       try {
         const langs = (await invoke<string[]>("get_languages")).sort();
-        availableLanguages.splice(0, availableLanguages.length, ...langs);
+        setAvailableLanguages(langs);
+        const names: Record<string, string> = {};
         langs.forEach((code) => {
           const name =
             new Intl.DisplayNames([code], { type: "language" }).of(code) || code;
-          languageNames[code] = name;
+          names[code] = name;
         });
+        setLanguageNames(names);
         let chosen = "en";
         if (typeof window !== "undefined") {
           const stored = window.localStorage.getItem("lang");
@@ -99,7 +105,9 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   }, [lang]);
 
   return (
-    <LangCtx.Provider value={{ lang, setLang, translations }}>
+    <LangCtx.Provider
+      value={{ lang, setLang, translations, availableLanguages, languageNames }}
+    >
       {children}
     </LangCtx.Provider>
   );
