@@ -17,6 +17,7 @@ use util::AlertVariant;
 use std::{
     collections::{HashMap, HashSet},
     env,
+    path::PathBuf,
     sync::{mpsc, Arc, LazyLock, OnceLock},
     vec,
 };
@@ -110,10 +111,34 @@ struct NewServerDetails {
     endpoint: Option<String>,
 }
 
+fn ensure_locales_dir() -> PathBuf {
+    let locales_dir = state::get_app_statics().app_data_dir.join("locales");
+    if let Err(e) = std::fs::create_dir_all(&locales_dir) {
+        warn!("Failed to create locales dir: {}", e);
+    }
+
+    let builtin_dir = state::get_app_statics().resource_dir.join("locales");
+    if let Ok(entries) = std::fs::read_dir(builtin_dir) {
+        for entry in entries.flatten() {
+            let src_path = entry.path();
+            if src_path.extension().and_then(|e| e.to_str()) == Some("json") {
+                let dest_path = locales_dir.join(entry.file_name());
+                if !dest_path.exists() {
+                    if let Err(e) = std::fs::copy(&src_path, &dest_path) {
+                        warn!("Failed to copy locale {:?}: {}", src_path, e);
+                    }
+                }
+            }
+        }
+    }
+
+    locales_dir
+}
+
 #[tauri::command]
 async fn get_languages() -> CommandResult<Vec<String>> {
     let mut langs = Vec::new();
-    let locales_dir = state::get_app_statics().resource_dir.join("locales");
+    let locales_dir = ensure_locales_dir();
     if let Ok(entries) = std::fs::read_dir(locales_dir) {
         for entry in entries.flatten() {
             let path = entry.path();
@@ -129,7 +154,7 @@ async fn get_languages() -> CommandResult<Vec<String>> {
 
 #[tauri::command]
 async fn load_language(lang: String) -> CommandResult<HashMap<String, String>> {
-    let locales_dir = state::get_app_statics().resource_dir.join("locales");
+    let locales_dir = ensure_locales_dir();
     let file_path = locales_dir.join(format!("{}.json", lang));
     let contents = std::fs::read_to_string(file_path).map_err(|e| e.to_string())?;
     let map = serde_json::from_str(&contents).map_err(|e| e.to_string())?;
