@@ -61,7 +61,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         langs.forEach((code) => {
           const name =
             new Intl.DisplayNames([code], { type: "language" }).of(code) || code;
-          names[code] = name;
+          names[code] = name[0].toLocaleUpperCase() + name.slice(1);
         });
         setLanguageNames(names);
         let chosen = "en";
