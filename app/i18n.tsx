@@ -12,6 +12,7 @@ import { once, type UnlistenFn } from "@tauri-apps/api/event";
 export type Language = string;
 
 const localeCache: Record<string, Record<string, string>> = {};
+const loadingLocales: Record<string, Promise<void>> = {};
 
 async function loadLocale(lang: Language): Promise<Record<string, string>> {
   return invoke<Record<string, string>>("load_language", { lang });
@@ -23,6 +24,7 @@ interface LangContextType {
   translations: Record<string, string>;
   availableLanguages: string[];
   languageNames: Record<string, string>;
+  ensureLangLoaded: () => Promise<void>;
 }
 
 const LangCtx = createContext<LangContextType>({
@@ -31,6 +33,7 @@ const LangCtx = createContext<LangContextType>({
   translations: {},
   availableLanguages: [],
   languageNames: {},
+  ensureLangLoaded: async () => {},
 });
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
@@ -44,11 +47,20 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     if (localeCache[newLang]) {
       setTranslations(localeCache[newLang]!);
     } else {
-      loadLocale(newLang).then((map) => {
-        localeCache[newLang] = map;
-        setTranslations(map);
-      });
+      setTranslations({});
     }
+  };
+
+  const ensureLangLoaded = async () => {
+    if (!localeCache[lang]) {
+      if (!loadingLocales[lang]) {
+        loadingLocales[lang] = loadLocale(lang).then((map) => {
+          localeCache[lang] = map;
+        });
+      }
+      await loadingLocales[lang];
+    }
+    setTranslations(localeCache[lang]!);
   };
 
   useEffect(() => {
@@ -79,10 +91,9 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
             }
           }
         }
-        if (!localeCache[chosen]) {
-          localeCache[chosen] = await loadLocale(chosen);
+        if (localeCache[chosen]) {
+          setTranslations(localeCache[chosen]!);
         }
-        setTranslations(localeCache[chosen]!);
         setLangState(chosen);
       } catch {
         // ignore errors
@@ -106,7 +117,14 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <LangCtx.Provider
-      value={{ lang, setLang, translations, availableLanguages, languageNames }}
+      value={{
+        lang,
+        setLang,
+        translations,
+        availableLanguages,
+        languageNames,
+        ensureLangLoaded,
+      }}
     >
       {children}
     </LangCtx.Provider>
@@ -118,6 +136,11 @@ export function useLanguage() {
 }
 
 export function useT() {
-  const { translations } = useLanguage();
-  return (key: string) => translations[key] || key;
+  const { translations, ensureLangLoaded } = useLanguage();
+  return (key: string) => {
+    if (Object.keys(translations).length === 0) {
+      void ensureLangLoaded();
+    }
+    return translations[key] || key;
+  };
 }
