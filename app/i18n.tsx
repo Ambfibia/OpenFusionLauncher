@@ -8,6 +8,7 @@ import {
 } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { once, type UnlistenFn } from "@tauri-apps/api/event";
+
 export const availableLanguages: string[] = [];
 export type Language = string;
 export const languageNames: Record<string, string> = {};
@@ -50,7 +51,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     let unlisten: UnlistenFn | undefined;
     const init = async () => {
       try {
-        const langs = await invoke<string[]>("get_languages");
+        const langs = (await invoke<string[]>("get_languages")).sort();
         availableLanguages.splice(0, availableLanguages.length, ...langs);
         langs.forEach((code) => {
           const name =
