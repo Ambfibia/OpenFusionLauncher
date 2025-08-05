@@ -91,7 +91,7 @@ export default function ManageAccountModal({
   return (
     <Modal show={show} onHide={() => setShow(false)} centered>
       <Modal.Header closeButton>
-        <Modal.Title>{t("Manage Account")} - {server?.description}</Modal.Title>
+        <Modal.Title>{t("common.manageAccount")} - {server?.description}</Modal.Title>
       </Modal.Header>
       <Modal.Body className="p-0">
         {accountInfo === undefined ? (
@@ -104,29 +104,29 @@ export default function ManageAccountModal({
           </div>
         ) : accountInfo === null ? (
           <div className="p-3 text-center">
-            <span>{t("Could not load account information")}</span>
+            <span>{t("status.loadAccountInformation")}</span>
           </div>
         ) : (
           <div className="p-3">
             <span>
-              <strong>{t("Username")}:</strong> {accountInfo.username}
+              <strong>{t("common.username")}:</strong> {accountInfo.username}
             </span>
             <br />
             <span>
-              <strong>{t("Current email")}:</strong>{" "}
-              {accountInfo.email ?? t("(not set)")}
+              <strong>{t("common.currentEmail")}:</strong>{" "}
+              {accountInfo.email ?? t("common.set")}
             </span>
           </div>
         )}
         <Tabs activeKey={tab} onSelect={(k) => setTab(k || TAB_DEFAULT)} fill>
-          <Tab eventKey={TAB_UPDATE_EMAIL} title={t("Change Email")}>
+          <Tab eventKey={TAB_UPDATE_EMAIL} title={t("common.changeEmail")}>
             <Form className="p-3">
               <Form.Group className="mb-3" controlId="editNewEmail">
                 <Form.Control
                   type="text"
                   value={newEmail}
                   onChange={(e) => setNewEmail(e.target.value)}
-                  placeholder={t("New Email")}
+                  placeholder={t("common.newEmail")}
                   isInvalid={newEmail.length > 0 && !validateEmail(newEmail, false)}
                 />
               </Form.Group>
@@ -135,20 +135,20 @@ export default function ManageAccountModal({
                   type="text"
                   value={newEmailConfirm}
                   onChange={(e) => setNewEmailConfirm(e.target.value)}
-                  placeholder={t("Confirm New Email")}
+                  placeholder={t("common.confirmNewEmail")}
                   isInvalid={newEmailConfirm.length > 0 && !validateNewEmail()}
                 />
               </Form.Group>
             </Form>
           </Tab>
-          <Tab eventKey={TAB_UPDATE_PASSWORD} title={t("Change Password")}>
+          <Tab eventKey={TAB_UPDATE_PASSWORD} title={t("auth.changePassword")}>
             <Form className="p-3">
               <Form.Group className="mb-3" controlId="editNewPassword">
                 <Form.Control
                   type="text"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder={t("New Password")}
+                  placeholder={t("auth.newPassword")}
                   isInvalid={newPassword.length > 0 && !validatePassword(newPassword)}
                 />
               </Form.Group>
@@ -157,7 +157,7 @@ export default function ManageAccountModal({
                   type="text"
                   value={newPasswordConfirm}
                   onChange={(e) => setNewPasswordConfirm(e.target.value)}
-                  placeholder={t("Confirm New Password")}
+                  placeholder={t("auth.confirmNewPassword")}
                   isInvalid={newPasswordConfirm.length > 0 && !validateNewPassword()}
                 />
               </Form.Group>
@@ -173,7 +173,7 @@ export default function ManageAccountModal({
               open(url);
             }}
           >
-            {t("View this server's privacy policy")}
+            {t("server.viewServersPrivacy")}
           </span>
         </div>
       </Modal.Body>
@@ -181,11 +181,11 @@ export default function ManageAccountModal({
         <Button
           variant="primary"
           onClick={() => setShow(false)}
-          text="Cancel"
+          text="common.cancel"
         />
         <Button
           variant="success"
-          text={tab == TAB_UPDATE_EMAIL ? "Send Verification Email" : "Update Password"}
+          text={tab == TAB_UPDATE_EMAIL ? "common.sendVerificationEmail" : "auth.updatePassword"}
           loading={working}
           enabled={tab == TAB_UPDATE_EMAIL ? validateNewEmail() : validateNewPassword()}
           onClick={onSubmit}

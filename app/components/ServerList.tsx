@@ -10,7 +10,7 @@ const findVersion = (versions: VersionEntry[], uuid: string) => {
 const getVersionsForServer = async (server: ServerEntry) => {
   if (!server.endpoint) {
     // Not available for simple servers
-    throw new Error("Server is not an endpoint server");
+    throw new Error("server.endpoint2");
   }
 
   const versions: string[] = await invoke("get_versions_for_server", {
@@ -56,7 +56,7 @@ function PlayerCount({ server, refreshes }: { server: ServerEntry; refreshes: nu
 
   if (playerCount !== undefined) {
     return (
-      <span className="fw-bold text-success" title={t("Current player count")}>
+      <span className="fw-bold text-success" title={t("common.currentPlayerCount")}>
         <i className="fa fa-user fa-sm"></i> {playerCount}
       </span>
     );
@@ -68,7 +68,7 @@ function PlayerCount({ server, refreshes }: { server: ServerEntry; refreshes: nu
         <span className="fw-bold text-danger">
           <i
             className="fa fa-plug-circle-xmark"
-            title={t("Could not connect to server")}
+            title={t("server.connect")}
           ></i>
         </span>
       );
@@ -86,7 +86,7 @@ function PlayerCount({ server, refreshes }: { server: ServerEntry; refreshes: nu
       <span>
         <i
           className="fa-solid fa-circle-question"
-          title={t("No information provided")}
+          title={t("status.noInformationProvided")}
         ></i>
       </span>
   );
@@ -137,7 +137,7 @@ function VersionBadges({
         ></span>
       );
     } else if (endpointVersions.length == 0) {
-      return <span className="badge bg-danger">{t("No versions")}</span>;
+      return <span className="badge bg-danger">{t("common.noVersions")}</span>;
     } else {
       return (
         <>
@@ -146,7 +146,7 @@ function VersionBadges({
             if (!version) {
               return (
                 <span key={versionUuid} className="badge bg-danger me-1">
-                  {t("unknown")}
+                  {t("common.unknown")}
                 </span>
               );
             }
@@ -164,7 +164,7 @@ function VersionBadges({
     const versionUuid = server.version!;
     const version = findVersion(versions, versionUuid);
     if (!version) {
-      return <span className="badge bg-danger">{t("unknown")}</span>;
+      return <span className="badge bg-danger">{t("common.unknown")}</span>;
     }
     const label = version.name ?? version.uuid;
     return <span className="badge bg-secondary" title={version.uuid}>{label}</span>;
@@ -198,13 +198,13 @@ export default function ServerList({
       <table className="table table-striped table-hover mb-0">
         <thead>
           <tr>
-            <th className="text-start name-column">{t("Server Name")}</th>
+            <th className="text-start name-column">{t("server.name")}</th>
             <th className="versions-column">
-              {t("Game Versions")}
+              {t("common.gameVersions")}
               <i onClick={() => setSupportedVersionRefreshes((r) => r + 1)} className="fa fa-rotate-right ms-2 clickable"></i>
             </th>
             <th className="text-end status-column">
-              {t("Status")}
+              {t("common.status")}
               <i onClick={() => setStatusRefreshes((r) => r + 1)} className="fa fa-rotate-right ms-2 clickable"></i>
             </th>
           </tr>
@@ -222,7 +222,7 @@ export default function ServerList({
             </tr>
           ) : servers.length === 0 ? (
             <tr>
-              <td colSpan={3}>{t("No servers available.")}</td>
+              <td colSpan={3}>{t("server.noServersAvailable")}</td>
             </tr>
           ) : (
             servers.map((server) => (

@@ -35,12 +35,12 @@ export default function ForgotPasswordModal({
   return (
     <Modal show={show} onHide={() => setShow(false)} centered>
       <Modal.Header closeButton>
-        <Modal.Title>{t("Forgot Password")}</Modal.Title>
+        <Modal.Title>{t("auth.forgotPassword")}</Modal.Title>
       </Modal.Header>
       <Modal.Body className="p-0">
         <p className="px-3 pt-3 mb-0">
           {t(
-            "Enter the email address associated with your account below to receive a one-time password that can be used to log in."
+            "auth.enterEmailAddress"
           )}
         </p>
         <Form className="p-3">
@@ -49,7 +49,7 @@ export default function ForgotPasswordModal({
               type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder={t("Email")}
+              placeholder={t("common.email")}
               isInvalid={
                 email.length > 0 && !validateEmail(email, false)
               }
@@ -58,7 +58,7 @@ export default function ForgotPasswordModal({
         </Form>
         <p className="px-3">
           {t(
-            "Once you have logged in, you can change your password in Settings -> Authentication -> Manage Account -> Change Password."
+            "settings.onceHaveLogged"
           )}
         </p>
       </Modal.Body>
@@ -66,11 +66,11 @@ export default function ForgotPasswordModal({
         <Button
           variant="primary"
           onClick={() => setShow(false)}
-          text="Cancel"
+          text="common.cancel"
         />
         <Button
           variant="success"
-          text={t("Send Temporary Password")}
+          text={t("auth.sendTemporaryPassword")}
           loading={loading}
           enabled={validateEmail(email, false)}
           onClick={() => onHitSubmit()}

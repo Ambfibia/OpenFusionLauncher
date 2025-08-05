@@ -23,13 +23,13 @@ export default function AuthenticationTab({ active }: { active: boolean }) {
     try {
       await invoke("do_logout");
       if (ctx.alertSuccess) {
-        ctx.alertSuccess(t("Logged out of all game servers"));
+        ctx.alertSuccess(t("server.loggedOutGame"));
       }
       refresh();
     } catch (e) {
       if (ctx.alertError) {
         ctx.alertError(
-          t("Failed to log out of all game servers: {error}").replace(
+          t("server.failedLogOut").replace(
             "{error}",
             "" + e,
           ),
@@ -59,22 +59,22 @@ export default function AuthenticationTab({ active }: { active: boolean }) {
       >
         <Button
           icon="rotate-right"
-          text="Refresh"
-          tooltip="Refresh logins"
+          text="nav.refresh"
+          tooltip="nav.refreshLogins"
           variant="primary"
           onClick={refresh}
         />
         {/* <div className="p-2 ms-auto"></div> */}
         <Button
           icon="sign-out-alt"
-          text="Log Out All"
-          tooltip="Log out of all game servers"
+          text="auth.logOut"
+          tooltip="server.logOutGame"
           variant="danger"
           onClick={() => {
             if (ctx.showConfirmationModal) {
               ctx.showConfirmationModal(
-                t("Are you sure you want to log out of all game servers?"),
-                t("Log Out All"),
+                t("dialog.confirmLogout"),
+                t("auth.logOut"),
                 "danger",
                 logOutAll,
               );

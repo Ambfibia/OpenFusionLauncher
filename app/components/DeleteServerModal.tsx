@@ -20,25 +20,25 @@ export default function DeleteServerModal({
   return (
     <Modal show={show} onHide={() => setShow(false)} centered={true}>
       <Modal.Header>
-        <Modal.Title>{t("Are you sure?")}</Modal.Title>
+        <Modal.Title>{t("dialog.sure")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {t("Do you really want to delete {server}?").replace(
+        {t("dialog.confirmDelete").replace(
           "{server}",
           server?.description ?? "",
         )}
         <br />
-        {t("You could always re-add it later.")}
+        {t("common.alwaysReaddLater")}
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={() => setShow(false)} variant="primary" text="Cancel" />
+        <Button onClick={() => setShow(false)} variant="primary" text="common.cancel" />
         <Button
           onClick={() => {
             setShow(false);
             deleteServer(server?.uuid);
           }}
           variant="danger"
-          text="Yes, Delete"
+          text="common.yesDelete"
         />
       </Modal.Footer>
     </Modal>

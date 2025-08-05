@@ -146,9 +146,9 @@ export default function GameBuildsList({
       <table className="table table-striped table-hover mb-0">
         <thead>
           <tr>
-            <th>{t("Version")}</th>
-            <th className="text-center cache-col">{t("Game Cache")}</th>
-            <th className="text-center px-5 cache-col">{t("Offline Cache")}</th>
+            <th>{t("common.version2")}</th>
+            <th className="text-center cache-col">{t("cache.game")}</th>
+            <th className="text-center px-5 cache-col">{t("cache.offline")}</th>
             <th className="text-end"></th>
           </tr>
         </thead>
@@ -165,7 +165,7 @@ export default function GameBuildsList({
             </tr>
           ) : versions.length == 0 ? (
             <tr>
-              <td colSpan={3}>{t("No builds available")}</td>
+              <td colSpan={3}>{t("build.noBuildsAvailable")}</td>
             </tr>
           ) : (
             versions.map((version) => {
@@ -237,7 +237,7 @@ export default function GameBuildsList({
                         enabled={Object.keys(versionData.gameItems).length > 0}
                         icon="folder"
                         onClick={() => invoke("open_folder_for_version", { uuid: version.uuid, offline: false })}
-                        tooltip="Open game cache folder"
+                        tooltip="cache.openGameFolder"
                       />{" "}
                       <Button
                         loading={!versionData.gameDone}
@@ -245,7 +245,7 @@ export default function GameBuildsList({
                         icon="trash"
                         onClick={() => clearGameCache(version.uuid)}
                         variant="danger"
-                        tooltip="Clear game cache"
+                        tooltip="cache.clearGame"
                       />
                     </td>
                     <td className="text-center cache-col">
@@ -282,7 +282,7 @@ export default function GameBuildsList({
                         enabled={Object.keys(versionData.offlineItems).length > 0}
                         icon="folder"
                         onClick={() => invoke("open_folder_for_version", { uuid: version.uuid, offline: true })}
-                        tooltip="Open offline cache folder"
+                        tooltip="cache.openOfflineFolder"
                       />{" "}
                       <Button
                         loading={!versionData.offlineDone}
@@ -294,7 +294,7 @@ export default function GameBuildsList({
                         icon="download"
                         onClick={() => downloadOfflineCache(version.uuid)}
                         variant="success"
-                        tooltip="Download offline cache"
+                        tooltip="cache.downloadOffline"
                       />{" "}
                       <Button
                         loading={!versionData.offlineDone}
@@ -302,7 +302,7 @@ export default function GameBuildsList({
                         icon="screwdriver-wrench"
                         onClick={() => repairOfflineCache(version.uuid)}
                         variant="warning"
-                        tooltip="Repair offline cache"
+                        tooltip="cache.repairOffline"
                       />{" "}
                       <Button
                         loading={!versionData.offlineDone}
@@ -310,7 +310,7 @@ export default function GameBuildsList({
                         icon="trash"
                         onClick={() => deleteOfflineCache(version.uuid)}
                         variant="danger"
-                        tooltip="Delete offline cache"
+                        tooltip="cache.deleteOffline"
                       />
                     </td>
                     <td className="text-end p-1">
@@ -321,7 +321,7 @@ export default function GameBuildsList({
                         icon="x"
                         onClick={() => removeVersion(version.uuid)}
                         variant="danger"
-                        tooltip={DEFAULT_VERSION_UUIDS.includes(version.uuid) ? "Cannot remove default build" : "Remove build"}
+                        tooltip={DEFAULT_VERSION_UUIDS.includes(version.uuid) ? "build.cannotRemoveDefault" : "build.remove"}
                       />
                     </td>
                   </tr>

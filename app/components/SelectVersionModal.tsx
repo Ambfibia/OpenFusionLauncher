@@ -15,7 +15,7 @@ const findVersion = (versions: VersionEntry[], uuid: string) => {
 const getVersionsForServer = async (server: ServerEntry) => {
   if (!server.endpoint) {
     // Not available for simple servers
-    throw new Error("Server is not an endpoint server");
+    throw new Error("server.endpoint2");
   }
 
   const versions: string[] = await invoke("get_versions_for_server", {
@@ -77,13 +77,13 @@ export default function SelectVersionModal({
   return (
     <Modal show={show} onHide={() => doHide()} centered={true}>
       <Modal.Header>
-        <Modal.Title>{t("Select Game Version")}</Modal.Title>
+        <Modal.Title>{t("common.selectGameVersion")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <span
           dangerouslySetInnerHTML={{
             __html: t(
-              "The server {server} supports multiple game versions. Please select a version to use."
+              "server.supportsMultipleGame"
             ).replace(
               "{server}",
               `<strong>${server?.description ?? ""}</strong>`
@@ -100,7 +100,7 @@ export default function SelectVersionModal({
                   <Form.Check
                     key={version.uuid}
                     type="radio"
-                    name="version"
+                    name="common.version3"
                     label={getLabelForVersion(version)}
                     checked={selected === version.uuid}
                     onChange={() => setSelected(version.uuid)}
@@ -120,14 +120,14 @@ export default function SelectVersionModal({
         )}
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={() => doHide()} variant="primary" text="Cancel" />
+        <Button onClick={() => doHide()} variant="primary" text="common.cancel" />
         <Button
           onClick={() => {
             doHide();
             onSelect(selected!);
           }}
           variant="success"
-          text="Select"
+          text="common.select"
           enabled={!!selected}
         />
       </Modal.Footer>

@@ -175,7 +175,7 @@ export default function Home() {
       if (updateInfo) {
         setUpdateAvailable(updateInfo);
         alertInfo(
-          t("Update available: {version}").replace(
+          t("common.updateAvailable").replace(
             "{version}",
             updateInfo.version,
           ),
@@ -195,39 +195,39 @@ export default function Home() {
     }
     getDebugMode().then((debug) => {
       if (debug) {
-        alertWarning(t("Debug mode enabled"));
+        alertWarning(t("common.debugModeEnabled"));
       }
     });
     setInitialFetchDone(true);
   };
 
   const importFromOpenFusionClient = async () => {
-    startLoading("import", t("Importing"));
+    startLoading("import", t("common.importing"));
     try {
       const counts: ImportCounts = await invoke("import_from_openfusionclient");
       if (counts.server_count == 0 && counts.version_count == 0) {
-        console.log(t("Nothing to import"));
+        console.log(t("common.nothingImport"));
       } else {
-        let text = t("Imported");
+        let text = t("common.imported");
         if (counts.version_count > 0) {
           text += ` ${counts.version_count} ${
-            counts.version_count > 1 ? t("versions") : t("version")
+            counts.version_count > 1 ? t("common.versions") : t("common.version3")
           }`;
           if (counts.server_count > 0) {
-            text += ` ${t("and")} `;
+            text += ` ${t("common.value")} `;
           }
         }
         if (counts.server_count > 0) {
           text += `${counts.server_count} ${
-            counts.server_count > 1 ? t("servers") : t("server")
+            counts.server_count > 1 ? t("server.servers") : t("server.value")
           }`;
         }
-        text += ` ${t("from OpenFusionClient")}`;
+        text += ` ${t("common.openfusionclient")}`;
         alertSuccess(text);
       }
     } catch (e: unknown) {
       alertError(
-        t("Failed to import from OpenFusionClient: {error}").replace(
+        t("status.failedImportOpenfusionclient").replace(
           "{error}",
           String(e),
         ),
@@ -286,7 +286,7 @@ export default function Home() {
     } catch (e: unknown) {
       await getCurrentWindow().show();
       alertError(
-        t("Error during init: {error}").replace("{error}", String(e)),
+        t("status.errorDuringInit").replace("{error}", String(e)),
       );
     }
   };
@@ -312,7 +312,7 @@ export default function Home() {
         await getCurrentWindow().hide();
       }
       const exitCode: number = await invoke("do_launch");
-      setTagline(t("Thanks for playing!"));
+      setTagline(t("common.thanksPlaying"));
       await getCurrentWindow().show();
       if (exitCode != 0) {
         console.warn("Game exited with code " + exitCode);
@@ -320,7 +320,7 @@ export default function Home() {
     } catch (e: unknown) {
       await getCurrentWindow().show();
       alertError(
-        t("Failed to launch: {error}").replace("{error}", String(e)),
+        t("status.failedLaunch").replace("{error}", String(e)),
       );
     }
     stopLoading("launch");
@@ -348,7 +348,7 @@ export default function Home() {
         alertInfo(res.resp);
       }
     } catch (e: unknown) {
-      alertError(t("Failed to register: {error}").replace("{error}", String(e)));
+      alertError(t("status.failedRegister").replace("{error}", String(e)));
     }
     stopLoading("do_register");
   };
@@ -368,7 +368,7 @@ export default function Home() {
         remember: remember,
       });
     } catch (e: unknown) {
-      alertError(t("Failed to login: {error}").replace("{error}", String(e)));
+      alertError(t("status.failedLogin").replace("{error}", String(e)));
       return;
     } finally {
       stopLoading("do_login");
@@ -379,7 +379,7 @@ export default function Home() {
   const onConnect = async (serverUuid: string, versionUuid?: string) => {
     const server = servers.find((s) => s.uuid == serverUuid);
     if (!server) {
-      alertError(t("Server not found"));
+      alertError(t("server.found"));
       setConnecting(false);
       return;
     }
@@ -416,7 +416,7 @@ export default function Home() {
       } catch (e: unknown) {
         stopLoading("configure_endpoint");
         alertError(
-          t("Failed to get versions: {error}").replace("{error}", String(e)),
+          t("status.failedGetVersions").replace("{error}", String(e)),
         );
         setConnecting(false);
         return;
@@ -436,7 +436,7 @@ export default function Home() {
       }
 
       alertSuccess(
-        t("Logged in as {username}").replace(
+        t("common.logged").replace(
           "{username}",
           session.username,
         ),
@@ -444,7 +444,7 @@ export default function Home() {
     }
 
     if (!version) {
-      alertError(t("No version selected"));
+      alertError(t("common.noVersionSelected"));
       setConnecting(false);
       return;
     }
@@ -462,10 +462,10 @@ export default function Home() {
         return [...servers, newServer];
       });
       setSelectedServer(uuid);
-      alertSuccess(t("Server added"));
+      alertSuccess(t("server.added"));
     } catch (e: unknown) {
       alertError(
-        t("Failed to add server: {error}").replace("{error}", String(e)),
+        t("server.failedAdd").replace("{error}", String(e)),
       );
     }
     stopLoading("add_server");
@@ -489,11 +489,11 @@ export default function Home() {
         return newServers;
       });
       if (showSucc ?? true) {
-        alertSuccess(t("Server updated"));
+        alertSuccess(t("server.updated"));
       }
     } catch (e: unknown) {
       alertError(
-        t("Failed to update server: {error}").replace("{error}", String(e)),
+        t("server.failedUpdate").replace("{error}", String(e)),
       );
     }
     stopLoading("update_server");
@@ -519,10 +519,10 @@ export default function Home() {
             break;
           }
         }
-        alertSuccess(t("Server deleted"));
+        alertSuccess(t("server.deleted"));
       } catch (e: unknown) {
         alertError(
-          t("Failed to delete server: {error}").replace("{error}", String(e)),
+          t("server.failedDelete").replace("{error}", String(e)),
         );
       }
     }
@@ -535,10 +535,10 @@ export default function Home() {
         serverUuid: getSelectedServer()!.uuid,
       });
       setShowForgotPasswordModal(false);
-      alertSuccess(t("One-time password sent"));
+      alertSuccess(t("auth.onetimePasswordSent"));
     } catch (e: unknown) {
       alertError(
-        t("Failed to send one-time password ({error})").replace(
+        t("auth.failedSendOnetime").replace(
           "{error}",
           String(e),
         ),
@@ -640,21 +640,21 @@ export default function Home() {
                 onClick={() => setShowAddModal(true)}
                 variant="success"
                 icon="plus"
-                tooltip="Add server"
+                tooltip="server.add"
               />
               <Button
                 onClick={() => setShowEditModal(true)}
                 enabled={getSelectedServer() ? true : false}
                 variant="primary"
                 icon="edit"
-                tooltip="Edit server"
+                tooltip="server.edit"
               />
               <Button
                 onClick={() => setShowDeleteModal(true)}
                 enabled={getSelectedServer() ? true : false}
                 variant="danger"
                 icon="trash"
-                tooltip="Delete server"
+                tooltip="server.delete"
               />
             </Stack>
           </Col>
@@ -669,7 +669,7 @@ export default function Home() {
                 enabled={getSelectedServer() ? true : false}
                 variant="primary"
                 icon="angle-double-right"
-                text="Connect"
+                text="nav.connect"
               />
             </Stack>
           </Col>
@@ -680,7 +680,7 @@ export default function Home() {
           onClick={() => setShowAboutModal(true)}
           variant="primary"
           icon="info-circle"
-          tooltip="About OpenFusion Launcher"
+          tooltip="nav.aboutOpenfusionLauncher"
         />
       </div>
       <div id="config-button-div">
@@ -688,7 +688,7 @@ export default function Home() {
           onClick={() => router.push("/settings")}
           variant="primary"
           icon="cog"
-          tooltip="Settings"
+          tooltip="settings.value"
         />
       </div>
       <EditServerModal

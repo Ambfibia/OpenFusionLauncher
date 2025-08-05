@@ -22,7 +22,7 @@ export default function SettingsHeader({
         loading={working}
         icon="trash"
         className="d-inline-block float-end ms-1"
-        text="Reset to Defaults"
+        text="common.resetDefaults"
         variant="danger"
         onClick={onReset}
       />
@@ -31,7 +31,7 @@ export default function SettingsHeader({
         icon="rotate-left"
         className="d-inline-block float-end ms-1"
         enabled={canApply}
-        text="Discard"
+        text="common.discard"
         variant="primary"
         onClick={onDiscard}
       />
@@ -40,7 +40,7 @@ export default function SettingsHeader({
         icon="check"
         className="d-inline-block float-end ms-1"
         enabled={canApply}
-        text="Apply"
+        text="common.apply"
         variant="success"
         onClick={onApply}
       />

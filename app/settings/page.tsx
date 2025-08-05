@@ -116,7 +116,7 @@ export default function SettingsPage() {
       setInitialFetchDone(true);
     } catch (e) {
       alertError(
-        t("Error during init: {error}", { error: String(e) }),
+        t("status.errorDuringInit", { error: String(e) }),
       );
     }
   };
@@ -124,10 +124,10 @@ export default function SettingsPage() {
   const saveConfig = async (config: Config) => {
     try {
       await invoke("update_config", { config: config });
-      alertSuccess(t("Changes applied successfully"));
+      alertSuccess(t("status.changesAppliedSuccessfully"));
     } catch (e) {
       alertError(
-        t("Error updating config: {error}", { error: String(e) }),
+        t("status.errorUpdatingConfig", { error: String(e) }),
       );
     }
   };
@@ -135,10 +135,10 @@ export default function SettingsPage() {
   const resetLauncherSettings = async () => {
     try {
       await invoke("reset_launcher_config");
-      alertSuccess(t("Launcher settings reset successfully"));
+      alertSuccess(t("settings.launcherResetSuccessfully"));
     } catch (e) {
       alertError(
-        t("Error resetting launcher settings: {error}", {
+        t("settings.errorResettingLauncher", {
           error: String(e),
         }),
       );
@@ -148,10 +148,10 @@ export default function SettingsPage() {
   const resetGameSettings = async () => {
     try {
       await invoke("reset_game_config");
-      alertSuccess(t("Game settings reset successfully"));
+      alertSuccess(t("settings.gameResetSuccessfully"));
     } catch (e) {
       alertError(
-        t("Error resetting game settings: {error}", {
+        t("settings.errorResettingGame", {
           error: String(e),
         }),
       );
@@ -198,13 +198,13 @@ export default function SettingsPage() {
     <SettingsCtx.Provider value={ctx}>
       <Toasts alerts={alerts} />
       {loadingTasks.length > 0 && <LoadingScreen tasks={loadingTasks} />}
-      <LauncherPage title={t("Settings")} id="launcher-page-settings">
+      <LauncherPage title={t("settings.value")} id="launcher-page-settings">
         <Tabs activeKey={tab} onSelect={(k) => setTab(k ?? DEFAULT_TAB)} fill>
           <Tab
             eventKey={TAB_LAUNCHER_SETTINGS}
             title={
               <>
-                <i className="fas fa-rocket"></i> <span>{t("Launcher Settings")}</span>
+                <i className="fas fa-rocket"></i> <span>{t("settings.launcher")}</span>
               </>
             }
           >
@@ -220,7 +220,7 @@ export default function SettingsPage() {
             eventKey={TAB_GAME_SETTINGS}
             title={
               <>
-                <i className="fas fa-gamepad"></i> <span>{t("Game Settings")}</span>
+                <i className="fas fa-gamepad"></i> <span>{t("settings.game")}</span>
               </>
             }
           >
@@ -236,7 +236,7 @@ export default function SettingsPage() {
             eventKey={TAB_GAME_BUILDS}
             title={
               <>
-                <i className="fas fa-download"></i> <span>{t("Game Builds")}</span>
+                <i className="fas fa-download"></i> <span>{t("build.gameBuilds")}</span>
               </>
             }
           >
@@ -246,7 +246,7 @@ export default function SettingsPage() {
             eventKey={TAB_AUTHENTICATION}
             title={
               <>
-                <i className="fas fa-key"></i> <span>{t("Authentication")}</span>
+                <i className="fas fa-key"></i> <span>{t("auth.authentication")}</span>
               </>
             }
           >
