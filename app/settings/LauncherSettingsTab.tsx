@@ -6,13 +6,7 @@ import SettingControlBrowse from "./SettingControlBrowse";
 import { getDebugMode } from "@/app/util";
 import { SettingsCtx } from "@/app/contexts";
 import SettingsHeader from "./SettingsHeader";
-import {
-  useT,
-  useLanguage,
-  availableLanguages,
-  languageNames,
-  type Language,
-} from "@/app/i18n";
+import { useT, useLanguage, type Language } from "@/app/i18n";
 
 export default function LauncherSettingsTab({
   active,
@@ -32,7 +26,7 @@ export default function LauncherSettingsTab({
 
   const ctx = useContext(SettingsCtx);
   const t = useT();
-  const { setLang } = useLanguage();
+  const { setLang, availableLanguages, languageNames } = useLanguage();
 
   useEffect(() => {
     getDebugMode().then(setDebug);
