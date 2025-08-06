@@ -161,9 +161,15 @@ async fn do_launch(app_handle: tauri::AppHandle) -> CommandResult<i32> {
     let cmd_str = util::get_launch_cmd_dbg_str(&cmd, false);
     drop(state);
 
-    let mut proc = cmd
-        .spawn()
-        .map_err(|e| format!("{} (launch command was: {})", e, cmd_str))?;
+    let mut proc = match cmd.spawn() {
+        Ok(proc) => proc,
+        Err(e) => {
+            if let Some(ls) = logo_swap {
+                restore_logo(ls);
+            }
+            return Err(format!("{} (launch command was: {})", e, cmd_str));
+        }
+    };
     if launch_behavior == LaunchBehavior::Quit {
         if let Some(ls) = logo_swap {
             std::thread::spawn(move || {
