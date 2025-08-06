@@ -42,17 +42,35 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const setLang = (newLang: Language) => {
     setLangState(newLang);
     if (!localeCache["en"]) {
-      loadLocale("en").then((map) => {
-        localeCache["en"] = map;
-      });
+      (async () => {
+        try {
+          const map = await loadLocale("en");
+          localeCache["en"] = map;
+        } catch (err) {
+          console.error(err);
+          console.warn(
+            "Failed to load English locale; translations may be incomplete.",
+          );
+        }
+      })();
     }
     if (localeCache[newLang]) {
       setTranslations(localeCache[newLang]!);
     } else {
-      loadLocale(newLang).then((map) => {
-        localeCache[newLang] = map;
-        setTranslations(map);
-      });
+      (async () => {
+        try {
+          const map = await loadLocale(newLang);
+          localeCache[newLang] = map;
+          setTranslations(map);
+        } catch (err) {
+          console.error(err);
+          console.warn(
+            `Failed to load locale ${newLang}; falling back to English.`,
+          );
+          setTranslations(localeCache["en"] ?? {});
+          setLangState("en");
+        }
+      })();
     }
   };
 
@@ -85,16 +103,37 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
           }
         }
         if (!localeCache["en"]) {
-          localeCache["en"] = await loadLocale("en");
+          try {
+            localeCache["en"] = await loadLocale("en");
+          } catch (err) {
+            console.error(err);
+            console.warn(
+              "Failed to load English locale; translations may be incomplete.",
+            );
+            localeCache["en"] = {};
+          }
         }
         if (!localeCache[chosen]) {
-          localeCache[chosen] =
-            chosen === "en" ? localeCache["en"]! : await loadLocale(chosen);
+          if (chosen === "en") {
+            localeCache[chosen] = localeCache["en"]!;
+          } else {
+            try {
+              localeCache[chosen] = await loadLocale(chosen);
+            } catch (err) {
+              console.error(err);
+              console.warn(
+                `Failed to load locale ${chosen}; falling back to English.`,
+              );
+              chosen = "en";
+              localeCache[chosen] = localeCache["en"]!;
+            }
+          }
         }
         setTranslations(localeCache[chosen]!);
         setLangState(chosen);
-      } catch {
-        // ignore errors
+      } catch (err) {
+        console.error(err);
+        console.warn("Failed to initialize languages.");
       }
     };
     init();
