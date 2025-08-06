@@ -82,12 +82,9 @@ export default function SelectVersionModal({
       <Modal.Body>
         <span
           dangerouslySetInnerHTML={{
-            __html: t(
-              "server.supportsMultipleGame"
-            ).replace(
-              "{server}",
-              `<strong>${server?.description ?? ""}</strong>`
-            ),
+            __html: t("server.supportsMultipleGame", {
+              server: `<strong>${server?.description ?? ""}</strong>`,
+            }),
           }}
         />
         <br />

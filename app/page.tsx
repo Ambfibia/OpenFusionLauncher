@@ -172,10 +172,7 @@ export default function Home() {
       if (updateInfo) {
         setUpdateAvailable(updateInfo);
         alertInfo(
-          t("common.updateAvailable").replace(
-            "{version}",
-            updateInfo.version,
-          ),
+          t("common.updateAvailable", { version: updateInfo.version }),
           updateInfo.url,
         );
       }
@@ -224,10 +221,7 @@ export default function Home() {
       }
     } catch (e: unknown) {
       alertError(
-        t("status.failedImportOpenfusionclient").replace(
-          "{error}",
-          String(e),
-        ),
+        t("status.failedImportOpenfusionclient", { error: String(e) }),
       );
     }
     stopLoading("import");
@@ -282,9 +276,7 @@ export default function Home() {
       await getCurrentWindow().setFocus();
     } catch (e: unknown) {
       await getCurrentWindow().show();
-      alertError(
-        t("status.errorDuringInit").replace("{error}", String(e)),
-      );
+      alertError(t("status.errorDuringInit", { error: String(e) }));
     }
   };
 
@@ -316,9 +308,7 @@ export default function Home() {
       }
     } catch (e: unknown) {
       await getCurrentWindow().show();
-      alertError(
-        t("status.failedLaunch").replace("{error}", String(e)),
-      );
+      alertError(t("status.failedLaunch", { error: String(e) }));
     }
     stopLoading("launch");
   };
@@ -345,7 +335,7 @@ export default function Home() {
         alertInfo(res.resp);
       }
     } catch (e: unknown) {
-      alertError(t("status.failedRegister").replace("{error}", String(e)));
+      alertError(t("status.failedRegister", { error: String(e) }));
     }
     stopLoading("do_register");
   };
@@ -365,7 +355,7 @@ export default function Home() {
         remember: remember,
       });
     } catch (e: unknown) {
-      alertError(t("status.failedLogin").replace("{error}", String(e)));
+      alertError(t("status.failedLogin", { error: String(e) }));
       return;
     } finally {
       stopLoading("do_login");
@@ -412,9 +402,7 @@ export default function Home() {
         });
       } catch (e: unknown) {
         stopLoading("configure_endpoint");
-        alertError(
-          t("status.failedGetVersions").replace("{error}", String(e)),
-        );
+        alertError(t("status.failedGetVersions", { error: String(e) }));
         setConnecting(false);
         return;
       }
@@ -432,12 +420,7 @@ export default function Home() {
         }
       }
 
-      alertSuccess(
-        t("common.logged").replace(
-          "{username}",
-          session.username,
-        ),
-      );
+      alertSuccess(t("common.logged", { username: session.username }));
     }
 
     if (!version) {
@@ -461,9 +444,7 @@ export default function Home() {
       setSelectedServer(uuid);
       alertSuccess(t("server.added"));
     } catch (e: unknown) {
-      alertError(
-        t("server.failedAdd").replace("{error}", String(e)),
-      );
+      alertError(t("server.failedAdd", { error: String(e) }));
     }
     stopLoading("add_server");
   };
@@ -489,9 +470,7 @@ export default function Home() {
         alertSuccess(t("server.updated"));
       }
     } catch (e: unknown) {
-      alertError(
-        t("server.failedUpdate").replace("{error}", String(e)),
-      );
+      alertError(t("server.failedUpdate", { error: String(e) }));
     }
     stopLoading("update_server");
   };
@@ -518,9 +497,7 @@ export default function Home() {
         }
         alertSuccess(t("server.deleted"));
       } catch (e: unknown) {
-        alertError(
-          t("server.failedDelete").replace("{error}", String(e)),
-        );
+        alertError(t("server.failedDelete", { error: String(e) }));
       }
     }
   };
@@ -534,12 +511,7 @@ export default function Home() {
       setShowForgotPasswordModal(false);
       alertSuccess(t("auth.onetimePasswordSent"));
     } catch (e: unknown) {
-      alertError(
-        t("auth.failedSendOnetime").replace(
-          "{error}",
-          String(e),
-        ),
-      );
+      alertError(t("auth.failedSendOnetime", { error: String(e) }));
     }
   };
 
