@@ -41,6 +41,11 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   const setLang = (newLang: Language) => {
     setLangState(newLang);
+    if (!localeCache["en"]) {
+      loadLocale("en").then((map) => {
+        localeCache["en"] = map;
+      });
+    }
     if (localeCache[newLang]) {
       setTranslations(localeCache[newLang]!);
     } else {
@@ -79,8 +84,12 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
             }
           }
         }
+        if (!localeCache["en"]) {
+          localeCache["en"] = await loadLocale("en");
+        }
         if (!localeCache[chosen]) {
-          localeCache[chosen] = await loadLocale(chosen);
+          localeCache[chosen] =
+            chosen === "en" ? localeCache["en"]! : await loadLocale(chosen);
         }
         setTranslations(localeCache[chosen]!);
         setLangState(chosen);
@@ -123,7 +132,8 @@ export function useT() {
     key: string,
     params?: Record<string, string | number>,
   ): string => {
-    let str = translations[key] || key;
+    let str =
+      translations[key] ?? localeCache["en"]?.[key] ?? key;
     if (params) {
       for (const [placeholder, value] of Object.entries(params)) {
         str = str.replaceAll(`{${placeholder}}`, String(value));
