@@ -124,7 +124,6 @@ export default function SettingsPage() {
   const saveConfig = async (config: Config) => {
     try {
       await invoke("update_config", { config: config });
-      alertSuccess(t("status.changesAppliedSuccessfully"));
     } catch (e) {
       alertError(
         t("status.errorUpdatingConfig", { error: String(e) }),
@@ -162,22 +161,28 @@ export default function SettingsPage() {
     if (newSettings) {
       const newConfig = { ...config!, launcher: newSettings };
       await saveConfig(newConfig);
+      const updatedConfig = await syncConfig();
+      alertSuccess(t("status.changesAppliedSuccessfully"));
+      return updatedConfig.launcher;
     } else {
       await resetLauncherSettings();
+      const updatedConfig = await syncConfig();
+      return updatedConfig.launcher;
     }
-    const updatedConfig = await syncConfig();
-    return updatedConfig.launcher;
   };
 
   const updateGameSettings = async (newSettings?: GameSettings) => {
     if (newSettings) {
       const newConfig = { ...config!, game: newSettings };
       await saveConfig(newConfig);
+      const updatedConfig = await syncConfig();
+      alertSuccess(t("status.changesAppliedSuccessfully"));
+      return updatedConfig.game;
     } else {
       await resetGameSettings();
+      const updatedConfig = await syncConfig();
+      return updatedConfig.game;
     }
-    const updatedConfig = await syncConfig();
-    return updatedConfig.game;
   };
 
   useEffect(() => {
