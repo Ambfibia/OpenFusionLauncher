@@ -72,9 +72,9 @@ function ListEntry({
       loadSession();
     } catch (e: unknown) {
       if (ctx.alertError) {
-        ctx.alertError(
-          t("auth.failedLogOut", { error: String(e) }),
-        );
+          ctx.alertError(
+          t("auth.failedLogout", { error: String(e) }),
+          );
       }
     }
     setButtonLoading(false);
@@ -246,7 +246,7 @@ function ListEntry({
                 <Button
                   loading={buttonLoading}
                   icon="sign-in-alt"
-                  text="auth.log"
+                  text="auth.login"
                   onClick={logIn}
                   variant="success"
                 />
@@ -268,7 +268,7 @@ function ListEntry({
                 <Button
                   loading={buttonLoading}
                   icon="sign-out-alt"
-                  text="auth.logOut2"
+                  text="auth.logout"
                   onClick={logOut}
                   variant="danger"
                 />

@@ -218,7 +218,7 @@ export default function LoginModal({
             className="mb-3"
             fill
           >
-            <Tab eventKey={TAB_LOGIN} title={t("auth.log")} className="p-3">
+            <Tab eventKey={TAB_LOGIN} title={t("auth.login")} className="p-3">
               <Form.Group className="mb-3" controlId={CONTROL_ID_USERNAME}>
                 <Form.Control
                   type="text"
@@ -342,7 +342,7 @@ export default function LoginModal({
           <Button
             onClick={submitForm}
             variant="success"
-            text={tab === TAB_LOGIN ? "auth.log" : "common.register"}
+            text={tab === TAB_LOGIN ? "auth.login" : "common.register"}
             enabled={canSubmit(tab)}
           />
           {/* Hidden submit button */}
