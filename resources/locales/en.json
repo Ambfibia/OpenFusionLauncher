@@ -145,7 +145,7 @@
   "common.updateAvailable": "Update available: {version}",
   "common.upsell": "Upsell",
   "common.username": "Username",
-  "common.value": "and",
+  "common.and": "and",
   "common.verificationEmailSent": "Verification email sent to {email}",
   "common.version": "Version {version}",
   "common.version2": "Version",

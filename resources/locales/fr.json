@@ -145,7 +145,7 @@
   "common.updateAvailable": "Mise à jour disponible: {version}",
   "common.upsell": "Cochette",
   "common.username": "Nom d'utilisateur",
-  "common.value": "et",
+  "common.and": "et",
   "common.verificationEmailSent": "Email de vérification envoyé à {email}",
   "common.version": "Version {version}",
   "common.version2": "Version",
