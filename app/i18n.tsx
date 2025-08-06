@@ -18,6 +18,15 @@ async function loadLocale(lang: Language): Promise<Record<string, string>> {
   return invoke<Record<string, string>>("load_language", { lang });
 }
 
+async function fetchLocale(lang: Language): Promise<Record<string, string>> {
+  if (localeCache[lang]) {
+    return localeCache[lang]!;
+  }
+  const map = await loadLocale(lang);
+  localeCache[lang] = map;
+  return map;
+}
+
 interface LangContextType {
   lang: Language;
   setLang: (lang: Language) => void;
@@ -45,41 +54,34 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const setLang = (newLang: Language) => {
     latestRequest.current = newLang;
     setLangState(newLang);
-    if (!localeCache["en"]) {
-      (async () => {
-        try {
-          const map = await loadLocale("en");
-          localeCache["en"] = map;
-        } catch (err) {
-          console.error(err);
-          console.warn(
-            "Failed to load English locale; translations may be incomplete.",
-          );
-        }
-      })();
-    }
+    fetchLocale("en").catch((err) => {
+      console.error(err);
+      console.warn(
+        "Failed to load English locale; translations may be incomplete.",
+      );
+      localeCache["en"] = localeCache["en"] ?? {};
+    });
     if (localeCache[newLang]) {
       setTranslations(localeCache[newLang]!);
-    } else {
-      (async () => {
-        try {
-          const map = await loadLocale(newLang);
-          localeCache[newLang] = map;
-          if (latestRequest.current === newLang) {
-            setTranslations(map);
-          }
-        } catch (err) {
-          console.error(err);
-          console.warn(
-            `Failed to load locale ${newLang}; falling back to English.`,
-          );
-          if (latestRequest.current === newLang) {
-            setTranslations(localeCache["en"] ?? {});
-            setLangState("en");
-          }
-        }
-      })();
+      return;
     }
+    (async () => {
+      try {
+        const map = await fetchLocale(newLang);
+        if (latestRequest.current === newLang) {
+          setTranslations(map);
+        }
+      } catch (err) {
+        console.error(err);
+        console.warn(
+          `Failed to load locale ${newLang}; falling back to English.`,
+        );
+        if (latestRequest.current === newLang) {
+          setTranslations(localeCache["en"] ?? {});
+          setLangState("en");
+        }
+      }
+    })();
   };
 
   useEffect(() => {
@@ -110,34 +112,27 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
             }
           }
         }
-        if (!localeCache["en"]) {
-          try {
-            localeCache["en"] = await loadLocale("en");
-          } catch (err) {
-            console.error(err);
-            console.warn(
-              "Failed to load English locale; translations may be incomplete.",
-            );
-            localeCache["en"] = {};
-          }
+        try {
+          await fetchLocale("en");
+        } catch (err) {
+          console.error(err);
+          console.warn(
+            "Failed to load English locale; translations may be incomplete.",
+          );
+          localeCache["en"] = {};
         }
-        if (!localeCache[chosen]) {
-          if (chosen === "en") {
-            localeCache[chosen] = localeCache["en"]!;
-          } else {
-            try {
-              localeCache[chosen] = await loadLocale(chosen);
-            } catch (err) {
-              console.error(err);
-              console.warn(
-                `Failed to load locale ${chosen}; falling back to English.`,
-              );
-              chosen = "en";
-              localeCache[chosen] = localeCache["en"]!;
-            }
-          }
+        let map: Record<string, string>;
+        try {
+          map = await fetchLocale(chosen);
+        } catch (err) {
+          console.error(err);
+          console.warn(
+            `Failed to load locale ${chosen}; falling back to English.`,
+          );
+          chosen = "en";
+          map = localeCache["en"] ?? {};
         }
-        setTranslations(localeCache[chosen]!);
+        setTranslations(map);
         setLangState(chosen);
       } catch (err) {
         console.error(err);
