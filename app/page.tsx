@@ -51,16 +51,17 @@ import { useT, useLanguage, type Language } from "@/app/i18n";
 
 export default function Home() {
   const loadedRef = useRef(false);
+  const postInitRef = useRef(false);
   const router = useRouter();
   const t = useT();
-  const { setLang } = useLanguage();
+  const { setLang, translations } = useLanguage();
 
   const [appName, setAppName] = useState("");
   const [launcherVersion, setLauncherVersion] = useState("--");
   const [updateAvailable, setUpdateAvailable] = useState<
     UpdateInfo | undefined
   >(undefined);
-  const [tagline, setTagline] = useState(t("server.welcomeOpenfusionSelect"));
+  const [taglineKey, setTaglineKey] = useState("server.welcomeOpenfusionSelect");
   const [topOffset, setTopOffset] = useState<string>("0");
 
   const [initialFetchDone, setInitialFetchDone] = useState(false);
@@ -182,16 +183,8 @@ export default function Home() {
   };
 
   const initialFetch = async () => {
-    const config: Config = await syncConfig();
+    await syncConfig();
     await syncServersAndVersions();
-    if (config.launcher.check_for_updates) {
-      checkForUpdate(); // no need to await
-    }
-    getDebugMode().then((debug) => {
-      if (debug) {
-        alertWarning(t("common.debugModeEnabled"));
-      }
-    });
     setInitialFetchDone(true);
   };
 
@@ -301,7 +294,7 @@ export default function Home() {
         await getCurrentWindow().hide();
       }
       const exitCode: number = await invoke("do_launch");
-      setTagline(t("common.thanksPlaying"));
+      setTaglineKey("common.thanksPlaying");
       await getCurrentWindow().show();
       if (exitCode != 0) {
         console.warn("Game exited with code " + exitCode);
@@ -521,6 +514,27 @@ export default function Home() {
   };
 
   useEffect(() => {
+    if (!initialFetchDone) {
+      return;
+    }
+    if (postInitRef.current) {
+      return;
+    }
+    if (Object.keys(translations).length === 0) {
+      return;
+    }
+    postInitRef.current = true;
+    if (config?.launcher.check_for_updates) {
+      checkForUpdate();
+    }
+    getDebugMode().then((debug) => {
+      if (debug) {
+        alertWarning(t("common.debugModeEnabled"));
+      }
+    });
+  }, [initialFetchDone, translations, t, config]);
+
+  useEffect(() => {
     if (!loadedRef.current) {
       console.log("init");
       doInit();
@@ -573,7 +587,7 @@ export default function Home() {
               selectedServer={getSelectedServer()}
             />
             <div id="of-intro-text">
-              {t(tagline)
+              {t(taglineKey)
                 .split("\n")
                 .map((line, index) => (
                   <p className="fw-bold" key={index}>
