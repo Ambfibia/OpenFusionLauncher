@@ -21,7 +21,7 @@ import { getTheme } from "@/app/util";
 import AuthenticationTab from "./AuthenticationTab";
 import LauncherSettingsTab from "./LauncherSettingsTab";
 import GameSettingsTab from "./GameSettingsTab";
-import { useT, useLanguage, type Language } from "@/app/i18n";
+import { useT, useLanguage, type Language, tForLang } from "@/app/i18n";
 
 const TAB_LAUNCHER_SETTINGS = "launcher-settings";
 const TAB_GAME_SETTINGS = "game-settings";
@@ -162,7 +162,11 @@ export default function SettingsPage() {
       const newConfig = { ...config!, launcher: newSettings };
       await saveConfig(newConfig);
       const updatedConfig = await syncConfig();
-      alertSuccess(t("status.changesAppliedSuccessfully"));
+      const successMsg = await tForLang(
+        updatedConfig.launcher.language as Language,
+        "status.changesAppliedSuccessfully",
+      );
+      alertSuccess(successMsg);
       return updatedConfig.launcher;
     } else {
       await resetLauncherSettings();
@@ -176,7 +180,11 @@ export default function SettingsPage() {
       const newConfig = { ...config!, game: newSettings };
       await saveConfig(newConfig);
       const updatedConfig = await syncConfig();
-      alertSuccess(t("status.changesAppliedSuccessfully"));
+      const successMsg = await tForLang(
+        updatedConfig.launcher.language as Language,
+        "status.changesAppliedSuccessfully",
+      );
+      alertSuccess(successMsg);
       return updatedConfig.game;
     } else {
       await resetGameSettings();

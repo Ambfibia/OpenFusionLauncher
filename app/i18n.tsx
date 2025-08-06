@@ -181,3 +181,26 @@ export function useT() {
     return str;
   };
 }
+
+export async function tForLang(
+  lang: Language,
+  key: string,
+  params?: Record<string, string | number>,
+): Promise<string> {
+  if (!localeCache[lang]) {
+    try {
+      const map = await loadLocale(lang);
+      localeCache[lang] = map;
+    } catch (err) {
+      console.error(err);
+      localeCache[lang] = localeCache["en"] ?? {};
+    }
+  }
+  let str = localeCache[lang]?.[key] ?? localeCache["en"]?.[key] ?? key;
+  if (params) {
+    for (const [placeholder, value] of Object.entries(params)) {
+      str = str.replaceAll(`{${placeholder}}`, String(value));
+    }
+  }
+  return str;
+}
