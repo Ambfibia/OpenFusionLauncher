@@ -145,7 +145,7 @@
   "common.updateAvailable": "Доступно обновление: {version}",
   "common.upsell": "Реклама",
   "common.username": "Имя пользователя",
-  "common.value": "и",
+  "common.and": "и",
   "common.verificationEmailSent": "Письмо для подтверждения отправлено на {email}",
   "common.version": "Версия {version}",
   "common.version2": "Версия",

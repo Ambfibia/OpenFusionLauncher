@@ -208,7 +208,7 @@ export default function Home() {
             counts.version_count > 1 ? t("common.versions") : t("common.version3")
           }`;
           if (counts.server_count > 0) {
-            text += ` ${t("common.value")} `;
+            text += ` ${t("common.and")} `;
           }
         }
         if (counts.server_count > 0) {
