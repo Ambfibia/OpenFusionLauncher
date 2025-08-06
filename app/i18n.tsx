@@ -119,5 +119,16 @@ export function useLanguage() {
 
 export function useT() {
   const { translations } = useLanguage();
-  return (key: string) => translations[key] || key;
+  return (
+    key: string,
+    params?: Record<string, string | number>,
+  ): string => {
+    let str = translations[key] || key;
+    if (params) {
+      for (const [placeholder, value] of Object.entries(params)) {
+        str = str.replaceAll(`{${placeholder}}`, String(value));
+      }
+    }
+    return str;
+  };
 }

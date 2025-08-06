@@ -29,10 +29,7 @@ export default function AuthenticationTab({ active }: { active: boolean }) {
     } catch (e) {
       if (ctx.alertError) {
         ctx.alertError(
-          t("server.failedLogOut").replace(
-            "{error}",
-            "" + e,
-          ),
+          t("server.failedLogOut", { error: String(e) }),
         );
       }
     }

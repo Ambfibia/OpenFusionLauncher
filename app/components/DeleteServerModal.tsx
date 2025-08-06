@@ -23,10 +23,7 @@ export default function DeleteServerModal({
         <Modal.Title>{t("dialog.sure")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {t("dialog.confirmDelete").replace(
-          "{server}",
-          server?.description ?? "",
-        )}
+        {t("dialog.confirmDelete", { server: server?.description ?? "" })}
         <br />
         {t("common.alwaysReaddLater")}
       </Modal.Body>

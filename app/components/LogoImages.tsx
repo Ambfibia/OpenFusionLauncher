@@ -43,7 +43,7 @@ export default function BackgroundImages({
         <img
           src={imageUrl}
           className="logo-image"
-          alt={t("server.logo").replace("{server}", selectedServer.description)}
+          alt={t("server.logo", { server: selectedServer.description })}
         />
       </div>
     );
