@@ -5,6 +5,7 @@ import {
   useState,
   useEffect,
   useLayoutEffect,
+  useRef,
 } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { once, type UnlistenFn } from "@tauri-apps/api/event";
@@ -39,7 +40,10 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [availableLanguages, setAvailableLanguages] = useState<string[]>([]);
   const [languageNames, setLanguageNames] = useState<Record<string, string>>({});
 
+  const latestRequest = useRef<Language>(lang);
+
   const setLang = (newLang: Language) => {
+    latestRequest.current = newLang;
     setLangState(newLang);
     if (!localeCache["en"]) {
       (async () => {
@@ -61,14 +65,18 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         try {
           const map = await loadLocale(newLang);
           localeCache[newLang] = map;
-          setTranslations(map);
+          if (latestRequest.current === newLang) {
+            setTranslations(map);
+          }
         } catch (err) {
           console.error(err);
           console.warn(
             `Failed to load locale ${newLang}; falling back to English.`,
           );
-          setTranslations(localeCache["en"] ?? {});
-          setLangState("en");
+          if (latestRequest.current === newLang) {
+            setTranslations(localeCache["en"] ?? {});
+            setLangState("en");
+          }
         }
       })();
     }
