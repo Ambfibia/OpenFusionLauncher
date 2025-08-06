@@ -9,7 +9,8 @@ use ffbuildtool::{ItemProgress, Version};
 use regex::Regex;
 use serde::{Deserialize, Serialize};
 use state::{
-    get_app_statics, AppState, Config, FlatServer, FlatServers, Server, ServerInfo, Versions,
+    get_app_statics, AppState, Config, FlatServer, FlatServers, LogoSwap, Server, ServerInfo,
+    Versions,
 };
 use tauri_plugin_shell::ShellExt;
 use util::AlertVariant;
@@ -140,6 +141,16 @@ async fn load_language(lang: String) -> CommandResult<HashMap<String, String>> {
     Ok(map)
 }
 
+fn restore_logo(ls: LogoSwap) {
+    let original = ls.img_dir.join("unity-dexlabs.png");
+    if let Err(e) = std::fs::rename(&original, &ls.localized) {
+        warn!("Failed to restore localized logo: {}", e);
+    }
+    if let Err(e) = std::fs::rename(&ls.backup, &original) {
+        warn!("Failed to restore original logo: {}", e);
+    }
+}
+
 #[tauri::command]
 async fn do_launch(app_handle: tauri::AppHandle) -> CommandResult<i32> {
     debug!("do_launch");
@@ -147,6 +158,7 @@ async fn do_launch(app_handle: tauri::AppHandle) -> CommandResult<i32> {
     let mut state = state.lock().await;
     let launch_behavior = state.config.launcher.launch_behavior;
     let mut cmd = state.launch_cmd.take().ok_or(ERR_NO_LAUNCH_PREPARED)?;
+    let logo_swap = state.logo_swap.take();
     let cmd_str = util::get_launch_cmd_dbg_str(&cmd, false);
     drop(state);
 
@@ -154,10 +166,23 @@ async fn do_launch(app_handle: tauri::AppHandle) -> CommandResult<i32> {
         .spawn()
         .map_err(|e| format!("{} (launch command was: {})", e, cmd_str))?;
     if launch_behavior == LaunchBehavior::Quit {
+        if let Some(ls) = logo_swap {
+            std::thread::spawn(move || {
+                let _ = proc.wait();
+                restore_logo(ls);
+            });
+        } else {
+            std::thread::spawn(move || {
+                let _ = proc.wait();
+            });
+        }
         app_handle.exit(0);
         return Ok(0);
     }
     let exit_code = proc.wait().map_err(|e| e.to_string())?;
+    if let Some(ls) = logo_swap {
+        restore_logo(ls);
+    }
     Ok(exit_code.code().unwrap_or(0))
 }
 
@@ -417,6 +442,25 @@ async fn prep_launch(
 
         let state = app_handle.state::<Mutex<AppState>>();
         let mut state = state.lock().await;
+
+        let img_dir = working_dir.join("assets").join("img");
+        let localized = img_dir.join(format!("unity-dexlabs-{}.png", state.config.launcher.language));
+        let original = img_dir.join("unity-dexlabs.png");
+        let backup = img_dir.join("unity-dexlabs.png.bak");
+        if localized.exists() && state.logo_swap.is_none() {
+            if std::fs::rename(&original, &backup).is_ok()
+                && std::fs::rename(&localized, &original).is_ok()
+            {
+                state.logo_swap = Some(LogoSwap {
+                    img_dir: img_dir.clone(),
+                    backup,
+                    localized,
+                });
+            } else {
+                let _ = std::fs::rename(&backup, &original);
+            }
+        }
+
         let server = state
             .servers
             .get_entry(server_uuid)

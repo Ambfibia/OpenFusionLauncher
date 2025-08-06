@@ -27,6 +27,13 @@ pub fn get_app_statics() -> &'static AppStatics {
 }
 
 #[derive(Debug)]
+pub struct LogoSwap {
+    pub img_dir: PathBuf,
+    pub backup: PathBuf,
+    pub localized: PathBuf,
+}
+
+#[derive(Debug)]
 pub struct AppStatics {
     version: String,
     pub app_data_dir: PathBuf,
@@ -82,6 +89,7 @@ pub struct AppState {
     pub temp_tokens: HashMap<Uuid, String>,
     pub write_config: bool,
     pub launch_cmd: Option<Command>,
+    pub logo_swap: Option<LogoSwap>,
 }
 impl AppState {
     pub fn load(app_handle: tauri::AppHandle) -> Self {
@@ -118,6 +126,7 @@ impl AppState {
             temp_tokens: HashMap::new(),
             write_config,
             launch_cmd: None,
+            logo_swap: None,
         }
     }
 
