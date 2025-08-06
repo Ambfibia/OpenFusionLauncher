@@ -30,7 +30,6 @@ pub fn get_app_statics() -> &'static AppStatics {
 pub struct LogoSwap {
     pub img_dir: PathBuf,
     pub backup: PathBuf,
-    pub localized: PathBuf,
 }
 
 #[derive(Debug)]

@@ -143,11 +143,10 @@ async fn load_language(lang: String) -> CommandResult<HashMap<String, String>> {
 
 fn restore_logo(ls: LogoSwap) {
     let original = ls.img_dir.join("unity-dexlabs.png");
-    if let Err(e) = std::fs::rename(&original, &ls.localized) {
-        warn!("Failed to restore localized logo: {}", e);
-    }
-    if let Err(e) = std::fs::rename(&ls.backup, &original) {
+    if let Err(e) = std::fs::copy(&ls.backup, &original) {
         warn!("Failed to restore original logo: {}", e);
+    } else if let Err(e) = std::fs::remove_file(&ls.backup) {
+        warn!("Failed to remove logo backup: {}", e);
     }
 }
 
@@ -444,20 +443,22 @@ async fn prep_launch(
         let mut state = state.lock().await;
 
         let img_dir = working_dir.join("assets").join("img");
-        let localized = img_dir.join(format!("unity-dexlabs-{}.png", state.config.launcher.language));
+        let localized = img_dir.join(format!(
+            "unity-dexlabs-{}.png",
+            state.config.launcher.language
+        ));
         let original = img_dir.join("unity-dexlabs.png");
         let backup = img_dir.join("unity-dexlabs.png.bak");
         if localized.exists() && state.logo_swap.is_none() {
-            if std::fs::rename(&original, &backup).is_ok()
-                && std::fs::rename(&localized, &original).is_ok()
+            if std::fs::copy(&original, &backup).is_ok()
+                && std::fs::copy(&localized, &original).is_ok()
             {
                 state.logo_swap = Some(LogoSwap {
                     img_dir: img_dir.clone(),
                     backup,
-                    localized,
                 });
             } else {
-                let _ = std::fs::rename(&backup, &original);
+                let _ = std::fs::remove_file(&backup);
             }
         }
 
