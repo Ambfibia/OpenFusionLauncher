@@ -324,7 +324,7 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
             if (ctx.showConfirmationModal) {
               ctx.showConfirmationModal(
                 t("dialog.deleteAllOffline"),
-                t("common.delete"),
+                t("common.deleteAll"),
                 "danger",
                 deleteAllOfflineCaches,
               );
@@ -339,8 +339,8 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
           onClick={() => {
             if (ctx.showConfirmationModal) {
               ctx.showConfirmationModal(
-                t("dialog.confirmClear"),
-                t("common.clear"),
+                t("dialog.confirmClearAll"),
+                t("common.clearAll"),
                 "danger",
                 clearAllGameCaches,
               );
@@ -356,10 +356,10 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
             const version = versions!.find((v) => v.uuid == uuid)!;
             const label = version.name ?? "version " + version.uuid;
             ctx.showConfirmationModal(
-              t("dialog.confirmClear2", {
+              t("dialog.confirmClear", {
                 name: label,
               }),
-              t("common.clear2"),
+              t("common.clear"),
               "danger",
               clearGameCache.bind(null, uuid),
             );
@@ -375,7 +375,7 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
               t("dialog.deleteOffline", {
                 name: label,
               }),
-              t("common.delete2"),
+              t("common.delete"),
               "danger",
               deleteOfflineCache.bind(null, uuid),
             );

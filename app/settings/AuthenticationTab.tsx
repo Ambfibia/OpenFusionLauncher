@@ -23,13 +23,13 @@ export default function AuthenticationTab({ active }: { active: boolean }) {
     try {
       await invoke("do_logout");
       if (ctx.alertSuccess) {
-        ctx.alertSuccess(t("server.loggedOutGame"));
+        ctx.alertSuccess(t("server.loggedOutGameAll"));
       }
       refresh();
     } catch (e) {
       if (ctx.alertError) {
         ctx.alertError(
-          t("server.failedLogOut", { error: String(e) }),
+        t("server.failedLogoutAll", { error: String(e) }),
         );
       }
     }
@@ -64,14 +64,14 @@ export default function AuthenticationTab({ active }: { active: boolean }) {
         {/* <div className="p-2 ms-auto"></div> */}
         <Button
           icon="sign-out-alt"
-          text="auth.logOut"
-          tooltip="server.logOutGame"
+          text="auth.logoutAll"
+          tooltip="server.logoutGameAll"
           variant="danger"
           onClick={() => {
             if (ctx.showConfirmationModal) {
               ctx.showConfirmationModal(
                 t("dialog.confirmLogout"),
-                t("auth.logOut"),
+                t("auth.logoutAll"),
                 "danger",
                 logOutAll,
               );
