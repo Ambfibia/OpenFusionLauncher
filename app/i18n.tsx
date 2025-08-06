@@ -168,21 +168,26 @@ export function useLanguage() {
   return useContext(LangCtx);
 }
 
+function formatTranslation(
+  map: Record<string, string>,
+  key: string,
+  params?: Record<string, string | number>,
+): string {
+  let str = map[key] ?? localeCache["en"]?.[key] ?? key;
+  if (params) {
+    for (const [placeholder, value] of Object.entries(params)) {
+      str = str.replaceAll(`{${placeholder}}`, String(value));
+    }
+  }
+  return str;
+}
+
 export function useT() {
   const { translations } = useLanguage();
   return (
     key: string,
     params?: Record<string, string | number>,
-  ): string => {
-    let str =
-      translations[key] ?? localeCache["en"]?.[key] ?? key;
-    if (params) {
-      for (const [placeholder, value] of Object.entries(params)) {
-        str = str.replaceAll(`{${placeholder}}`, String(value));
-      }
-    }
-    return str;
-  };
+  ): string => formatTranslation(translations, key, params);
 }
 
 export async function tForLang(
@@ -199,11 +204,5 @@ export async function tForLang(
       localeCache[lang] = localeCache["en"] ?? {};
     }
   }
-  let str = localeCache[lang]?.[key] ?? localeCache["en"]?.[key] ?? key;
-  if (params) {
-    for (const [placeholder, value] of Object.entries(params)) {
-      str = str.replaceAll(`{${placeholder}}`, String(value));
-    }
-  }
-  return str;
+  return formatTranslation(localeCache[lang]!, key, params);
 }
