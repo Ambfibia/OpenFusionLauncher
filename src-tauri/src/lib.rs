@@ -135,7 +135,10 @@ async fn get_languages() -> CommandResult<Vec<String>> {
 #[tauri::command]
 async fn load_language(lang: String) -> CommandResult<HashMap<String, String>> {
     let file_path = get_locales_dir().join(format!("{}.json", lang));
-    let contents = std::fs::read_to_string(file_path).map_err(|e| e.to_string())?;
+    let contents = tauri::async_runtime::spawn_blocking(move || std::fs::read_to_string(file_path))
+        .await
+        .map_err(|e| e.to_string())?
+        .map_err(|e| e.to_string())?;
     let map = serde_json::from_str(&contents).map_err(|e| e.to_string())?;
     Ok(map)
 }
