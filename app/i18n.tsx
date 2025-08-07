@@ -6,6 +6,7 @@ import {
   useEffect,
   useLayoutEffect,
   useRef,
+  useCallback,
 } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { once, type UnlistenFn } from "@tauri-apps/api/event";
@@ -51,7 +52,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   const latestRequest = useRef<Language>(lang);
 
-  const setLang = (newLang: Language) => {
+  const setLang = useCallback((newLang: Language) => {
     latestRequest.current = newLang;
     setLangState(newLang);
     fetchLocale("en").catch((err) => {
@@ -82,7 +83,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         }
       }
     })();
-  };
+  }, [lang]);
 
   useEffect(() => {
     let unlisten: UnlistenFn | undefined;
