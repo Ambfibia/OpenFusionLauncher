@@ -86,63 +86,77 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     let unlisten: UnlistenFn | undefined;
+    let initPromise: Promise<void> | null = null;
     const init = async () => {
-      try {
-        const langs = (await invoke<string[]>("get_languages")).sort();
-        setAvailableLanguages(langs);
-        const names: Record<string, string> = {};
-        langs.forEach((code) => {
-          const name =
-            new Intl.DisplayNames([code], { type: "language" }).of(code) || code;
-          names[code] = name[0].toLocaleUpperCase() + name.slice(1);
-        });
-        setLanguageNames(names);
-        let chosen = "en";
-        if (typeof window !== "undefined") {
-          const stored = window.localStorage.getItem("lang");
-          if (stored && langs.includes(stored)) {
-            chosen = stored;
-          } else {
-            await invoke("reload_state");
-            const cfg = await invoke<{ launcher: { language: string } }>(
-              "get_config",
-            );
-            if (langs.includes(cfg.launcher.language)) {
-              chosen = cfg.launcher.language;
+      if (initPromise) {
+        return initPromise;
+      }
+      initPromise = (async () => {
+        try {
+          const langs = (await invoke<string[]>("get_languages")).sort();
+          setAvailableLanguages(langs);
+          const names: Record<string, string> = {};
+          langs.forEach((code) => {
+            const name =
+              new Intl.DisplayNames([code], { type: "language" }).of(code) ||
+              code;
+            names[code] = name[0].toLocaleUpperCase() + name.slice(1);
+          });
+          setLanguageNames(names);
+          let chosen = "en";
+          if (typeof window !== "undefined") {
+            const stored = window.localStorage.getItem("lang");
+            if (stored && langs.includes(stored)) {
+              chosen = stored;
+            } else {
+              await invoke("reload_state");
+              const cfg = await invoke<{ launcher: { language: string } }>(
+                "get_config",
+              );
+              if (langs.includes(cfg.launcher.language)) {
+                chosen = cfg.launcher.language;
+              }
             }
           }
-        }
-        try {
-          await fetchLocale("en");
+          try {
+            await fetchLocale("en");
+          } catch (err) {
+            console.error(err);
+            console.warn(
+              "Failed to load English locale; translations may be incomplete.",
+            );
+            localeCache["en"] = {};
+          }
+          let map: Record<string, string>;
+          try {
+            map = await fetchLocale(chosen);
+          } catch (err) {
+            console.error(err);
+            console.warn(
+              `Failed to load locale ${chosen}; falling back to English.`,
+            );
+            chosen = "en";
+            map = localeCache["en"] ?? {};
+          }
+          setTranslations(map);
+          setLangState(chosen);
         } catch (err) {
           console.error(err);
-          console.warn(
-            "Failed to load English locale; translations may be incomplete.",
-          );
-          localeCache["en"] = {};
+          console.warn("Failed to initialize languages.");
         }
-        let map: Record<string, string>;
-        try {
-          map = await fetchLocale(chosen);
-        } catch (err) {
-          console.error(err);
-          console.warn(
-            `Failed to load locale ${chosen}; falling back to English.`,
-          );
-          chosen = "en";
-          map = localeCache["en"] ?? {};
-        }
-        setTranslations(map);
-        setLangState(chosen);
-      } catch (err) {
-        console.error(err);
-        console.warn("Failed to initialize languages.");
-      }
+      })();
+      return initPromise;
     };
-    init();
-    once("tauri://ready", init).then((fn) => {
-      unlisten = fn;
-    });
+    const isTauri =
+      typeof window !== "undefined" &&
+      ("__TAURI_INTERNALS__" in window || "__TAURI__" in window);
+    if (isTauri) {
+      once("tauri://ready", init).then((fn) => {
+        unlisten = fn;
+      });
+    } else {
+      void init();
+    }
     return () => {
       if (unlisten) {
         unlisten();
