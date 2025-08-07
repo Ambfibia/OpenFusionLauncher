@@ -47,42 +47,47 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = useState<Language>("en");
   const [translations, setTranslations] = useState<Record<string, string>>({});
   const [availableLanguages, setAvailableLanguages] = useState<string[]>([]);
-  const [languageNames, setLanguageNames] = useState<Record<string, string>>({});
+  const [languageNames, setLanguageNames] = useState<Record<string, string>>(
+    {},
+  );
 
   const latestRequest = useRef<Language>(lang);
 
-  const setLang = useCallback((newLang: Language) => {
-    latestRequest.current = newLang;
-    setLangState(newLang);
-    fetchLocale("en").catch((err) => {
-      console.error(err);
-      console.warn(
-        "Failed to load English locale; translations may be incomplete.",
-      );
-      localeCache["en"] = localeCache["en"] ?? {};
-    });
-    if (localeCache[newLang]) {
-      setTranslations(localeCache[newLang]!);
-      return;
-    }
-    (async () => {
-      try {
-        const map = await fetchLocale(newLang);
-        if (latestRequest.current === newLang) {
-          setTranslations(map);
-        }
-      } catch (err) {
+  const setLang = useCallback(
+    (newLang: Language) => {
+      latestRequest.current = newLang;
+      setLangState(newLang);
+      fetchLocale("en").catch((err) => {
         console.error(err);
         console.warn(
-          `Failed to load locale ${newLang}; falling back to English.`,
+          "Failed to load English locale; translations may be incomplete.",
         );
-        if (latestRequest.current === newLang) {
-          setTranslations(localeCache["en"] ?? {});
-          setLangState("en");
-        }
+        localeCache["en"] = localeCache["en"] ?? {};
+      });
+      if (localeCache[newLang]) {
+        setTranslations(localeCache[newLang]!);
+        return;
       }
-    })();
-  }, [lang]);
+      (async () => {
+        try {
+          const map = await fetchLocale(newLang);
+          if (latestRequest.current === newLang) {
+            setTranslations(map);
+          }
+        } catch (err) {
+          console.error(err);
+          console.warn(
+            `Failed to load locale ${newLang}; falling back to English.`,
+          );
+          if (latestRequest.current === newLang) {
+            setTranslations(localeCache["en"] ?? {});
+            setLangState("en");
+          }
+        }
+      })();
+    },
+    [lang],
+  );
 
   useEffect(() => {
     let unlisten: UnlistenFn | undefined;
@@ -93,7 +98,8 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         const names: Record<string, string> = {};
         langs.forEach((code) => {
           const name =
-            new Intl.DisplayNames([code], { type: "language" }).of(code) || code;
+            new Intl.DisplayNames([code], { type: "language" }).of(code) ||
+            code;
           names[code] = name[0].toLocaleUpperCase() + name.slice(1);
         });
         setLanguageNames(names);
@@ -184,10 +190,8 @@ function formatTranslation(
 
 export function useT() {
   const { translations } = useLanguage();
-  return (
-    key: string,
-    params?: Record<string, string | number>,
-  ): string => formatTranslation(translations, key, params);
+  return (key: string, params?: Record<string, string | number>): string =>
+    formatTranslation(translations, key, params);
 }
 
 export async function tForLang(
