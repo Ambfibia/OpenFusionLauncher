@@ -4,7 +4,6 @@ import {
   useContext,
   useState,
   useEffect,
-  useLayoutEffect,
   useRef,
   useCallback,
 } from "react";
@@ -151,7 +150,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     document.documentElement.lang = lang;
     window.localStorage.setItem("lang", lang);
   }, [lang]);
