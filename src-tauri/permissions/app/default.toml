@@ -1,0 +1,17 @@
+"$schema" = "schemas/schema.json"
+
+[default]
+description = """
+Default permissions for the app plugin.
+
+#### Granted Permissions
+
+- version
+- name
+- tauri_version
+"""
+permissions = [
+  "allow-version",
+  "allow-name",
+  "allow-tauri-version",
+]
