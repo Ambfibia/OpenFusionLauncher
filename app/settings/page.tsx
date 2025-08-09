@@ -17,6 +17,7 @@ import GameBuildsTab from "@/app/settings/GameBuildsTab";
 import { Tab, Tabs } from "react-bootstrap";
 import LauncherPage from "@/components/LauncherPage";
 import ConfirmationModal from "@/components/ConfirmationModal";
+import type { TranslationKey } from "@/app/translation-key";
 import { getTheme } from "@/app/util";
 import AuthenticationTab from "./AuthenticationTab";
 import LauncherSettingsTab from "./LauncherSettingsTab";
@@ -44,7 +45,8 @@ export default function SettingsPage() {
   // confirmation modal
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState("");
-  const [confirmationConfirmText, setConfirmationConfirmText] = useState("");
+  const [confirmationConfirmText, setConfirmationConfirmText] =
+    useState<TranslationKey>("common.confirm");
   const [confirmationConfirmVariant, setConfirmationConfirmVariant] =
     useState("");
   const [confirmationOnConfirm, setConfirmationOnConfirm] = useState<
@@ -89,7 +91,7 @@ export default function SettingsPage() {
 
   const showConfirmationModal = (
     message: string,
-    confirmText: string,
+    confirmText: TranslationKey,
     confirmVariant: string,
     onConfirm: () => void,
   ) => {

@@ -70,7 +70,7 @@ export default function ForgotPasswordModal({
         />
         <Button
           variant="success"
-          text={t("auth.sendTemporaryPassword")}
+          text="auth.sendTemporaryPassword"
           loading={loading}
           enabled={validateEmail(email, false)}
           onClick={() => onHitSubmit()}

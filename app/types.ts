@@ -1,4 +1,5 @@
 import type { Language } from "./i18n";
+import type { TranslationKey } from "./translation-key";
 
 export type ServerEntry = {
   uuid: string;
@@ -115,7 +116,7 @@ export type SettingsContext = {
   stopLoading?: (id: string) => void;
   showConfirmationModal?: (
     message: string,
-    confirmText: string,
+    confirmText: TranslationKey,
     confirmVariant: string,
     onConfirm: () => void,
   ) => void;

@@ -1,5 +1,6 @@
 "use client";
 import { useT } from "@/app/i18n";
+import type { TranslationKey } from "@/app/translation-key";
 
 export default function Button({
   onClick,
@@ -19,15 +20,15 @@ export default function Button({
   icon?: string;
   iconLeft?: boolean;
   iconStyle?: string;
-  tooltip?: string;
-  text?: string;
+  tooltip?: TranslationKey;
+  text?: TranslationKey;
   loading?: boolean;
   className?: string;
 }) {
   const t = useT();
   const actualVariant = variant ?? "primary";
   const actuallyEnabled = (enabled ?? true) && !loading;
-  const tooltipText = tooltip ? t(tooltip) : text ? t(text.trim()) : undefined;
+  const tooltipText = tooltip ? t(tooltip) : text ? t(text) : undefined;
   const iconStyleClass = iconStyle ? "-" + iconStyle : "";
 
   const iconElement = loading ? (

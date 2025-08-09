@@ -9,6 +9,7 @@ import {
 } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { once, type UnlistenFn } from "@tauri-apps/api/event";
+import type { TranslationKey } from "./translation-key";
 
 export type Language = string;
 
@@ -176,7 +177,7 @@ export function useLanguage() {
 
 function formatTranslation(
   map: Record<string, string>,
-  key: string,
+  key: TranslationKey,
   params?: Record<string, string | number>,
 ): string {
   let str = map[key] ?? localeCache["en"]?.[key] ?? key;
@@ -190,13 +191,15 @@ function formatTranslation(
 
 export function useT() {
   const { translations } = useLanguage();
-  return (key: string, params?: Record<string, string | number>): string =>
-    formatTranslation(translations, key, params);
+  return (
+    key: TranslationKey,
+    params?: Record<string, string | number>,
+  ): string => formatTranslation(translations, key, params);
 }
 
 export async function tForLang(
   lang: Language,
-  key: string,
+  key: TranslationKey,
   params?: Record<string, string | number>,
 ): Promise<string> {
   if (!localeCache[lang]) {

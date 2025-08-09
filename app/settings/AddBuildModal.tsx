@@ -129,7 +129,7 @@ export default function AddBuildModal({
         />
         <Button
           variant="success"
-          text={tab == TAB_MANUAL ? "common.add" : "Import"}
+          text={tab == TAB_MANUAL ? "common.add" : "common.import"}
           enabled={tab == TAB_MANUAL ? validateManual() : validateImport()}
           onClick={() => onSubmit()}
         />

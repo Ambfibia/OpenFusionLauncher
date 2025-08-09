@@ -48,6 +48,7 @@ import {
 import ForgotPasswordModal from "./components/ForgotPasswordModal";
 import { useRouter } from "next/navigation";
 import { useT, useLanguage, type Language } from "@/app/i18n";
+import type { TranslationKey } from "@/app/translation-key";
 
 export default function Home() {
   const loadedRef = useRef(false);
@@ -61,7 +62,9 @@ export default function Home() {
   const [updateAvailable, setUpdateAvailable] = useState<
     UpdateInfo | undefined
   >(undefined);
-  const [taglineKey, setTaglineKey] = useState("server.welcomeOpenfusionSelect");
+  const [taglineKey, setTaglineKey] = useState<TranslationKey>(
+    "server.welcomeOpenfusionSelect",
+  );
   const [topOffset, setTopOffset] = useState<string>("0");
 
   const [initialFetchDone, setInitialFetchDone] = useState(false);

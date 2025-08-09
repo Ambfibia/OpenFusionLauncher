@@ -57,7 +57,7 @@ export default function GameSettingsTab({
     if (ctx.showConfirmationModal) {
       ctx.showConfirmationModal(
         t("dialog.confirmReset2"),
-        t("settings.resetGame"),
+        "settings.resetGame",
         "danger",
         resetSettings,
       );

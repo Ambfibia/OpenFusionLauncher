@@ -1,6 +1,7 @@
 import { Config, ServerEntry } from "@/app/types";
 import get_seed from "@/app/seed";
 import { invoke } from "@tauri-apps/api/core";
+import type { TranslationKey } from "@/app/translation-key";
 
 export function validateUsername(username: string) {
   // From OpenFusion:
@@ -52,7 +53,10 @@ export function getTheme(config: Config) {
   return "dark";
 }
 
-export function variantToLabel(variant: string, t: (key: string) => string) {
+export function variantToLabel(
+  variant: string,
+  t: (key: TranslationKey, params?: Record<string, string | number>) => string,
+) {
   switch (variant) {
     case "success":
       return t("status.success");

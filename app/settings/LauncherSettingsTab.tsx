@@ -63,7 +63,7 @@ export default function LauncherSettingsTab({
     if (ctx.showConfirmationModal) {
       ctx.showConfirmationModal(
         t("dialog.confirmReset"),
-        t("settings.resetLauncher"),
+        "settings.resetLauncher",
         "danger",
         resetSettings,
       );

@@ -2,6 +2,7 @@
 import { Modal } from "react-bootstrap";
 import Button from "./Button";
 import { useT } from "@/app/i18n";
+import type { TranslationKey } from "@/app/translation-key";
 
 export default function ConfirmationModal({
   show,
@@ -14,7 +15,7 @@ export default function ConfirmationModal({
   show: boolean;
   setShow: (show: boolean) => void;
   message: string;
-  confirmText: string;
+  confirmText: TranslationKey;
   confirmVariant: string;
   onConfirm: () => void;
 }) {
