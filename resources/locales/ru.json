@@ -25,6 +25,7 @@
   "build.assetUrl": "URL ресурса",
   "build.assetUrlExample": "https://cdn.example.com/build",
   "build.cannotRemoveDefault": "Нельзя удалить стандартную сборку",
+  "build.confirmRemove": "Вы уверены, что хотите удалить сборку {build}? Она будет автоматически загружена снова, если потребуется серверу.",
   "build.failedAdd": "Не удалось добавить сборку: {error}",
   "build.failedImport": "Не удалось импортировать сборку: {error}",
   "build.failedRemove": "Не удалось удалить сборку: {error}",

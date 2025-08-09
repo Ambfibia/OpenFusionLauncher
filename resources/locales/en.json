@@ -25,6 +25,7 @@
   "build.assetUrl": "Asset URL",
   "build.assetUrlExample": "https://cdn.example.com/build",
   "build.cannotRemoveDefault": "Cannot remove default build",
+  "build.confirmRemove": "Are you sure you want to remove build {build}? It will be automatically fetched again if it is required by a server.",
   "build.failedAdd": "Failed to add build: {error}",
   "build.failedImport": "Failed to import build: {error}",
   "build.failedRemove": "Failed to remove build: {error}",

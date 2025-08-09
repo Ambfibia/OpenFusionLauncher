@@ -25,6 +25,7 @@
   "build.assetUrl": "URL de ressource",
   "build.assetUrlExample": "https://cdn.example.com/build",
   "build.cannotRemoveDefault": "Impossible de supprimer la construction par défaut",
+  "build.confirmRemove": "Êtes-vous sûr de vouloir supprimer la construction {build}? Elle sera automatiquement récupérée si un serveur en a besoin.",
   "build.failedAdd": "Échec de l'ajout de construction: {error}",
   "build.failedImport": "Échec de l'importation de construction: {error}",
   "build.failedRemove": "Échec de la suppression de la construction: {error}",

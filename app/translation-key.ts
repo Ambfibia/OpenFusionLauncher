@@ -27,6 +27,7 @@ export type TranslationKey =
   | 'build.assetUrl'
   | 'build.assetUrlExample'
   | 'build.cannotRemoveDefault'
+  | 'build.confirmRemove'
   | 'build.failedAdd'
   | 'build.failedImport'
   | 'build.failedRemove'
