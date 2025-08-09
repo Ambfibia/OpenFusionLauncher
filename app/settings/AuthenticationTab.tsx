@@ -69,12 +69,12 @@ export default function AuthenticationTab({ active }: { active: boolean }) {
           variant="danger"
           onClick={() => {
             if (ctx.showConfirmationModal) {
-              ctx.showConfirmationModal(
-                t("dialog.confirmLogout"),
-                t("auth.logoutAll"),
-                "danger",
-                logOutAll,
-              );
+            ctx.showConfirmationModal(
+              t("dialog.confirmLogout"),
+              "auth.logoutAll",
+              "danger",
+              logOutAll,
+            );
             }
           }}
         />

@@ -102,6 +102,7 @@
   "common.implemented": "Не реализовано",
   "common.imported": "Импортировано",
   "common.importing": "Импортирование",
+  "common.import": "Импорт",
   "common.invalidLogFile": "Недопустимый путь к файлу журнала",
   "common.invalidManifest": "Недействительный манифест",
   "common.invalidVersionNumber": "Неверный номер версии",

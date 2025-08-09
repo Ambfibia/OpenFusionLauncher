@@ -5,6 +5,7 @@ import { Alert } from "@/app/types";
 import { getHostnameFromLink, variantToLabel } from "@/app/util";
 import { useT } from "@/app/i18n";
 import Button from "./Button";
+import type { TranslationKey } from "@/app/translation-key";
 
 export default function Toast({ alert }: { alert: Alert }) {
   const [show, setShow] = useState(true);
@@ -30,8 +31,8 @@ export default function Toast({ alert }: { alert: Alert }) {
             onClick={() => open(alert.link!)}
             variant="success"
             icon="arrow-up-right-from-square"
-            text={getHostnameFromLink(alert.link)}
-            tooltip={alert.link}
+            text={getHostnameFromLink(alert.link) as TranslationKey}
+            tooltip={alert.link as TranslationKey}
           />
         )}
       </_Toast.Body>

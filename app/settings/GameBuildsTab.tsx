@@ -309,7 +309,7 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
       >
         <Button
           icon="plus"
-          text={t("build.add")}
+          text="build.add"
           tooltip="build.addNewManifest"
           variant="success"
           onClick={() => setShowAddBuildModal(true)}
@@ -317,14 +317,14 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
         <div className="p-2 ms-auto"></div>
         <Button
           icon="trash"
-          text={t("common.deleteOffline")}
+          text="common.deleteOffline"
           tooltip="cache.deleteOfflineCaches"
           variant="danger"
           onClick={() => {
             if (ctx.showConfirmationModal) {
               ctx.showConfirmationModal(
                 t("dialog.deleteAllOffline"),
-                t("common.deleteAll"),
+                "common.deleteAll",
                 "danger",
                 deleteAllOfflineCaches,
               );
@@ -333,14 +333,14 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
         />
         <Button
           icon="trash"
-          text={t("common.clearGame")}
+          text="common.clearGame"
           tooltip="cache.clearGameCaches"
           variant="danger"
           onClick={() => {
             if (ctx.showConfirmationModal) {
               ctx.showConfirmationModal(
                 t("dialog.confirmClearAll"),
-                t("common.clearAll"),
+                "common.clearAll",
                 "danger",
                 clearAllGameCaches,
               );
@@ -359,7 +359,7 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
               t("dialog.confirmClear", {
                 name: label,
               }),
-              t("common.clear"),
+              "common.clear",
               "danger",
               clearGameCache.bind(null, uuid),
             );
@@ -375,7 +375,7 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
               t("dialog.deleteOffline", {
                 name: label,
               }),
-              t("common.delete"),
+              "common.delete",
               "danger",
               deleteOfflineCache.bind(null, uuid),
             );

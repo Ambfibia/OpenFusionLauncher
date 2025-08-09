@@ -102,6 +102,7 @@
   "common.implemented": "Non implémenté",
   "common.imported": "Importé",
   "common.importing": "Importation",
+  "common.import": "Importer",
   "common.invalidLogFile": "Chemin de fichier journal non valide",
   "common.invalidManifest": "Manifeste non valide",
   "common.invalidVersionNumber": "Numéro de version non valide",
