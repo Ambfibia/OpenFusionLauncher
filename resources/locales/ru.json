@@ -59,7 +59,7 @@
   "cache.gamePath": "Путь кэша игры",
   "cache.offline": "Офлайн-кэш",
   "cache.offlineDeletedSuccessfully": "Офлайн-кэш для {name} успешно удален",
-  "cache.offlineDeletedSuccessfully2": "Офлайн-кэш успешно удален",
+  "cache.offlineDeletedSuccessfully2": "Офлайн-кэш успешно удалён",
   "cache.offlinePath": "Путь офлайн-кэша",
   "cache.offlineRepairStarted": "Начато восстановление офлайн-кэша",
   "cache.openGameFolder": "Открыть папку кэша игры",
