@@ -38,7 +38,11 @@ jobs:
 
   build-linux:
     needs: build-ffrunner
-    runs-on: ubuntu-24.04
+    # This runner image should stay the same, otherwise there is potential to break compatibility.
+    # See https://v2.tauri.app/distribute/appimage/#limitations
+    runs-on: ubuntu-22.04 
+    env:
+      TAURI_BUNDLER_NEW_APPIMAGE_FORMAT: true
     steps:
     - uses: actions/setup-node@v4
       with:
@@ -62,11 +66,11 @@ jobs:
       uses: actions/cache@v4
       with:
         path: /home/runner/.cargo
-        key: tauri-cli-Linux
+        key: tauri-cli-experimental-Linux
 
     - name: Install Tauri CLI
       if: steps.cache-tauri.outputs.cache-hit != 'true'
-      run: cargo install tauri-cli --version "^2.0.0" --locked
+      run: cargo install tauri-cli --git https://github.com/tauri-apps/tauri --rev f0511be705661dba2e505d7a86f513f5b4dbe240
 
     - uses: actions/checkout@v4
 
@@ -90,18 +94,73 @@ jobs:
     #     key: cargo-deps-Linux
 
     - name: Build
-      run: cargo tauri build --no-bundle
+      run: cargo tauri build --bundles appimage
 
     - name: Package
       run: |
         cd src-tauri/target/release
         mkdir linux-standalone
-        mv -t linux-standalone openfusionlauncher ffrunner.exe d3d9_vulkan.dll assets defaults loader player mono
+        mkdir linux-appimage
+        cp -r -t linux-standalone openfusionlauncher ffrunner.exe d3d9_vulkan.dll assets defaults loader player mono
+        cp -r -t linux-appimage bundle/appimage/OpenFusionLauncher_*.AppImage
 
     - uses: actions/upload-artifact@v4.6.0
       with:
         name: openfusionlauncher-linux-standalone
         path: src-tauri/target/release/linux-standalone/
+
+    - uses: actions/upload-artifact@v4.6.0
+      with:
+        name: openfusionlauncher-linux-appimage
+        path: src-tauri/target/release/linux-appimage/
+
+  build-macos:
+    needs: build-ffrunner
+    runs-on: macos-latest
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Restore Tauri CLI
+        id: cache-tauri
+        uses: actions/cache@v4
+        with:
+          path: /Users/runner/.cargo
+          key: tauri-cli-MacOS
+      
+      - name: Install Tauri CLI
+        if: steps.cache-tauri.outputs.cache-hit != 'true'
+        run: cargo install tauri-cli --version "^2.0.0" --locked
+
+      - uses: actions/checkout@v4
+
+      - name: Download ffrunner
+        uses: actions/download-artifact@v4.1.8
+        with:
+          name: ffrunner-mingw
+          path: resources/ffrunner
+
+      - name: Install NPM packages
+        run: npm install
+
+      - name: Ensure targets for Universal binary are present
+        run: rustup target add aarch64-apple-darwin x86_64-apple-darwin
+
+      - name: Build
+        run: cargo tauri build --bundles app dmg --target universal-apple-darwin
+
+      - name: Package
+        run: |
+          cd src-tauri/target/universal-apple-darwin/release/
+          mkdir macos-universal
+          mv bundle/macos/OpenFusionLauncher.app/ macos-universal
+          mv bundle/dmg/OpenFusionLauncher_*.dmg macos-universal
+
+      - uses: actions/upload-artifact@v4.6.0
+        with:
+          name: openfusionlauncher-macos-universal
+          path: src-tauri/target/universal-apple-darwin/release/macos-universal/
 
   build-windows:
     needs: build-ffrunner

@@ -31,10 +31,13 @@ type Error = Box<dyn std::error::Error>;
 type Result<T> = std::result::Result<T, Error>;
 type CommandResult<T> = std::result::Result<T, String>;
 
+static LOGIN_COOKIE_REGEX: LazyLock<Regex> = LazyLock::new(|| Regex::new(r#"-t (\S+)"#).unwrap());
+
 static VERSION_NUMBER_REGEX: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"^v?\d+(?:\.\d)*$").unwrap());
 const UPDATE_CHECK_URL: &str =
     "https://api.github.com/repos/OpenFusionProject/OpenFusionLauncher/releases/latest";
+const DOWNLOAD_PAGE_URL: &str = "https://openfusion.dev/download/";
 
 #[derive(Debug, Deserialize)]
 struct UpdateCheckResponse {
@@ -168,9 +171,13 @@ async fn do_launch(app_handle: tauri::AppHandle) -> CommandResult<i32> {
     let cmd_str = util::get_launch_cmd_dbg_str(&cmd, false);
     drop(state);
 
-    let mut proc = cmd
-        .spawn()
-        .map_err(|e| format!("{} (launch command was: {})", e, cmd_str))?;
+    let mut proc = cmd.spawn().map_err(|e| {
+        // we want to censor the login cookie if present
+        let censored_cmd_str = LOGIN_COOKIE_REGEX
+            .replace_all(&cmd_str, "-t ***")
+            .to_string();
+        format!("{} (launch command was: {})", e, censored_cmd_str)
+    })?;
     if launch_behavior == LaunchBehavior::Quit {
         app_handle.exit(0);
         return Ok(0);
@@ -512,6 +519,7 @@ async fn prep_launch(
                 }
             }
         }
+
         let _ = std::fs::create_dir_all(&cache_dir);
         cmd.env("UNITY_FF_CACHE_DIR", cache_dir);
 
@@ -644,6 +652,41 @@ async fn prep_launch(
 
         if let Some(launch_fmt) = &state.config.game.launch_command {
             cmd = util::gen_launch_command(cmd, launch_fmt);
+        }
+
+        #[cfg(not(target_os = "windows"))]
+        {
+            // The compat data dir is, in order of priority:
+            // 1. WINEPREFIX env var in the launch command, if set
+            // 2. WINEPREFIX env var in the current environment, if set
+            // 3. The default compat data dir in the app cache
+            let mut compat_data_dir = None;
+            for env_var in cmd.get_envs() {
+                if let (key, Some(value)) = env_var {
+                    if key == "WINEPREFIX" {
+                        compat_data_dir = Some(value.into());
+                    }
+                }
+            }
+
+            if compat_data_dir.is_none() && env::var("WINEPREFIX").is_ok_and(|val| !val.is_empty())
+            {
+                compat_data_dir = Some(env::var("WINEPREFIX").unwrap().into());
+            }
+
+            if compat_data_dir.is_none() {
+                compat_data_dir = Some(app_statics.compat_data_dir.clone());
+            }
+
+            let compat_data_dir = compat_data_dir.unwrap();
+            if !compat_data_dir.exists() {
+                std::fs::create_dir_all(&compat_data_dir)?;
+            }
+
+            if !util::is_device_steam_deck() {
+                // we want to let Proton set this itself on Deck
+                cmd.env("WINEPREFIX", compat_data_dir.to_string_lossy().to_string());
+            }
         }
 
         util::log_command(&cmd);
@@ -1257,7 +1300,7 @@ async fn check_for_update() -> CommandResult<Option<UpdateInfo>> {
         }
         Ok(Some(UpdateInfo {
             version: resp.tag_name,
-            url: resp.html_url,
+            url: String::from(DOWNLOAD_PAGE_URL),
         }))
     };
     internal.await.map_err(|e: Error| e.to_string())
