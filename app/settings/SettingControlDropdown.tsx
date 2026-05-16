@@ -25,7 +25,7 @@ export default function SettingControlDropdown({
   const getOptionValueFromKey = (key: string) => {
     const option = options.find((option) => option.key === key);
     if (!option) {
-      console.warn("Invalid option key: " + key);
+      console.warn("Недопустимый ключ опции: " + key);
       return undefined;
     }
     const optionVal = option.value ?? option.key;
@@ -65,7 +65,7 @@ export default function SettingControlDropdown({
       {options.map((option) => (
         <option key={option.key} value={option.key}>
           {(option.label ?? option.key) +
-            (option.key === defaultKey ? " (default)" : "")}
+            (option.key === defaultKey ? " (по умолчанию)" : "")}
           {option.description && <p>: {option.description}</p>}
         </option>
       ))}

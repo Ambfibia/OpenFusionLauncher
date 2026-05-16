@@ -81,9 +81,9 @@ export default function SettingControlFpsFix({
     : getFpsLimitForValue(value) !== getFpsLimitForValue(oldValue);
 
   const EXPLANATION = [
-    "FusionFall's framerate is normally capped around 64 FPS.",
-    "This setting activates a patch to remove this limit.",
-    "You can restore the original behavior by turning it off or tweak it to your own soft cap.",
+    "Частота кадров FusionFall обычно ограничена примерно 64 FPS.",
+    "Эта настройка включает патч, который снимает ограничение.",
+    "Можно вернуть исходное поведение или указать собственный мягкий предел.",
   ];
 
   return (
@@ -92,7 +92,7 @@ export default function SettingControlFpsFix({
       <Form.Check
         type="radio"
         id={`${id}-on`}
-        label="On (experimental, default)"
+        label="Включено (экспериментально, по умолчанию)"
         checked={selected === KEY_FIX_ON}
         className={selected === KEY_FIX_ON && keyModified ? "text-success" : ""}
         onChange={() => {
@@ -104,7 +104,7 @@ export default function SettingControlFpsFix({
         <Form.Check
           type="radio"
           id={`${id}-on-with-limiter`}
-          label="On with limiter"
+          label="Включено с ограничителем"
           checked={selected === KEY_FIX_ON_WITH_LIMITER}
           className={
             selected === KEY_FIX_ON_WITH_LIMITER && keyModified
@@ -133,7 +133,7 @@ export default function SettingControlFpsFix({
       <Form.Check
         type="radio"
         id={`${id}-off`}
-        label="Off"
+        label="Выключено"
         checked={selected === KEY_FIX_OFF}
         className={
           selected === KEY_FIX_OFF && keyModified ? "text-success" : ""

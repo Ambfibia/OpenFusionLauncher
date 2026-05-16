@@ -50,7 +50,7 @@ import ConfirmationModal from "./components/ConfirmationModal";
 import { useRouter } from "next/navigation";
 
 const DEFAULT_TAGLINE =
-  "Welcome to OpenFusion.\nSelect a server from the list below to get started.";
+  "Добро пожаловать в OpenFusion.\nВыберите сервер из списка ниже, чтобы начать.";
 
 export default function Home() {
   const loadedRef = useRef(false);
@@ -158,7 +158,7 @@ export default function Home() {
     onConfirm: () => void,
     title?: string
   ) => {
-    setConfirmationTitle(title || "Confirm");
+    setConfirmationTitle(title || "Подтвердить");
     setConfirmationMessage(message);
     setConfirmationConfirmText(confirmText);
     setConfirmationConfirmVariant(confirmVariant);
@@ -196,10 +196,10 @@ export default function Home() {
       );
       if (updateInfo) {
         setUpdateAvailable(updateInfo);
-        alertInfo("Update available: " + updateInfo.version, updateInfo.url);
+        alertInfo("Доступно обновление: " + updateInfo.version, updateInfo.url);
       }
     } catch (e: unknown) {
-      console.warn("Failed to check for updates (" + e + ")");
+      console.warn("Не удалось проверить обновления (" + e + ")");
     }
   };
 
@@ -211,38 +211,30 @@ export default function Home() {
     }
     getDebugMode().then((debug) => {
       if (debug) {
-        alertWarning("Debug mode enabled");
+        alertWarning("Режим отладки включен");
       }
     });
     setInitialFetchDone(true);
   };
 
   const importFromOpenFusionClient = async () => {
-    startLoading("import", "Importing");
+    startLoading("import", "Импорт");
     try {
       const counts: ImportCounts = await invoke("import_from_openfusionclient");
       if (counts.server_count == 0 && counts.version_count == 0) {
-        console.log("Nothing to import");
+        console.log("Нечего импортировать");
       } else {
-        let text = "Imported ";
+        const parts: string[] = [];
         if (counts.version_count > 0) {
-          text +=
-            counts.version_count +
-            (counts.version_count > 1 ? " versions " : " version ");
-          if (counts.server_count > 0) {
-            text += "and ";
-          }
+          parts.push("версий: " + counts.version_count);
         }
         if (counts.server_count > 0) {
-          text +=
-            counts.server_count +
-            (counts.server_count > 1 ? " servers " : " server ");
+          parts.push("серверов: " + counts.server_count);
         }
-        text += "from OpenFusionClient";
-        alertSuccess(text);
+        alertSuccess("Импортировано из OpenFusionClient: " + parts.join(", "));
       }
     } catch (e: unknown) {
-      alertError("Failed to import from OpenFusionClient (" + e + ")");
+      alertError("Не удалось импортировать из OpenFusionClient (" + e + ")");
     }
     stopLoading("import");
   };
@@ -259,7 +251,7 @@ export default function Home() {
     try {
       await updateServer(details, serverUuid, false);
     } catch (e: unknown) {
-      console.warn("Failed to set version for server: " + e);
+      console.warn("Не удалось выбрать версию для сервера: " + e);
     }
     onConnect(serverUuid, versionUuid);
   };
@@ -296,7 +288,7 @@ export default function Home() {
       await getCurrentWindow().setFocus();
     } catch (e: unknown) {
       await getCurrentWindow().show();
-      alertError("Error during init (" + e + ")");
+      alertError("Ошибка при инициализации (" + e + ")");
     }
   };
 
@@ -321,14 +313,14 @@ export default function Home() {
         await getCurrentWindow().hide();
       }
       const exitCode: number = await invoke("do_launch");
-      setTagline("Thanks for playing!");
+      setTagline("Спасибо за игру!");
       await getCurrentWindow().show();
       if (exitCode != 0) {
-        console.warn("Game exited with code " + exitCode);
+        console.warn("Игра завершилась с кодом " + exitCode);
       }
     } catch (e: unknown) {
       await getCurrentWindow().show();
-      alertError("Failed to launch (" + e + ")");
+      alertError("Не удалось запустить игру (" + e + ")");
     }
     stopLoading("launch");
   };
@@ -355,7 +347,7 @@ export default function Home() {
         alertInfo(res.resp);
       }
     } catch (e: unknown) {
-      alertError("Failed to register (" + e + ")");
+      alertError("Не удалось зарегистрироваться (" + e + ")");
     }
     stopLoading("do_register");
   };
@@ -375,7 +367,7 @@ export default function Home() {
         remember: remember,
       });
     } catch (e: unknown) {
-      alertError("Failed to login (" + e + ")");
+      alertError("Не удалось войти (" + e + ")");
       return;
     } finally {
       stopLoading("do_login");
@@ -386,7 +378,7 @@ export default function Home() {
   const onConnect = async (serverUuid: string, versionUuid?: string) => {
     const server = servers.find((s) => s.uuid == serverUuid);
     if (!server) {
-      alertError("Server not found");
+      alertError("Сервер не найден");
       setConnecting(false);
       return;
     }
@@ -422,7 +414,7 @@ export default function Home() {
         });
       } catch (e: unknown) {
         stopLoading("configure_endpoint");
-        alertError("Failed to get versions: " + e);
+        alertError("Не удалось получить версии: " + e);
         setConnecting(false);
         return;
       }
@@ -440,11 +432,11 @@ export default function Home() {
         }
       }
 
-      alertSuccess("Logged in as " + session.username);
+      alertSuccess("Выполнен вход: " + session.username);
     }
 
     if (!version) {
-      alertError("No version selected");
+      alertError("Версия не выбрана");
       setConnecting(false);
       return;
     }
@@ -462,9 +454,9 @@ export default function Home() {
         return [...servers, newServer];
       });
       setSelectedServer(uuid);
-      alertSuccess("Server added");
+      alertSuccess("Сервер добавлен");
     } catch (e: unknown) {
-      alertError("Failed to add server (" + e + ")");
+      alertError("Не удалось добавить сервер (" + e + ")");
     }
     stopLoading("add_server");
   };
@@ -487,10 +479,10 @@ export default function Home() {
         return newServers;
       });
       if (showSucc ?? true) {
-        alertSuccess("Server updated");
+        alertSuccess("Сервер обновлен");
       }
     } catch (e: unknown) {
-      alertError("Failed to update server (" + e + ")");
+      alertError("Не удалось обновить сервер (" + e + ")");
     }
     stopLoading("update_server");
   };
@@ -515,9 +507,9 @@ export default function Home() {
             break;
           }
         }
-        alertSuccess("Server deleted");
+        alertSuccess("Сервер удален");
       } catch (e: unknown) {
-        alertError("Failed to delete server (" + e + ")");
+        alertError("Не удалось удалить сервер (" + e + ")");
       }
     }
   };
@@ -529,9 +521,9 @@ export default function Home() {
         serverUuid: getSelectedServer()!.uuid,
       });
       setShowForgotPasswordModal(false);
-      alertSuccess("One-time password sent");
+      alertSuccess("Одноразовый пароль отправлен");
     } catch (e: unknown) {
-      alertError("Failed to send one-time password (" + e + ")");
+      alertError("Не удалось отправить одноразовый пароль (" + e + ")");
     }
   };
 
@@ -627,21 +619,21 @@ export default function Home() {
                 onClick={() => setShowAddModal(true)}
                 variant="success"
                 icon="plus"
-                tooltip="Add server"
+                tooltip="Добавить сервер"
               />
               <Button
                 onClick={() => setShowEditModal(true)}
                 enabled={getSelectedServer() ? true : false}
                 variant="primary"
                 icon="edit"
-                tooltip="Edit server"
+                tooltip="Изменить сервер"
               />
               <Button
                 onClick={() => setShowDeleteModal(true)}
                 enabled={getSelectedServer() ? true : false}
                 variant="danger"
                 icon="trash"
-                tooltip="Delete server"
+                tooltip="Удалить сервер"
               />
             </Stack>
           </Col>
@@ -656,7 +648,7 @@ export default function Home() {
                 enabled={getSelectedServer() ? true : false}
                 variant="primary"
                 icon="angle-double-right"
-                text="Connect"
+                text="Подключиться"
               />
             </Stack>
           </Col>
@@ -667,7 +659,7 @@ export default function Home() {
           onClick={() => setShowAboutModal(true)}
           variant="primary"
           icon="info-circle"
-          tooltip="About OpenFusion Launcher"
+          tooltip="О лаунчере OpenFusion"
         />
       </div>
       <div id="config-button-div">
@@ -675,7 +667,7 @@ export default function Home() {
           onClick={() => router.push("/settings")}
           variant="primary"
           icon="cog"
-          tooltip="Settings"
+          tooltip="Настройки"
         />
       </div>
       <EditServerModal

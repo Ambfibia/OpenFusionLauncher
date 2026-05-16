@@ -86,7 +86,7 @@ export default function ManageAccountModal({
   return (
     <Modal show={show} onHide={() => setShow(false)} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Manage Account - {server?.description}</Modal.Title>
+        <Modal.Title>Управление аккаунтом - {server?.description}</Modal.Title>
       </Modal.Header>
       <Modal.Body className="p-0">
         {accountInfo === undefined ? (
@@ -99,24 +99,24 @@ export default function ManageAccountModal({
           </div>
         ) : accountInfo === null ? (
           <div className="p-3 text-center">
-            <span>Could not load account information</span>
+            <span>Не удалось загрузить информацию об аккаунте</span>
           </div>
         ) : (
           <div className="p-3">
-            <span><strong>Username: </strong>{accountInfo.username}</span>
+            <span><strong>Имя пользователя: </strong>{accountInfo.username}</span>
             <br />
-            <span><strong>Current email: </strong>{accountInfo.email ?? "(not set)"}</span>
+            <span><strong>Текущая эл. почта: </strong>{accountInfo.email ?? "(не указана)"}</span>
           </div>
         )}
         <Tabs activeKey={tab} onSelect={(k) => setTab(k || TAB_DEFAULT)} fill>
-          <Tab eventKey={TAB_UPDATE_EMAIL} title="Change Email">
+          <Tab eventKey={TAB_UPDATE_EMAIL} title="Изменить почту">
             <Form className="p-3">
               <Form.Group className="mb-3" controlId="editNewEmail">
                 <Form.Control
                   type="text"
                   value={newEmail}
                   onChange={(e) => setNewEmail(e.target.value)}
-                  placeholder="New Email"
+                  placeholder="Новая эл. почта"
                   isInvalid={newEmail.length > 0 && !validateEmail(newEmail, false)}
                 />
               </Form.Group>
@@ -125,20 +125,20 @@ export default function ManageAccountModal({
                   type="text"
                   value={newEmailConfirm}
                   onChange={(e) => setNewEmailConfirm(e.target.value)}
-                  placeholder="Confirm New Email"
+                  placeholder="Подтвердите новую эл. почту"
                   isInvalid={newEmailConfirm.length > 0 && !validateNewEmail()}
                 />
               </Form.Group>
             </Form>
           </Tab>
-          <Tab eventKey={TAB_UPDATE_PASSWORD} title="Change Password">
+          <Tab eventKey={TAB_UPDATE_PASSWORD} title="Изменить пароль">
             <Form className="p-3">
               <Form.Group className="mb-3" controlId="editNewPassword">
                 <Form.Control
                   type="password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder="New Password"
+                  placeholder="Новый пароль"
                   isInvalid={newPassword.length > 0 && !validatePassword(newPassword)}
                 />
               </Form.Group>
@@ -147,7 +147,7 @@ export default function ManageAccountModal({
                   type="password"
                   value={newPasswordConfirm}
                   onChange={(e) => setNewPasswordConfirm(e.target.value)}
-                  placeholder="Confirm New Password"
+                  placeholder="Подтвердите новый пароль"
                   isInvalid={newPasswordConfirm.length > 0 && !validateNewPassword()}
                 />
               </Form.Group>
@@ -156,7 +156,7 @@ export default function ManageAccountModal({
         </Tabs>
         <div className="text-center mb-3">
           <span>
-            View this server{"'s "}
+            Открыть{" "}
             <span
               role="button"
               className="text-decoration-underline"
@@ -165,7 +165,7 @@ export default function ManageAccountModal({
                 open(url);
               }}
             >
-              privacy policy
+              политику конфиденциальности
             </span>
           </span>
         </div>
@@ -174,11 +174,11 @@ export default function ManageAccountModal({
         <Button
           variant="primary"
           onClick={() => setShow(false)}
-          text="Cancel"
+          text="Отмена"
         />
         <Button
           variant="success"
-          text={tab == TAB_UPDATE_EMAIL ? "Send Verification Email" : "Update Password"}
+          text={tab == TAB_UPDATE_EMAIL ? "Отправить письмо" : "Обновить пароль"}
           loading={working}
           enabled={tab == TAB_UPDATE_EMAIL ? validateNewEmail() : validateNewPassword()}
           onClick={onSubmit}

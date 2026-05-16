@@ -21,12 +21,12 @@ export default function AuthenticationTab({ active }: { active: boolean }) {
     try {
       await invoke("do_logout");
       if (ctx.alertSuccess) {
-        ctx.alertSuccess("Logged out of all game servers");
+        ctx.alertSuccess("Выполнен выход со всех игровых серверов");
       }
       refresh();
     } catch (e) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to log out of all game servers: " + e);
+        ctx.alertError("Не удалось выйти со всех игровых серверов: " + e);
       }
     }
   };
@@ -52,22 +52,22 @@ export default function AuthenticationTab({ active }: { active: boolean }) {
       >
         <Button
           icon="rotate-right"
-          text="Refresh"
-          tooltip="Refresh logins"
+          text="Обновить"
+          tooltip="Обновить входы"
           variant="primary"
           onClick={refresh}
         />
         {/* <div className="p-2 ms-auto"></div> */}
         <Button
           icon="sign-out-alt"
-          text="Log Out All"
-          tooltip="Log out of all game servers"
+          text="Выйти со всех"
+          tooltip="Выйти со всех игровых серверов"
           variant="danger"
           onClick={() => {
             if (ctx.showConfirmationModal) {
               ctx.showConfirmationModal(
-                "Are you sure you want to log out of all game servers?",
-                "Log Out All",
+                "Вы уверены, что хотите выйти со всех игровых серверов?",
+                "Выйти со всех",
                 "danger",
                 logOutAll,
               );

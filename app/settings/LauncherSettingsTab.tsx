@@ -57,8 +57,8 @@ export default function LauncherSettingsTab({
   const showResetConfirmation = () => {
     if (ctx.showConfirmationModal) {
       ctx.showConfirmationModal(
-        "Are you sure you want to reset the launcher settings to their defaults?",
-        "Reset Launcher Settings",
+        "Вы уверены, что хотите сбросить настройки лаунчера к значениям по умолчанию?",
+        "Сбросить настройки лаунчера",
         "danger",
         resetSettings,
       );
@@ -77,7 +77,7 @@ export default function LauncherSettingsTab({
           className="primary my-5 p-3 rounded border border-primary"
         >
           <SettingsHeader
-            text="Launcher Settings"
+            text="Настройки лаунчера"
             working={working}
             canApply={canApply}
             onApply={applySettings}
@@ -107,10 +107,10 @@ export default function LauncherSettingsTab({
               /> */}
               <SettingControlDropdown
                 id="check_for_updates"
-                name="Check for launcher updates on launch"
+                name="Проверять обновления лаунчера при запуске"
                 options={[
-                  { key: "yes", value: true, label: "Yes" },
-                  { key: "no", value: false, label: "No" },
+                  { key: "yes", value: true, label: "Да" },
+                  { key: "no", value: false, label: "Нет" },
                 ]}
                 defaultKey="yes"
                 oldValue={currentSettings.check_for_updates}
@@ -124,7 +124,7 @@ export default function LauncherSettingsTab({
               />
               <SettingControlBrowse
                 id="game_cache_path"
-                name="Game Cache Path"
+                name="Путь к кэшу игры"
                 oldValue={currentSettings.game_cache_path}
                 value={settings.game_cache_path}
                 directory={true}
@@ -137,7 +137,7 @@ export default function LauncherSettingsTab({
               />
               <SettingControlBrowse
                 id="offline_cache_path"
-                name="Offline Cache Path"
+                name="Путь к офлайн-кэшу"
                 oldValue={currentSettings.offline_cache_path}
                 value={settings.offline_cache_path}
                 directory={true}
@@ -150,10 +150,10 @@ export default function LauncherSettingsTab({
               />
               <SettingControlDropdown
                 id="proxy_asset_downloads"
-                name="Proxy asset downloads over HTTPS"
+                name="Загружать игровые ресурсы через HTTPS-прокси"
                 options={[
-                  { key: "yes", value: true, label: "Yes" },
-                  { key: "no", value: false, label: "No" },
+                  { key: "yes", value: true, label: "Да" },
+                  { key: "no", value: false, label: "Нет" },
                 ]}
                 defaultKey="yes"
                 oldValue={currentSettings.proxy_asset_downloads}
@@ -167,10 +167,10 @@ export default function LauncherSettingsTab({
               />
               <SettingControlDropdown
                 id="use_offline_caches"
-                name="Use offline caches when downloaded"
+                name="Использовать загруженные офлайн-кэши"
                 options={[
-                  { key: "yes", value: true, label: "Yes" },
-                  { key: "no", value: false, label: "No" },
+                  { key: "yes", value: true, label: "Да" },
+                  { key: "no", value: false, label: "Нет" },
                 ]}
                 defaultKey="yes"
                 oldValue={currentSettings.use_offline_caches}
@@ -184,10 +184,10 @@ export default function LauncherSettingsTab({
               />
               <SettingControlDropdown
                 id="verify_offline_caches"
-                name="Verify offline caches on launch"
+                name="Проверять офлайн-кэши при запуске"
                 options={[
-                  { key: "yes", value: true, label: "Yes" },
-                  { key: "no", value: false, label: "No" },
+                  { key: "yes", value: true, label: "Да" },
+                  { key: "no", value: false, label: "Нет" },
                 ]}
                 defaultKey="no"
                 oldValue={currentSettings.verify_offline_caches}
@@ -201,10 +201,10 @@ export default function LauncherSettingsTab({
               />
               <SettingControlDropdown
                 id="delete_old_game_caches"
-                name="Delete old game caches on upgrades"
+                name="Удалять старые игровые кэши при обновлении"
                 options={[
-                  { key: "yes", value: true, label: "Yes" },
-                  { key: "no", value: false, label: "No" },
+                  { key: "yes", value: true, label: "Да" },
+                  { key: "no", value: false, label: "Нет" },
                 ]}
                 defaultKey="no"
                 oldValue={currentSettings.delete_old_game_caches}
@@ -218,24 +218,24 @@ export default function LauncherSettingsTab({
               />
               <SettingControlDropdown
                 id="launch_behavior"
-                name="Launch behavior"
+                name="Поведение при запуске игры"
                 options={[
                   {
                     key: "hide",
-                    label: "Hide",
+                    label: "Скрыть",
                     description:
-                      "hide the launcher when the game is launched, show again after game exits",
+                      "скрывать лаунчер при запуске игры и снова показывать после выхода",
                   },
                   {
                     key: "quit",
-                    label: "Quit",
-                    description: "quit the launcher when the game is launched",
+                    label: "Выйти",
+                    description: "закрывать лаунчер при запуске игры",
                   },
                   {
                     key: "stay_open",
-                    label: "Stay Open",
+                    label: "Оставить открытым",
                     description:
-                      "keep the launcher open when the game is launched",
+                      "оставлять лаунчер открытым при запуске игры",
                   },
                 ]}
                 defaultKey="hide"
@@ -253,7 +253,7 @@ export default function LauncherSettingsTab({
           {debug && (
             <>
               <hr className="border-primary" />
-              <h6>Debug</h6>
+              <h6>Отладка</h6>
               <textarea
                 className="w-100"
                 rows={5}

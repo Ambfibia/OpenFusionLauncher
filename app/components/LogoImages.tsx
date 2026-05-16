@@ -41,7 +41,7 @@ export default function BackgroundImages({
         <img
           src={imageUrl}
           className="logo-image"
-          alt={selectedServer.description + " Logo"}
+          alt={"Логотип " + selectedServer.description}
         />
       </div>
     );
@@ -52,13 +52,13 @@ export default function BackgroundImages({
       <NextImage
         id="of-logo-light"
         src={ofLogoLight}
-        alt="OpenFusion Logo"
+        alt="Логотип OpenFusion"
         width={256}
       />
       <NextImage
         id="of-logo-dark"
         src={ofLogoDark}
-        alt="OpenFusion Logo"
+        alt="Логотип OpenFusion"
         width={256}
       />
     </>

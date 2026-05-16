@@ -141,12 +141,12 @@ export default function EditServerModal({
   return (
     <Modal show={show} onHide={() => doHide()} centered={true}>
       <Modal.Header>
-        <Modal.Title>{isAdd ? "Add Server" : "Edit Server"}</Modal.Title>
+        <Modal.Title>{isAdd ? "Добавить сервер" : "Изменить сервер"}</Modal.Title>
       </Modal.Header>
       <Modal.Body className="px-0">
         <Form>
           <Form.Group className="mb-4 px-3" controlId="editServerDescription">
-            <Form.Label>Server Name</Form.Label>
+            <Form.Label>Название сервера</Form.Label>
             <Form.Control
               type="text"
               value={description}
@@ -160,9 +160,9 @@ export default function EditServerModal({
             className="mb-3"
             fill
           >
-            <Tab eventKey={TAB_SIMPLE} title="Simple Server">
+            <Tab eventKey={TAB_SIMPLE} title="Простой сервер">
               <Form.Group className="mb-3 px-3" controlId="editServerIp">
-                <Form.Label>Server Host</Form.Label>
+                <Form.Label>Хост сервера</Form.Label>
                 <Form.Control
                   type="text"
                   value={ip}
@@ -172,7 +172,7 @@ export default function EditServerModal({
                 />
               </Form.Group>
               <Form.Group className="mb-3 px-3" controlId="editServerVersion">
-                <Form.Label>Server Version</Form.Label>
+                <Form.Label>Версия сервера</Form.Label>
                 <Form.Select
                   value={version}
                   onChange={(e) => setVersion(e.target.value)}
@@ -188,9 +188,9 @@ export default function EditServerModal({
                 </Form.Select>
               </Form.Group>
             </Tab>
-            <Tab eventKey={TAB_ENDPOINT} title="Endpoint Server">
+            <Tab eventKey={TAB_ENDPOINT} title="Сервер с API">
               <Form.Group className="mb-3 px-3" controlId="editServerEndpoint">
-                <Form.Label>API Host</Form.Label>
+                <Form.Label>Хост API</Form.Label>
                 <Form.Control
                   type="text"
                   value={endpoint}
@@ -204,7 +204,7 @@ export default function EditServerModal({
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={() => doHide()} variant="primary" text="Cancel" />
+        <Button onClick={() => doHide()} variant="primary" text="Отмена" />
         <Button
           onClick={() => {
             const newServerDetails = makeNewServerDetails();
@@ -212,7 +212,7 @@ export default function EditServerModal({
             doHide();
           }}
           variant="success"
-          text={isAdd ? "Add" : "Save"}
+          text={isAdd ? "Добавить" : "Сохранить"}
           enabled={(() => {
             if (tab == TAB_SIMPLE) {
               return validateAddress(ip) && version != "";

@@ -14,7 +14,7 @@ const findVersion = (versions: VersionEntry[], uuid: string) => {
 const getVersionsForServer = async (server: ServerEntry) => {
   if (!server.endpoint) {
     // Not available for simple servers
-    throw new Error("Server is not an endpoint server");
+    throw new Error("Сервер не является сервером API");
   }
 
   const versions: string[] = await invoke("get_versions_for_server", {
@@ -61,7 +61,7 @@ export default function SelectVersionModal({
         const availableVersions = await getVersionsForServer(server!);
         setAvailable(availableVersions);
       } catch (e: unknown) {
-        console.error("Failed to fetch available versions: " + e);
+        console.error("Не удалось получить доступные версии: " + e);
         setAvailable([]);
       }
     };
@@ -75,11 +75,11 @@ export default function SelectVersionModal({
   return (
     <Modal show={show} onHide={() => doHide()} centered={true}>
       <Modal.Header>
-        <Modal.Title>Select Game Version</Modal.Title>
+        <Modal.Title>Выберите версию игры</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        The server <strong>{server?.description}</strong> supports multiple game
-        versions. Please select a version to use.
+        Сервер <strong>{server?.description}</strong> поддерживает несколько
+        версий игры. Выберите версию для запуска.
         <br />
         {available ? (
           <Form className="mt-2">
@@ -110,14 +110,14 @@ export default function SelectVersionModal({
         )}
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={() => doHide()} variant="primary" text="Cancel" />
+        <Button onClick={() => doHide()} variant="primary" text="Отмена" />
         <Button
           onClick={() => {
             doHide();
             onSelect(selected!);
           }}
           variant="success"
-          text="Select"
+          text="Выбрать"
           enabled={!!selected}
         />
       </Modal.Footer>

@@ -51,7 +51,7 @@ export default function SettingControlBrowse({
         ? []
         : [
             {
-              name: "File",
+              name: "Файл",
               extensions: extensions ?? ["*"],
             },
           ],
@@ -72,7 +72,7 @@ export default function SettingControlBrowse({
           placeholder={placeholder}
           isInvalid={validator ? !validator(text) : false}
         />
-        <Button className="ms-3" text="Browse..." onClick={() => onBrowse()} />
+        <Button className="ms-3" text="Обзор..." onClick={() => onBrowse()} />
       </div>
     </SettingControlBase>
   );

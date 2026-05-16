@@ -55,13 +55,13 @@ export function getTheme(config: Config) {
 export function variantToLabel(variant: string) {
   switch (variant) {
     case "success":
-      return "Success";
+      return "Успех";
     case "danger":
-      return "Error";
+      return "Ошибка";
     case "warning":
-      return "Warning";
+      return "Предупреждение";
     case "primary":
-      return "Info";
+      return "Информация";
     default:
       return "";
   }

@@ -37,7 +37,7 @@ export default function ConfirmationModal({
         <Button
           variant="primary"
           onClick={() => setShow(false)}
-          text="Cancel"
+          text="Отмена"
         />
         <Button
           variant={confirmVariant}

@@ -67,8 +67,8 @@ export default function GameSettingsTab({
   const showResetConfirmation = () => {
     if (ctx.showConfirmationModal) {
       ctx.showConfirmationModal(
-        "Are you sure you want to reset the game settings to their defaults?",
-        "Reset Game Settings",
+        "Вы уверены, что хотите сбросить настройки игры к значениям по умолчанию?",
+        "Сбросить настройки игры",
         "danger",
         resetSettings,
       );
@@ -101,7 +101,7 @@ export default function GameSettingsTab({
         });
       } catch (e: unknown) {
         if (ctx.alertError) {
-          ctx.alertError("Failed to update launch profile: (" + e + ")");
+          ctx.alertError("Не удалось обновить профиль запуска: (" + e + ")");
         }
       }
     } else {
@@ -147,8 +147,8 @@ export default function GameSettingsTab({
     const selectedProfile = selectedLaunchProfile;
     if (ctx.showConfirmationModal && selectedProfile) {
       ctx.showConfirmationModal(
-        "Are you sure you want to delete the launch profile \"" + selectedProfile.name + "\"?",
-        "Delete Launch Profile",
+        "Вы уверены, что хотите удалить профиль запуска \"" + selectedProfile.name + "\"?",
+        "Удалить профиль запуска",
         "danger",
         async () => deleteProfile(selectedProfile!.uuid),
       );
@@ -167,7 +167,7 @@ export default function GameSettingsTab({
           className="primary my-5 p-3 rounded border border-primary"
         >
           <SettingsHeader
-            text="Game Settings"
+            text="Настройки игры"
             working={working}
             canApply={canApply}
             onApply={applySettings}
@@ -179,11 +179,11 @@ export default function GameSettingsTab({
             <Form>
               <SettingControlDropdown
                 id="graphics_api"
-                name="Graphics API"
+                name="Графический API"
                 options={[
                   { key: "dx9", label: "DirectX 9" },
-                  { key: "vulkan", label: "Vulkan (experimental)" },
-                  { key: "opengl", label: "OpenGL (not recommended)" },
+                  { key: "vulkan", label: "Vulkan (экспериментально)" },
+                  { key: "opengl", label: "OpenGL (не рекомендуется)" },
                 ]}
                 defaultKey="dx9"
                 oldValue={currentSettings.graphics_api}
@@ -194,8 +194,8 @@ export default function GameSettingsTab({
               />
               <SettingControlDropdown
                 id="launch_profile"
-                name="Launch Profile"
-                options={launchProfiles.profiles.map((profile) => ({ key: profile.uuid, label: profile.preset ? profile.name + " (preset)" : profile.name }))}
+                name="Профиль запуска"
+                options={launchProfiles.profiles.map((profile) => ({ key: profile.uuid, label: profile.preset ? profile.name + " (предустановленный)" : profile.name }))}
                 defaultKey={launchProfiles.default_profile ?? ""}
                 oldValue={currentSettings.launch_profile}
                 value={settings.launch_profile}
@@ -206,13 +206,13 @@ export default function GameSettingsTab({
                   })
                 }
               >
-                <Button className="ms-1" icon="plus" tooltip="Add..." variant="success" onClick={() => setShowAddProfile(true)} />
-                <Button className="ms-1" icon="edit" tooltip="Edit..." enabled={selectedLaunchProfile !== undefined} onClick={() => setShowEditProfile(true)} />
-                <Button className="ms-1" icon="trash" tooltip="Delete..." variant="danger" enabled={canModify} onClick={() => showDeleteProfileConfirmation()} />
+                <Button className="ms-1" icon="plus" tooltip="Добавить..." variant="success" onClick={() => setShowAddProfile(true)} />
+                <Button className="ms-1" icon="edit" tooltip="Изменить..." enabled={selectedLaunchProfile !== undefined} onClick={() => setShowEditProfile(true)} />
+                <Button className="ms-1" icon="trash" tooltip="Удалить..." variant="danger" enabled={canModify} onClick={() => showDeleteProfileConfirmation()} />
               </SettingControlDropdown>
               <SettingControlWindowSize
                 id="window_size"
-                name="Window Size"
+                name="Размер окна"
                 modified={
                   settings.window_size?.width !==
                     currentSettings?.window_size?.width ||
@@ -226,7 +226,7 @@ export default function GameSettingsTab({
               />
               <SettingControlFpsFix
                 id="fps_fix"
-                name="FPS Fix"
+                name="Исправление FPS"
                 oldValue={currentSettings.fps_fix}
                 value={settings.fps_fix}
                 onChange={(value) =>
@@ -238,7 +238,7 @@ export default function GameSettingsTab({
           {debug && (
             <>
               <hr className="border-primary" />
-              <h6>Debug</h6>
+              <h6>Отладка</h6>
               <textarea
                 id="settings-json"
                 className="w-100"

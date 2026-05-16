@@ -32,11 +32,11 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
   const ctx = useContext(SettingsCtx);
 
   const clearGameCache = async (uuid: string, name?: string) => {
-    const txt = name ? " for " + name : "";
+    const txt = name ? " для " + name : "";
     try {
       await invoke("delete_cache", { uuid, offline: false });
       if (ctx.alertSuccess) {
-        ctx.alertSuccess("Game cache" + txt + " cleared successfully");
+        ctx.alertSuccess("Игровой кэш" + txt + " очищен");
       }
       setVersionData((prev) => {
         return prev.map((pv) => {
@@ -49,7 +49,7 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
       });
     } catch (e) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to clear game cache" + txt + ": " + e);
+        ctx.alertError("Не удалось очистить игровой кэш" + txt + ": " + e);
       }
     }
   };
@@ -78,7 +78,7 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
       });
     } catch (e) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to kickoff offline cache download: " + e);
+        ctx.alertError("Не удалось запустить загрузку офлайн-кэша: " + e);
       }
     }
   };
@@ -87,21 +87,21 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
     try {
       await invoke("download_cache", { uuid, offline: true, repair: true });
       if (ctx.alertSuccess) {
-        ctx.alertSuccess("Offline cache repair started");
+        ctx.alertSuccess("Восстановление офлайн-кэша запущено");
       }
     } catch (e) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to kickoff offline cache repair: " + e);
+        ctx.alertError("Не удалось запустить восстановление офлайн-кэша: " + e);
       }
     }
   };
 
   const deleteOfflineCache = async (uuid: string, name?: string) => {
-    const txt = name ? " for " + name : "";
+    const txt = name ? " для " + name : "";
     try {
       await invoke("delete_cache", { uuid, offline: true });
       if (ctx.alertSuccess) {
-        ctx.alertSuccess("Offline cache" + txt + " deleted successfully");
+        ctx.alertSuccess("Офлайн-кэш" + txt + " удален");
       }
       setVersionData((prev) => {
         return prev.map((pv) => {
@@ -118,7 +118,7 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
       });
     } catch (e) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to delete offline cache" + txt + ": " + e);
+        ctx.alertError("Не удалось удалить офлайн-кэш" + txt + ": " + e);
       }
     }
   };
@@ -176,12 +176,12 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
       });
       await fetchVersions();
       if (ctx.alertSuccess) {
-        ctx.alertSuccess("Imported build " + newVersionLabel);
+        ctx.alertSuccess("Сборка импортирована: " + newVersionLabel);
       }
       return true;
     } catch (e: unknown) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to import build: " + e);
+        ctx.alertError("Не удалось импортировать сборку: " + e);
       }
     }
     return false;
@@ -195,11 +195,11 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
       setRemoveTarget("");
       setShowRemoveBuildModal(false);
       if (ctx.alertSuccess) {
-        ctx.alertSuccess("Removed build " + name);
+        ctx.alertSuccess("Сборка удалена: " + name);
       }
     } catch (e: unknown) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to remove build: " + e);
+        ctx.alertError("Не удалось удалить сборку: " + e);
       }
     }
   };
@@ -209,11 +209,11 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
       await invoke("add_version_manual", { name, assetUrl });
       await fetchVersions();
       if (ctx.alertSuccess) {
-        ctx.alertSuccess("Added build " + name);
+        ctx.alertSuccess("Сборка добавлена: " + name);
       }
     } catch (e: unknown) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to add build: " + e);
+        ctx.alertError("Не удалось добавить сборку: " + e);
       }
     }
   };
@@ -241,7 +241,7 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
         if (vd.find((v) => v.versionUuid == version.uuid)) {
           continue;
         }
-        console.log("Validating cache for " + (version.name ?? version.uuid));
+        console.log("Проверка кэша для " + (version.name ?? version.uuid));
         invoke("validate_cache", {
           uuid: version.uuid,
           offline: false,
@@ -275,22 +275,22 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
       >
         <Button
           icon="plus"
-          text="Add Build"
-          tooltip="Add a new build from a manifest or asset URL"
+          text="Добавить сборку"
+          tooltip="Добавить новую сборку из манифеста или URL ресурсов"
           variant="success"
           onClick={() => setShowAddBuildModal(true)}
         />
         <div className="p-2 ms-auto"></div>
         <Button
           icon="trash"
-          text="Delete All Offline"
-          tooltip="Delete all offline caches"
+          text="Удалить офлайн-кэши"
+          tooltip="Удалить все офлайн-кэши"
           variant="danger"
           onClick={() => {
             if (ctx.showConfirmationModal) {
               ctx.showConfirmationModal(
-                "Are you sure you want to delete all offline caches?",
-                "Delete All",
+                "Вы уверены, что хотите удалить все офлайн-кэши?",
+                "Удалить все",
                 "danger",
                 deleteAllOfflineCaches,
               );
@@ -299,14 +299,14 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
         />
         <Button
           icon="trash"
-          text="Clear All Game"
-          tooltip="Clear all game caches"
+          text="Очистить кэш игры"
+          tooltip="Очистить все игровые кэши"
           variant="danger"
           onClick={() => {
             if (ctx.showConfirmationModal) {
               ctx.showConfirmationModal(
-                "Are you sure you want to clear all game caches?",
-                "Clear All",
+                "Вы уверены, что хотите очистить все игровые кэши?",
+                "Очистить все",
                 "danger",
                 clearAllGameCaches,
               );
@@ -320,12 +320,12 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
         clearGameCache={(uuid) => {
           if (ctx.showConfirmationModal) {
             const version = versions!.find((v) => v.uuid == uuid)!;
-            const label = version.name ?? "version " + version.uuid;
+            const label = version.name ?? "версия " + version.uuid;
             ctx.showConfirmationModal(
-              "Are you sure you want to clear the game cache for " +
+              "Вы уверены, что хотите очистить игровой кэш для " +
                 label +
                 "?",
-              "Clear",
+              "Очистить",
               "danger",
               clearGameCache.bind(null, uuid),
             );
@@ -336,12 +336,12 @@ export default function GameBuildsTab({ active }: { active: boolean }) {
         deleteOfflineCache={(uuid) => {
           if (ctx.showConfirmationModal) {
             const version = versions!.find((v) => v.uuid == uuid)!;
-            const label = version.name ?? "version " + version.uuid;
+            const label = version.name ?? "версия " + version.uuid;
             ctx.showConfirmationModal(
-              "Are you sure you want to delete the offline cache for " +
+              "Вы уверены, что хотите удалить офлайн-кэш для " +
                 label +
                 "?",
-              "Delete",
+              "Удалить",
               "danger",
               deleteOfflineCache.bind(null, uuid),
             );

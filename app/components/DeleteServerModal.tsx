@@ -18,18 +18,18 @@ export default function DeleteServerModal({
   return (
     <Modal show={show} onHide={() => setShow(false)} centered={true}>
       <Modal.Header>
-        <Modal.Title>Are you sure?</Modal.Title>
+        <Modal.Title>Вы уверены?</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        Do you really want to delete {server?.description}?
+        Вы действительно хотите удалить {server?.description}?
         <br />
-        You could always re-add it later.
+        Вы сможете добавить его снова позже.
       </Modal.Body>
       <Modal.Footer>
         <Button
           onClick={() => setShow(false)}
           variant="primary"
-          text="Cancel"
+          text="Отмена"
         />
         <Button
           onClick={() => {
@@ -37,7 +37,7 @@ export default function DeleteServerModal({
             deleteServer(server?.uuid);
           }}
           variant="danger"
-          text="Yes, Delete"
+          text="Да, удалить"
         />
       </Modal.Footer>
     </Modal>

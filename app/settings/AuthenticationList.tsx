@@ -63,13 +63,13 @@ function ListEntry({
     try {
       await invoke("do_logout", { serverUuid: server.uuid });
       if (ctx.alertSuccess) {
-        const txt = "Logged out of " + server.description;
+        const txt = "Выполнен выход с сервера " + server.description;
         ctx.alertSuccess(txt);
       }
       loadSession();
     } catch (e: unknown) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to log out: " + e);
+        ctx.alertError("Не удалось выйти: " + e);
       }
     }
     setButtonLoading(false);
@@ -85,12 +85,12 @@ function ListEntry({
         remember: true,
       });
       if (ctx.alertSuccess) {
-        ctx.alertSuccess("Logged in successfully");
+        ctx.alertSuccess("Вход выполнен");
       }
       loadSession();
     } catch (e: unknown) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to login: " + e);
+        ctx.alertError("Не удалось войти: " + e);
       }
     }
     setButtonLoading(false);
@@ -122,7 +122,7 @@ function ListEntry({
       }
     } catch (e: unknown) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to register: " + e);
+        ctx.alertError("Не удалось зарегистрироваться: " + e);
       }
     }
     setButtonLoading(false);
@@ -133,11 +133,11 @@ function ListEntry({
       await invoke("send_otp", { email, serverUuid: server.uuid });
       setShowForgotPasswordModal(false);
       if (ctx.alertSuccess) {
-        ctx.alertSuccess("One-time password sent");
+        ctx.alertSuccess("Одноразовый пароль отправлен");
       }
     } catch (e: unknown) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to send one-time password (" + e + ")");
+        ctx.alertError("Не удалось отправить одноразовый пароль (" + e + ")");
       }
     }
   };
@@ -146,12 +146,12 @@ function ListEntry({
     try {
       await invoke("update_email", { newEmail, serverUuid: server.uuid, sessionToken: session!.session_token });
       if (ctx.alertSuccess) {
-        ctx.alertSuccess("Verification email sent to " + newEmail);
+        ctx.alertSuccess("Письмо для подтверждения отправлено на " + newEmail);
       }
       setShowManageAccountModal(false);
     } catch (e: unknown) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to send verification email: " + e);
+        ctx.alertError("Не удалось отправить письмо для подтверждения: " + e);
       }
     }
   };
@@ -160,12 +160,12 @@ function ListEntry({
     try {
       await invoke("update_password", { newPassword, serverUuid: server.uuid, sessionToken: session!.session_token });
       if (ctx.alertSuccess) {
-        ctx.alertSuccess("Password updated successfully");
+        ctx.alertSuccess("Пароль обновлен");
       }
       setShowManageAccountModal(false);
     } catch (e: unknown) {
       if (ctx.alertError) {
-        ctx.alertError("Failed to update password: " + e);
+        ctx.alertError("Не удалось обновить пароль: " + e);
       }
     }
   };
@@ -202,6 +202,7 @@ function ListEntry({
                   height={60}
                   className="d-block tt"
                   title={server.description}
+                  alt={"Логотип " + server.description}
                 />
               ) : (
                 <h3 className="mb-0">{server.description}</h3>
@@ -209,7 +210,7 @@ function ListEntry({
               <small className="text-muted">{server.endpoint}</small>
               {offline !== undefined && (
                 <small className={"text-" + (offline! ? "danger" : "success")}>
-                  {" " + (offline! ? "offline" : "online")}
+                  {" " + (offline! ? "офлайн" : "онлайн")}
                 </small>
               )}
             </div>
@@ -221,11 +222,11 @@ function ListEntry({
               ></span>
             ) : offline === true ? null : session === null ? (
               <div className="text-end">
-                <small className="mb-1 d-block text-muted">not logged in</small>
+                <small className="mb-1 d-block text-muted">вход не выполнен</small>
                 <Button
                   loading={buttonLoading}
                   icon="sign-in-alt"
-                  text="Log In"
+                  text="Войти"
                   onClick={logIn}
                   variant="success"
                 />
@@ -233,13 +234,13 @@ function ListEntry({
             ) : (
               <div className="text-end">
                 <span className="mb-1 d-block">
-                  <small className="text-muted">logged in as</small>
+                  <small className="text-muted">выполнен вход:</small>
                   <h4 className="d-inline">{" " + session.username}</h4>
                 </span>
                 <Button
                   loading={buttonLoading}
                   icon="user"
-                  text="Manage Account"
+                  text="Управление аккаунтом"
                   onClick={() => setShowManageAccountModal(true)}
                   variant="primary"
                   className="me-2"
@@ -247,7 +248,7 @@ function ListEntry({
                 <Button
                   loading={buttonLoading}
                   icon="sign-out-alt"
-                  text="Log Out"
+                  text="Выйти"
                   onClick={logOut}
                   variant="danger"
                 />
@@ -307,7 +308,7 @@ export default function AuthenticationList({
             </tr>
           ) : servers.length == 0 ? (
             <tr>
-              <td colSpan={3}>No servers available.</td>
+              <td colSpan={3}>Нет доступных серверов.</td>
             </tr>
           ) : (
             servers.map((server: ServerEntry) => {

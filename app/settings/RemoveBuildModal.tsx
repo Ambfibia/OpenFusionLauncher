@@ -17,26 +17,26 @@ export default function RemoveBuildModal({
   return (
     <Modal show={show} onHide={() => setShow(false)} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Remove Build</Modal.Title>
+        <Modal.Title>Удалить сборку</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        Are you sure you want to remove build <strong>{version?.name ?? version?.uuid}</strong>?
-        It will be automatically fetched again if it is required by a server.
+        Вы уверены, что хотите удалить сборку <strong>{version?.name ?? version?.uuid}</strong>?
+        Она будет автоматически загружена снова, если понадобится серверу.
       </Modal.Body>
       <Modal.Footer>
         <Button
           variant="primary"
           onClick={() => setShow(false)}
-          text="Cancel"
+          text="Отмена"
         />
         <Button
           variant="danger"
-          text="Remove and Clear Caches"
+          text="Удалить и очистить кэши"
           onClick={() => onConfirm(version!.uuid, true)}
         />
         <Button
           variant="success"
-          text="Remove"
+          text="Удалить"
           onClick={() => onConfirm(version!.uuid, false)}
         />
       </Modal.Footer>

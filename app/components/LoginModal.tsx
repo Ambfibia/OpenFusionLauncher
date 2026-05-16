@@ -27,8 +27,8 @@ const CONTROL_ID_NEW_PASSWORD = "newPassword";
 const CONTROL_ID_CONFIRM_PASSWORD = "confirmPassword";
 const CONTROL_ID_EMAIL = "email";
 
-const EMAIL_DISCLAIMER = "A verification email will be sent to the address you provided. Please click on the enclosed link in order to complete the registration process as soon as possible.\n\nIf you do not click the verification link, the email will not be linked to your account. You will still be able to log in, but **you will not be able to recover your password.**";
-const NO_EMAIL_DISCLAIMER = "Continue without entering an email address? If there is no email linked to your account, **there will be no way to recover your password if you forget it**.\n\nIf you're logged in, you can always add an email address later by going to Settings -> Authentication -> Manage Account";
+const EMAIL_DISCLAIMER = "На указанный адрес будет отправлено письмо для подтверждения. Перейдите по ссылке в письме, чтобы завершить регистрацию.\n\nЕсли вы не подтвердите адрес, он не будет привязан к аккаунту. Вы все равно сможете войти, но **не сможете восстановить пароль.**";
+const NO_EMAIL_DISCLAIMER = "Продолжить без адреса электронной почты? Если к аккаунту не привязана почта, **вы не сможете восстановить пароль, если забудете его**.\n\nПосле входа вы всегда сможете добавить адрес в разделе Настройки -> Авторизация -> Управление аккаунтом";
 
 const replaceLinksWithShellOpen = (html: string) => {
   return html.replace(/<a href="([^"]+)">([^<]+)<\/a>/g, (match, href, text) => {
@@ -55,7 +55,7 @@ const checkEmailRequired = async (server: ServerEntry) => {
 };
 
 function AnnouncementsPanel({ server }: { server?: ServerEntry }) {
-  const ERROR_TEXT = "This server has no announcements.";
+  const ERROR_TEXT = "На этом сервере нет объявлений.";
 
   const [showUpsell, setShowUpsell] = useState<boolean>(false);
   const [showAnnouncements, setShowAnnouncements] = useState<boolean>(false);
@@ -100,7 +100,7 @@ function AnnouncementsPanel({ server }: { server?: ServerEntry }) {
         src={getUpsellImage(server)}
         className={!showUpsell ? "d-none" : ""}
         onLoad={() => setShowUpsell(true)}
-        alt="Upsell"
+        alt="Изображение сервера"
       />
       <div className="announcements">
         {error ? ERROR_TEXT : <div dangerouslySetInnerHTML={{ __html: announcements }} />}
@@ -212,18 +212,18 @@ export default function LoginModal({
       if (email.length > 0) {
         showConfirmationModal(
           EMAIL_DISCLAIMER,
-          "I understand",
+          "Понятно",
           "danger",
           submitForm,
-          "Note!",
+          "Внимание!",
         );
       } else {
         showConfirmationModal(
           NO_EMAIL_DISCLAIMER,
-          "I understand",
+          "Понятно",
           "danger",
           submitForm,
-          "Note!",
+          "Внимание!",
         );
       }
     } else {
@@ -250,11 +250,11 @@ export default function LoginModal({
             className="mb-3"
             fill
           >
-            <Tab eventKey={TAB_LOGIN} title="Log In" className="p-3">
+            <Tab eventKey={TAB_LOGIN} title="Вход" className="p-3">
               <Form.Group className="mb-3" controlId={CONTROL_ID_USERNAME}>
                 <Form.Control
                   type="text"
-                  placeholder="Username"
+                  placeholder="Имя пользователя"
                   value={username}
                   onFocus={() => setActiveControl(CONTROL_ID_USERNAME)}
                   onChange={(e) => setUsername(e.target.value)}
@@ -263,7 +263,7 @@ export default function LoginModal({
               <Form.Group className="mb-3" controlId={CONTROL_ID_PASSWORD}>
                 <Form.Control
                   type="password"
-                  placeholder="Password"
+                  placeholder="Пароль"
                   value={password}
                   onFocus={() => setActiveControl(CONTROL_ID_PASSWORD)}
                   onChange={(e) => setPassword(e.target.value)}
@@ -273,7 +273,7 @@ export default function LoginModal({
                 <Form.Group controlId={CONTROL_ID_REMEMBER}>
                   <Form.Check
                     type="checkbox"
-                    label="Remember Me"
+                    label="Запомнить меня"
                     disabled={alwaysRemember}
                     checked={remember}
                     onChange={(e) => setRemember(e.target.checked)}
@@ -287,15 +287,15 @@ export default function LoginModal({
                     onClose(); // bootstrap doesn't support nested modals
                   }}
                 >
-                Forgot your password?
+                Забыли пароль?
                 </span>
               </div>
             </Tab>
-            <Tab eventKey={TAB_REGISTER} title="Register" className="p-3">
+            <Tab eventKey={TAB_REGISTER} title="Регистрация" className="p-3">
               <Form.Group className="mb-3" controlId={CONTROL_ID_NEW_USERNAME}>
                 <Form.Control
                   type="text"
-                  placeholder="Username"
+                  placeholder="Имя пользователя"
                   value={username}
                   onFocus={() => setActiveControl(CONTROL_ID_NEW_USERNAME)}
                   onChange={(e) => setUsername(e.target.value)}
@@ -305,7 +305,7 @@ export default function LoginModal({
               <Form.Group className="mb-3" controlId={CONTROL_ID_NEW_PASSWORD}>
                 <Form.Control
                   type="password"
-                  placeholder="Password"
+                  placeholder="Пароль"
                   value={password}
                   onFocus={() => setActiveControl(CONTROL_ID_NEW_PASSWORD)}
                   onChange={(e) => setPassword(e.target.value)}
@@ -318,7 +318,7 @@ export default function LoginModal({
               >
                 <Form.Control
                   type="password"
-                  placeholder="Confirm Password"
+                  placeholder="Подтвердите пароль"
                   value={confirmPassword}
                   onFocus={() => setActiveControl(CONTROL_ID_CONFIRM_PASSWORD)}
                   onChange={(e) => setConfirmPassword(e.target.value)}
@@ -328,7 +328,7 @@ export default function LoginModal({
               <Form.Group className="mb-3" controlId={CONTROL_ID_EMAIL}>
                 <Form.Control
                   type="text"
-                  placeholder={"Email" + (emailRequired ? "" : " (optional)")}
+                  placeholder={"Эл. почта" + (emailRequired ? "" : " (необязательно)")}
                   value={email}
                   onFocus={() => setActiveControl(CONTROL_ID_EMAIL)}
                   onChange={(e) => setEmail(e.target.value)}
@@ -339,7 +339,7 @@ export default function LoginModal({
               </Form.Group>
               <div className="text-center">
                 <span>
-                  View this server{"'s "}
+                  Открыть{" "}
                   <span
                     role="button"
                     className="text-decoration-underline"
@@ -348,7 +348,7 @@ export default function LoginModal({
                       open(url);
                     }}
                   >
-                    privacy policy
+                    политику конфиденциальности
                   </span>
                 </span>
               </div>
@@ -357,8 +357,8 @@ export default function LoginModal({
                 controlId={CONTROL_ID_NEW_USERNAME}
               >
                 <div className="text-start lh-small">
-                  • 4 - 32 characters long
-                  <br />• No special characters besides - and _
+                  - От 4 до 32 символов
+                  <br />- Только буквы, цифры, дефис и подчеркивание
                 </div>
               </RequirementsTooltip>
               <RequirementsTooltip
@@ -366,18 +366,18 @@ export default function LoginModal({
                 controlId={CONTROL_ID_NEW_PASSWORD}
               >
                 <div className="text-start lh-small">
-                  • 8 - 32 characters long
+                  - От 8 до 32 символов
                 </div>
               </RequirementsTooltip>
             </Tab>
           </Tabs>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={onClose} variant="primary" text="Cancel" />
+          <Button onClick={onClose} variant="primary" text="Отмена" />
           <Button
             onClick={onSubmit}
             variant="success"
-            text={tab === TAB_LOGIN ? "Log In" : "Register"}
+            text={tab === TAB_LOGIN ? "Войти" : "Зарегистрироваться"}
             enabled={canSubmit(tab)}
           />
           {/* Hidden submit button */}

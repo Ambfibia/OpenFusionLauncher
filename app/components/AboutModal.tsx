@@ -16,14 +16,14 @@ export default function AboutModal({
   return (
     <Modal show={show} onHide={() => setShow(false)} centered={true}>
       <Modal.Header>
-        <Modal.Title>About {name}</Modal.Title>
+        <Modal.Title>О программе {name}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p className="font-monospace">Version {version}</p>
+        <p className="font-monospace">Версия {version}</p>
         <p>
-          ©2020-2025 OpenFusion Contributors
+          ©2020-2025 Участники OpenFusion
           <br />
-          OpenFusion is licensed under MIT.
+          OpenFusion распространяется по лицензии MIT.
           <br />
         </p>
       </Modal.Body>
@@ -33,19 +33,19 @@ export default function AboutModal({
             onClick={() => open("https://github.com/OpenFusionProject/")}
             variant="primary"
             icon="github fa-brands fa-xl"
-            tooltip="Github Page"
+            tooltip="Страница на GitHub"
           />
           <Button
             onClick={() => open("https://discord.gg/DYavckB")}
             variant="primary"
             icon="discord fa-brands fa-lg"
-            tooltip="Discord Chat"
+            tooltip="Чат Discord"
           />
           <div className="ms-auto"></div>
           <Button
             onClick={() => setShow(false)}
             variant="primary"
-            text="Close"
+            text="Закрыть"
           />
         </Stack>
       </Modal.Footer>

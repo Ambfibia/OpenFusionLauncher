@@ -9,7 +9,7 @@ const findVersion = (versions: VersionEntry[], uuid: string) => {
 const getVersionsForServer = async (server: ServerEntry) => {
   if (!server.endpoint) {
     // Not available for simple servers
-    throw new Error("Server is not an endpoint server");
+    throw new Error("Сервер не является сервером API");
   }
 
   const versions: string[] = await invoke("get_versions_for_server", {
@@ -54,7 +54,7 @@ function PlayerCount({ server, refreshes }: { server: ServerEntry, refreshes: nu
 
   if (playerCount !== undefined) {
     return (
-      <span className="fw-bold text-success" title="Current player count">
+      <span className="fw-bold text-success" title="Текущее число игроков">
         <i className="fa fa-user fa-sm"></i> {playerCount}
       </span>
     );
@@ -66,7 +66,7 @@ function PlayerCount({ server, refreshes }: { server: ServerEntry, refreshes: nu
         <span className="fw-bold text-danger">
           <i
             className="fa fa-plug-circle-xmark"
-            title="Could not connect to server"
+            title="Не удалось подключиться к серверу"
           ></i>
         </span>
       );
@@ -84,7 +84,7 @@ function PlayerCount({ server, refreshes }: { server: ServerEntry, refreshes: nu
     <span>
       <i
         className="fa-solid fa-circle-question"
-        title="No information provided"
+        title="Нет информации"
       ></i>
     </span>
   );
@@ -134,7 +134,7 @@ function VersionBadges({
         ></span>
       );
     } else if (endpointVersions.length == 0) {
-      return <span className="badge bg-danger">no versions</span>;
+      return <span className="badge bg-danger">нет версий</span>;
     } else {
       return (
         <>
@@ -143,7 +143,7 @@ function VersionBadges({
             if (!version) {
               return (
                 <span key={versionUuid} className="badge bg-danger me-1">
-                  unknown
+                  неизвестно
                 </span>
               );
             }
@@ -161,7 +161,7 @@ function VersionBadges({
     const versionUuid = server.version!;
     const version = findVersion(versions, versionUuid);
     if (!version) {
-      return <span className="badge bg-danger">unknown</span>;
+      return <span className="badge bg-danger">неизвестно</span>;
     }
     const label = version.name ?? version.uuid;
     return <span className="badge bg-secondary" title={version.uuid}>{label}</span>;
@@ -194,13 +194,13 @@ export default function ServerList({
       <table className="table table-striped table-hover mb-0">
         <thead>
           <tr>
-            <th className="text-start name-column">Server Name</th>
+            <th className="text-start name-column">Сервер</th>
             <th className="versions-column">
-              Game Versions
+              Версии игры
               <i onClick={() => setSupportedVersionRefreshes((r) => r + 1)} className="fa fa-rotate-right ms-2 clickable"></i>
             </th>
             <th className="text-end status-column">
-              Status
+              Статус
               <i onClick={() => setStatusRefreshes((r) => r + 1)} className="fa fa-rotate-right ms-2 clickable"></i>
             </th>
           </tr>
@@ -218,7 +218,7 @@ export default function ServerList({
             </tr>
           ) : servers.length === 0 ? (
             <tr>
-              <td colSpan={3}>No servers available.</td>
+              <td colSpan={3}>Нет доступных серверов.</td>
             </tr>
           ) : (
             servers.map((server) => (

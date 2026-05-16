@@ -6,7 +6,7 @@ import Button from "./Button";
 
 import { LaunchProfile } from "@/app/types";
 
-const DEFAULT_NAME = "New Profile";
+const DEFAULT_NAME = "Новый профиль";
 const DEFAULT_COMMAND = "{}";
 
 export default function EditProfileModal({
@@ -53,13 +53,13 @@ export default function EditProfileModal({
     <Modal show={show} onHide={() => doHide()} centered={true} size="lg">
       <Modal.Header>
         <Modal.Title>
-          {isAdd ? "Add Launch Profile" : "Edit Launch Profile"}
+          {isAdd ? "Добавить профиль запуска" : "Изменить профиль запуска"}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
           <Form.Group controlId="editProfileName">
-            <Form.Label>Profile Name</Form.Label>
+            <Form.Label>Название профиля</Form.Label>
             <Form.Control
               type="text"
               value={name}
@@ -73,7 +73,7 @@ export default function EditProfileModal({
             {"ID: " + profile!.uuid}
           </Form.Text>}
           <Form.Group className="mt-3" controlId="editProfileCommand">
-            <Form.Label>Launch Command</Form.Label>
+            <Form.Label>Команда запуска</Form.Label>
             <Form.Control
               as="textarea"
               rows={3}
@@ -85,16 +85,16 @@ export default function EditProfileModal({
               disabled={isPreset}
             />
             <Form.Text className="text-muted">
-              Use <code>{"{}"}</code> as a placeholder for the game executable.
+              Используйте <code>{"{}"}</code> как подстановку для исполняемого файла игры.
             </Form.Text>
           </Form.Group>
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={() => doHide()} variant="primary" text="Cancel" />
-        {!isAdd && <Button icon="copy" text="Duplicate" onClick={() => {
+        <Button onClick={() => doHide()} variant="primary" text="Отмена" />
+        {!isAdd && <Button icon="copy" text="Дублировать" onClick={() => {
           const profileToDuplicate = profile!;
-          saveProfile(profileToDuplicate.name + " (copy)", profileToDuplicate.command);
+          saveProfile(profileToDuplicate.name + " (копия)", profileToDuplicate.command);
           doHide();
         }} />}
         {
@@ -106,7 +106,7 @@ export default function EditProfileModal({
               doHide();
             }}
             variant="success"
-            text={isAdd ? "Add Profile" : "Save Profile"}
+            text={isAdd ? "Добавить профиль" : "Сохранить профиль"}
             enabled={isValid()}
           />
         }

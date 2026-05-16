@@ -9,7 +9,7 @@ export function startEasterEggs() {
 
   if (today >= christmasBegin && today <= christmasEnd) {
     snowflakes = new Snowflakes({ zIndex: -100 });
-    console.log("Christmas Activated.");
+    console.log("Рождественский режим включен.");
     snowflakes.start();
   }
 }

@@ -56,7 +56,7 @@ const isCorrupt = (
 };
 
 const getTooltipForItem = (name: string, item: VersionCacheProgressItem) => {
-  const status = item.missing ? "Missing: " : item.corrupt ? "Corrupt: " : "";
+  const status = item.missing ? "Отсутствует: " : item.corrupt ? "Поврежден: " : "";
   return status + name;
 };
 
@@ -115,7 +115,7 @@ const getMissingTooltip = (items: Record<string, VersionCacheProgressItem>) => {
     return undefined;
   }
 
-  let tooltip = "Missing:\n";
+  let tooltip = "Отсутствует:\n";
   for (const [name, _] of missingItems) {
     tooltip += `${name}\n`;
   }
@@ -144,9 +144,9 @@ export default function GameBuildsList({
       <table className="table table-striped table-hover mb-0">
         <thead>
           <tr>
-            <th>Version</th>
-            <th className="text-center cache-col">Game Cache</th>
-            <th className="text-center px-5 cache-col">Offline Cache</th>
+            <th>Версия</th>
+            <th className="text-center cache-col">Игровой кэш</th>
+            <th className="text-center px-5 cache-col">Офлайн-кэш</th>
             <th className="text-end"></th>
           </tr>
         </thead>
@@ -163,7 +163,7 @@ export default function GameBuildsList({
             </tr>
           ) : versions.length == 0 ? (
             <tr>
-              <td colSpan={3}>No builds available</td>
+              <td colSpan={3}>Нет доступных сборок</td>
             </tr>
           ) : (
             versions.map((version) => {
@@ -235,7 +235,7 @@ export default function GameBuildsList({
                         enabled={Object.keys(versionData.gameItems).length > 0}
                         icon="folder"
                         onClick={() => invoke("open_folder_for_version", { uuid: version.uuid, offline: false })}
-                        tooltip="Open game cache folder"
+                        tooltip="Открыть папку игрового кэша"
                       />{" "}
                       <Button
                         loading={!versionData.gameDone}
@@ -243,7 +243,7 @@ export default function GameBuildsList({
                         icon="trash"
                         onClick={() => clearGameCache(version.uuid)}
                         variant="danger"
-                        tooltip="Clear game cache"
+                        tooltip="Очистить игровой кэш"
                       />
                     </td>
                     <td className="text-center cache-col">
@@ -280,7 +280,7 @@ export default function GameBuildsList({
                         enabled={Object.keys(versionData.offlineItems).length > 0}
                         icon="folder"
                         onClick={() => invoke("open_folder_for_version", { uuid: version.uuid, offline: true })}
-                        tooltip="Open offline cache folder"
+                        tooltip="Открыть папку офлайн-кэша"
                       />{" "}
                       <Button
                         loading={!versionData.offlineDone}
@@ -292,7 +292,7 @@ export default function GameBuildsList({
                         icon="download"
                         onClick={() => downloadOfflineCache(version.uuid)}
                         variant="success"
-                        tooltip="Download offline cache"
+                        tooltip="Скачать офлайн-кэш"
                       />{" "}
                       <Button
                         loading={!versionData.offlineDone}
@@ -300,7 +300,7 @@ export default function GameBuildsList({
                         icon="screwdriver-wrench"
                         onClick={() => repairOfflineCache(version.uuid)}
                         variant="warning"
-                        tooltip="Repair offline cache"
+                        tooltip="Восстановить офлайн-кэш"
                       />{" "}
                       <Button
                         loading={!versionData.offlineDone}
@@ -308,7 +308,7 @@ export default function GameBuildsList({
                         icon="trash"
                         onClick={() => deleteOfflineCache(version.uuid)}
                         variant="danger"
-                        tooltip="Delete offline cache"
+                        tooltip="Удалить офлайн-кэш"
                       />
                     </td>
                     <td className="text-end p-1">
@@ -319,7 +319,7 @@ export default function GameBuildsList({
                         icon="x"
                         onClick={() => removeVersion(version.uuid)}
                         variant="danger"
-                        tooltip={DEFAULT_VERSION_UUIDS.includes(version.uuid) ? "Cannot remove default build" : "Remove build"}
+                        tooltip={DEFAULT_VERSION_UUIDS.includes(version.uuid) ? "Нельзя удалить стандартную сборку" : "Удалить сборку"}
                       />
                     </td>
                   </tr>

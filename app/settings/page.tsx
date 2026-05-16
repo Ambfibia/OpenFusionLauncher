@@ -93,7 +93,7 @@ export default function SettingsPage() {
     onConfirm: () => void,
     title?: string
   ) => {
-    setConfirmationTitle(title || "Confirm");
+    setConfirmationTitle(title || "Подтвердить");
     setConfirmationMessage(message);
     setConfirmationConfirmText(confirmText);
     setConfirmationConfirmVariant(confirmVariant);
@@ -122,34 +122,34 @@ export default function SettingsPage() {
       await syncConfig();
       setInitialFetchDone(true);
     } catch (e) {
-      alertError("Error during init: " + e);
+      alertError("Ошибка при инициализации: " + e);
     }
   };
 
   const saveConfig = async (config: Config) => {
     try {
       await invoke("update_config", { config: config });
-      alertSuccess("Changes applied successfully");
+      alertSuccess("Изменения применены");
     } catch (e) {
-      alertError("Error updating config: " + e);
+      alertError("Ошибка обновления конфигурации: " + e);
     }
   };
 
   const resetLauncherSettings = async () => {
     try {
       await invoke("reset_launcher_config");
-      alertSuccess("Launcher settings reset successfully");
+      alertSuccess("Настройки лаунчера сброшены");
     } catch (e) {
-      alertError("Error resetting launcher settings: " + e);
+      alertError("Ошибка сброса настроек лаунчера: " + e);
     }
   };
 
   const resetGameSettings = async () => {
     try {
       await invoke("reset_game_config");
-      alertSuccess("Game settings reset successfully");
+      alertSuccess("Настройки игры сброшены");
     } catch (e) {
-      alertError("Error resetting game settings: " + e);
+      alertError("Ошибка сброса настроек игры: " + e);
     }
   };
 
@@ -194,13 +194,13 @@ export default function SettingsPage() {
     <SettingsCtx.Provider value={ctx}>
       <Toasts alerts={alerts} />
       {loadingTasks.length > 0 && <LoadingScreen tasks={loadingTasks} />}
-      <LauncherPage title="Settings" id="launcher-page-settings">
+      <LauncherPage title="Настройки" id="launcher-page-settings">
         <Tabs activeKey={tab} onSelect={(k) => setTab(k ?? DEFAULT_TAB)} fill>
           <Tab
             eventKey={TAB_LAUNCHER_SETTINGS}
             title={
               <>
-                <i className="fas fa-rocket"></i> <span>Launcher Settings</span>
+                <i className="fas fa-rocket"></i> <span>Настройки лаунчера</span>
               </>
             }
           >
@@ -216,7 +216,7 @@ export default function SettingsPage() {
             eventKey={TAB_GAME_SETTINGS}
             title={
               <>
-                <i className="fas fa-gamepad"></i> <span>Game Settings</span>
+                <i className="fas fa-gamepad"></i> <span>Настройки игры</span>
               </>
             }
           >
@@ -233,7 +233,7 @@ export default function SettingsPage() {
             eventKey={TAB_GAME_BUILDS}
             title={
               <>
-                <i className="fas fa-download"></i> <span>Game Builds</span>
+                <i className="fas fa-download"></i> <span>Сборки игры</span>
               </>
             }
           >
@@ -243,7 +243,7 @@ export default function SettingsPage() {
             eventKey={TAB_AUTHENTICATION}
             title={
               <>
-                <i className="fas fa-key"></i> <span>Authentication</span>
+                <i className="fas fa-key"></i> <span>Авторизация</span>
               </>
             }
           >
